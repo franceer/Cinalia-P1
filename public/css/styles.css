@@ -1,0 +1,144 @@
+﻿/*@import url(http://fonts.googleapis.com/css?family=Oswald:300);
+
+* {
+    box-sizing:border-box;
+}
+body {
+    font-family: 'Oswald', sans-serif; 
+    width: 960px;
+    margin: 0 auto;
+}
+Do a flip down placard effect
+  Container :
+    perspective: 10000px;
+    perspective-origin: 50% 0;
+
+  Child
+    transition: all 0.3s;
+    transform: rotateX(-90deg);
+    transform-origin: 0 0;
+
+   On child action or class effect (ex: .visible or :hover)
+    transform: rotateX(0deg);  
+*/
+.commercials-nav{    
+    color: #6B7D86;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;    
+}
+.commercials-nav > div{
+    width: 100%;
+    transition: all 0.3s;
+    backface-visibility: hidden;
+    transform: rotateX(-90deg);
+    transform-origin: 0 0;
+    display: flex;
+    align-items: center;
+    align-content: center;  
+    box-shadow: 0 1px 1px rgba(52,63,74,.2);
+}
+.commercials-nav > div.visible{
+    transform: rotateX(0deg);    
+}
+.line-icon{
+    position: relative;
+    width: 40px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.line-icon svg{
+    display: block; /*Avoid having margin around svg (same for images)*/
+    fill: currentColor;
+    width: 40px;
+    height: 65px;    
+    padding: 5px;   
+    transition: all 500ms ease;
+    /*animation: flash-back 500ms ease 0s 1 reverse forwards running;*/ 
+}
+.line-icon span{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 40px;
+    opacity: 0;
+    text-align: center;
+    font-size: 0.9em;
+    transition: all 500ms ease;
+}
+.commercials-nav > div:hover svg{
+    transform: rotate(180deg) scale(0);
+    /*animation: flash 500ms ease 0s 1 normal forwards running;*/    
+}
+.commercials-nav > div:hover span{
+    opacity: 1;
+}
+/*@keyframes flash {    
+    100% {
+        transform: rotate(180deg) scale(0);
+    }
+}
+@keyframes flash-back {    
+    0% {
+        transform: rotate(180deg) scale(1);
+    }
+}*/
+.film-assets{
+    overflow: hidden;
+    min-height: 65px;
+    margin: 0;
+    display: flex;
+    flex-direction: row;   
+    align-items: center; 
+    width: 885px;    
+    transition: width 500ms ease;
+}
+.expanded{
+    width: 898px;    
+}
+.film-assets::before {
+    content: "";
+    border-left: 1px solid rgba(107, 125, 136,.6);
+    width: 2px;
+    height: 30px;
+}
+.film-assets, .film-assets li {
+    padding: 0; 
+    list-style-type: none;
+}
+/*.film-assets .first{
+    margin-left: -50px !important;
+}*/
+.film-assets li {
+    margin: 0; 
+    flex: 0 0 auto; 
+    width: auto;
+    font-family: Verdana;
+    opacity:0;    
+}
+.film-assets img{
+    display: block;/*Avoid having margin around img (same for svg)*/
+    margin: 2px;
+    border-radius: 100%;
+    width: 45px;
+    transition: width ease 500ms;
+    box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.8);
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+.film-assets img:hover{
+    -webkit-filter: initial;
+    filter:initial;
+    width: 60px;    
+    /*animation: scale 2s ease 0s 1 normal none running;*/
+}
+/*@keyframes scale {
+  100% {     
+    transform: scale(1.5);    
+  }
+}*/
+input[type=range] {
+    width: 100%;
+}

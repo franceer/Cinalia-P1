@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Home</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <!--<link href="./css/bootstrap-4.0-flex.css" rel="stylesheet" />-->   
+        <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css" />   
+        <link rel="stylesheet" href="./css/custom-bootstrap.css" />  
+        <link rel="stylesheet" href="./css/styles.css" />
+        <script src="./bootstrap/js/bootstrap.js"></script>
+        <script src="./js/plyr.js"></script>
+        <script type="text/javascript" src="/js/client-scripts.js"></script>
+        <link rel="stylesheet" href="https://cdn.plyr.io/1.5.9/plyr.css" />
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	</head>
+	<body>
+		<!--<img src="/images/film-interface-smartphone.png" />-->
+        <header>
+            <div class="container">
+                <div class="row">
+                    <nav id="secondary-nav" class="col-md-2 col-md-offset-10">
+                        <ul>
+                            <li><a href="#">Mon Compte</a></li>
+                            <li><span class="glyphicon glyphicon-search" aria-hidden="true"></span></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="row">
+                    <a id="brand" class="col-md-3" href="#">WatchCatch</a>
+                    <nav id="primary-nav" class="col-md-5 col-md-offset-1">                        
+                        <ul>
+                            <li><a href="#">movies</a>
+                                <ul class="primary-nav-sub1">
+                                    <li>Test 1</li>
+                                    <li>Test 2</li>
+                                    <li>Test 3</li>
+                                </ul>
+                            </li>
+                            <li><a href="#">fashion</a>
+                                <ul class="primary-nav-sub1">
+                                    <li>Test 1</li>
+                                    <li>Test 2</li>
+                                    <li>Test 3</li>
+                                </ul>
+                            </li>
+                            <li><a href="#">locations</a>
+                                <ul class="primary-nav-sub1">
+                                    <li>Test 1</li>
+                                    <li>Test 2</li>
+                                    <li>Test 3</li>
+                                </ul>
+                            </li>
+                            <li><a href="#">other</a>
+                                <ul class="primary-nav-sub1">
+                                    <li>Test 1</li>
+                                    <li>Test 2</li>
+                                    <li>Test 3</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>             
+        <section class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="./images/five-poster.jpg" class="img-responsive" alt="Five affiche du film" title="Five le film"/>
+                    <div class="plyr">
+                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
+                        <video controls>
+                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
+                            <!--Fallback for browsers that don't support the <video> element-->
+                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
+                        </video>
+                    </div>
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p id="all-products">Tous les produits</p>
+                </div>
+                <div class="col-md-8">
+                    <div class="commercials-nav">
+                        <div id="products" class="visible">
+                            <div class="line-icon">
+                                <span>Prêt-à-porter</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets">
+                                <% Object.keys(timeline).forEach(function(key){
+                                var products = timeline[key];
+                                products.forEach(function(product){
+                                %>
+                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
+                                    <img src="<%-product.PictureURL%>" />
+                                </li>
+                                <% });
+                                });%>
+                            </ul>
+                        </div>
+                        <!--<button class="left">Left</button>
+                        <button class="right">Right</button>-->
+                        <div id="objects" class="visible">
+                            <div class="line-icon">
+                                <span>Objets</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets">
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
+                                    <img src="/productimages/ironlak.png" />
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="places" class="visible">
+                            <div class="line-icon">
+                                <span>Lieux</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>    
+        <script type="text/javascript">
+            var timeline = <%- JSON.stringify(timeline);%>;
+
+            (function(d, p){
+            var a = new XMLHttpRequest(),
+            b = d.body;
+            a.open('GET', p, true);
+            a.send();
+            a.onload = function() {
+            var c = d.createElement('div');
+            c.setAttribute('hidden', '');
+            c.innerHTML = a.responseText;
+            b.insertBefore(c, b.childNodes[0]);
+            };
+            })(document, '/images/sprite.svg');
+            plyr.setup();
+        </script>  
+	</body>
+</html>

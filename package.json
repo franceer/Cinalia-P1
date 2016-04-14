@@ -1,0 +1,23 @@
+{
+  "name": "shopinmedia",
+  "version": "0.0.1",
+  "description": "First project.",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "bower": "^1.7.9",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "grunt": "^1.0.1",
+    "pg": "^4.4.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Erwin France",
+  "license": "ISC"
+}
