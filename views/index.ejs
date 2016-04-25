@@ -1,88 +1,48 @@
-﻿<!DOCTYPE html>
-<html>
-	<head>
-		<title>Home</title>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
-        <!--<link href="./css/bootstrap-4.0-flex.css" rel="stylesheet" />-->   
-        <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css" />   
-        <link rel="stylesheet" href="./css/custom-bootstrap.css" />  
-        <link rel="stylesheet" href="./css/styles.css" />
-        <script src="./bootstrap/js/bootstrap.js"></script>
-        <script src="./js/plyr.js"></script>
-        <script type="text/javascript" src="/js/client-scripts.js"></script>
-        <link rel="stylesheet" href="https://cdn.plyr.io/1.5.9/plyr.css" />
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	</head>
-	<body>
-		<!--<img src="/images/film-interface-smartphone.png" />-->
-        <header>
-            <div class="container">
-                <div class="row">
-                    <nav id="secondary-nav" class="col-md-2 col-md-offset-10">
-                        <ul>
-                            <li><a href="#">Mon Compte</a></li>
-                            <li><span class="glyphicon glyphicon-search" aria-hidden="true"></span></li>
-                        </ul>
-                    </nav>
+﻿<% include ./partials/header.ejs%>
+<section id="player-carousel" class="container">
+    <div class="wrap">              
+        <ul id="video-carousel" class="list-unstyled carousel is-set main">
+            <li class="carousel-seat row">
+                <div id="poster-section" class="col-md-3">
+                    <img id="poster" src="./images/five-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
+                    <h3 class="text-uppercase">Five 1</h3>
+                    <ul class="more-info list-unstyled">
+                        <li>
+                            <label class="label label-default">Date de sortie</label> <span>30 mars 2016</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Durée</label> <span>1h 42min</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">De</label> <span>Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Avec</label> <span>Pierre Niney, François Civil, Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Genre</label> <span>Comédie</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Nationalité</label> <span>Français</span>
+                        </li>
+                    </ul>
+                    <div id="all-products" class="text-uppercase text-md-center">
+                        Voir tous les produits
+                    </div>
                 </div>
-                <div class="row">
-                    <a id="brand" class="col-md-3" href="#">WatchCatch</a>
-                    <nav id="primary-nav" class="col-md-5 col-md-offset-1">                        
-                        <ul>
-                            <li><a href="#">movies</a>
-                                <ul class="primary-nav-sub1">
-                                    <li>Test 1</li>
-                                    <li>Test 2</li>
-                                    <li>Test 3</li>
-                                </ul>
-                            </li>
-                            <li><a href="#">fashion</a>
-                                <ul class="primary-nav-sub1">
-                                    <li>Test 1</li>
-                                    <li>Test 2</li>
-                                    <li>Test 3</li>
-                                </ul>
-                            </li>
-                            <li><a href="#">locations</a>
-                                <ul class="primary-nav-sub1">
-                                    <li>Test 1</li>
-                                    <li>Test 2</li>
-                                    <li>Test 3</li>
-                                </ul>
-                            </li>
-                            <li><a href="#">other</a>
-                                <ul class="primary-nav-sub1">
-                                    <li>Test 1</li>
-                                    <li>Test 2</li>
-                                    <li>Test 3</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>             
-        <section class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="./images/five-poster.jpg" class="img-responsive" alt="Five affiche du film" title="Five le film"/>
+                <div class="col-md-9">
                     <div class="plyr">
                         <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
-                        <video controls>
+                        <video poster="/images/five-launcher.jpg" controls>
                             <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
                             <!--Fallback for browsers that don't support the <video> element-->
                             <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
                         </video>
+                        <div class="video-overlay">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                            <div>Five un film de fou !</div>
+                        </div>
                     </div>
-                </div>                
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <p id="all-products">Tous les produits</p>
-                </div>
-                <div class="col-md-8">
                     <div class="commercials-nav">
                         <div id="products" class="visible">
                             <div class="line-icon">
@@ -103,8 +63,6 @@
                                 });%>
                             </ul>
                         </div>
-                        <!--<button class="left">Left</button>
-                        <button class="right">Right</button>-->
                         <div id="objects" class="visible">
                             <div class="line-icon">
                                 <span>Objets</span>
@@ -112,67 +70,7 @@
                                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
                                 </svg>
                             </div>
-                            <ul class="film-assets">
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
-                                <li data-product-title="Bombe IronLak" data-time-code="1" class="visible" style="margin-left: 0px; opacity: 1;">
-                                    <img src="/productimages/ironlak.png" />
-                                </li>
+                            <ul class="film-assets">                                        
                             </ul>
                         </div>
                         <div id="places" class="visible">
@@ -186,24 +84,464 @@
                         </div>
                     </div>
                 </div>
+            </li>
+            <li class="carousel-seat row">
+                <div id="poster-section" class="col-md-3">
+                    <img id="poster" src="./images/five-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
+                    <h3 class="text-uppercase">Five 2</h3>
+                    <ul class="more-info list-unstyled">
+                        <li>
+                            <label class="label label-default">Date de sortie</label> <span>30 mars 2016</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Durée</label> <span>1h 42min</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">De</label> <span>Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Avec</label> <span>Pierre Niney, François Civil, Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Genre</label> <span>Comédie</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Nationalité</label> <span>Français</span>
+                        </li>
+                    </ul>
+                    <div id="all-products" class="text-uppercase text-md-center">
+                        Voir tous les produits
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="plyr">
+                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
+                        <video poster="/images/five-launcher.jpg" controls>
+                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
+                            <!--Fallback for browsers that don't support the <video> element-->
+                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
+                        </video>
+                        <div class="video-overlay">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                            <div>Five un film de fou !</div>
+                        </div>
+                    </div>
+                    <div class="commercials-nav">
+                        <div id="products" class="visible">
+                            <div class="line-icon">
+                                <span>Prêt-à-porter</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets">
+                                <% Object.keys(timeline).forEach(function(key){
+                                var products = timeline[key];
+                                products.forEach(function(product){
+                                %>
+                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
+                                    <img src="<%-product.PictureURL%>" />
+                                </li>
+                                <% });
+                                });%>
+                            </ul>
+                        </div>
+                        <div id="objects" class="visible">
+                            <div class="line-icon">
+                                <span>Objets</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets"></ul>
+                        </div>
+                        <div id="places" class="visible">
+                            <div class="line-icon">
+                                <span>Lieux</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets"></ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="carousel-seat row">
+                <div id="poster-section" class="col-md-3">
+                    <img id="poster" src="./images/five-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
+                    <h3 class="text-uppercase">Five 3</h3>
+                    <ul class="more-info list-unstyled">
+                        <li>
+                            <label class="label label-default">Date de sortie</label> <span>30 mars 2016</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Durée</label> <span>1h 42min</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">De</label> <span>Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Avec</label> <span>Pierre Niney, François Civil, Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Genre</label> <span>Comédie</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Nationalité</label> <span>Français</span>
+                        </li>
+                    </ul>
+                    <div id="all-products" class="text-uppercase text-md-center">
+                        Voir tous les produits
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="plyr">
+                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
+                        <video poster="/images/five-launcher.jpg" controls>
+                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
+                            <!--Fallback for browsers that don't support the <video> element-->
+                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
+                        </video>
+                        <div class="video-overlay">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                            <div>Five un film de fou !</div>
+                        </div>
+                    </div>
+                    <div class="commercials-nav">
+                        <div id="products" class="visible">
+                            <div class="line-icon">
+                                <span>Prêt-à-porter</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets">
+                                <% Object.keys(timeline).forEach(function(key){
+                                var products = timeline[key];
+                                products.forEach(function(product){
+                                %>
+                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
+                                    <img src="<%-product.PictureURL%>" />
+                                </li>
+                                <% });
+                                });%>
+                            </ul>
+                        </div>
+                        <div id="objects" class="visible">
+                            <div class="line-icon">
+                                <span>Objets</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets"></ul>
+                        </div>
+                        <div id="places" class="visible">
+                            <div class="line-icon">
+                                <span>Lieux</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets"></ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="carousel-seat row">
+                <div id="poster-section" class="col-md-3">
+                    <img id="poster" src="./images/five-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
+                    <h3 class="text-uppercase">Five 4</h3>
+                    <ul class="more-info list-unstyled">
+                        <li>
+                            <label class="label label-default">Date de sortie</label> <span>30 mars 2016</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Durée</label> <span>1h 42min</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">De</label> <span>Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Avec</label> <span>Pierre Niney, François Civil, Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Genre</label> <span>Comédie</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Nationalité</label> <span>Français</span>
+                        </li>
+                    </ul>
+                    <div id="all-products" class="text-uppercase text-md-center">
+                        Voir tous les produits
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="plyr">
+                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
+                        <video poster="/images/five-launcher.jpg" controls>
+                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
+                            <!--Fallback for browsers that don't support the <video> element-->
+                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
+                        </video>
+                        <div class="video-overlay">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                            <div>Five un film de fou !</div>
+                        </div>
+                    </div>
+                    <div class="commercials-nav">
+                        <div id="products" class="visible">
+                            <div class="line-icon">
+                                <span>Prêt-à-porter</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets">
+                                <% Object.keys(timeline).forEach(function(key){
+                                var products = timeline[key];
+                                products.forEach(function(product){
+                                %>
+                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
+                                    <img src="<%-product.PictureURL%>" />
+                                </li>
+                                <% });
+                                });%>
+                            </ul>
+                        </div>
+                        <div id="objects" class="visible">
+                            <div class="line-icon">
+                                <span>Objets</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets">                                        
+                            </ul>
+                        </div>
+                        <div id="places" class="visible">
+                            <div class="line-icon">
+                                <span>Lieux</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets"></ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="carousel-seat is-ref row">
+                <div id="poster-section" class="col-md-3">
+                    <img id="poster" src="./images/five-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
+                    <h3 class="text-uppercase">Five 5</h3>
+                    <ul class="more-info list-unstyled">
+                        <li>
+                            <label class="label label-default">Date de sortie</label> <span>30 mars 2016</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Durée</label> <span>1h 42min</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">De</label> <span>Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Avec</label> <span>Pierre Niney, François Civil, Igor Gotesman</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Genre</label> <span>Comédie</span>
+                        </li>
+                        <li>
+                            <label class="label label-default">Nationalité</label> <span>Français</span>
+                        </li>
+                    </ul>
+                    <div id="all-products" class="text-uppercase text-md-center">
+                        Voir tous les produits
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="plyr">
+                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
+                        <video poster="/images/five-launcher.jpg" controls>
+                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
+                            <!--Fallback for browsers that don't support the <video> element-->
+                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
+                        </video>
+                        <div class="video-overlay">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                            <div>Five un film de fou !</div>
+                        </div>
+                    </div>
+                    <div class="commercials-nav">
+                        <div id="products" class="visible">
+                            <div class="line-icon">
+                                <span>Prêt-à-porter</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets">
+                                <% Object.keys(timeline).forEach(function(key){
+                                var products = timeline[key];
+                                products.forEach(function(product){
+                                %>
+                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
+                                    <img src="<%-product.PictureURL%>" />
+                                </li>
+                                <% });
+                                });%>
+                            </ul>
+                        </div>
+                        <div id="objects" class="visible">
+                            <div class="line-icon">
+                                <span>Objets</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets">                                        
+                            </ul>
+                        </div>
+                        <div id="places" class="visible">
+                            <div class="line-icon">
+                                <span>Lieux</span>
+                                <svg>
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
+                                </svg>
+                            </div>
+                            <ul class="film-assets"></ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>          
+    <div class="row controls">
+        <button class="toggle col-md-1" data-slide="#video-carousel" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+        <button class="toggle col-md-1 col-md-offset-10" data-slide="#video-carousel" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+    </div>
+    <div class="row">
+        <ul class="pagin col-md-6 col-md-offset-3 list-unstyled">
+            <li><a href="#" class="active"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
+            <li><a href="#"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
+            <li><a href="#"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
+            <li><a href="#"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
+            <li><a href="#"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
+            <li><a href="#"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
+            <li><a href="#"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
+            <li><a href="#"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
+        </ul>
+    </div>
+</section>
+<section class="highlight movies">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-md-center">
+                <h2 class="text-uppercase">A l'affiche</h2>
             </div>
-        </section>    
-        <script type="text/javascript">
-            var timeline = <%- JSON.stringify(timeline);%>;
-
-            (function(d, p){
-            var a = new XMLHttpRequest(),
-            b = d.body;
-            a.open('GET', p, true);
-            a.send();
-            a.onload = function() {
-            var c = d.createElement('div');
-            c.setAttribute('hidden', '');
-            c.innerHTML = a.responseText;
-            b.insertBefore(c, b.childNodes[0]);
-            };
-            })(document, '/images/sprite.svg');
-            plyr.setup();
-        </script>  
-	</body>
-</html>
+        </div>
+        <div class="wrap">
+            <ul id="carousel-movies" class="carousel is-set">
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat is-ref">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+            </ul>
+        </div>
+        <div class="row controls">
+            <button class="toggle col-md-1" data-slide="#carousel-movies" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+            <button class="toggle col-md-1 col-md-offset-10" data-slide="#carousel-movies" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+        </div>
+    </div>            
+</section>
+<section class="container highlight fashion">
+    <div class="row">
+        <div class="col-md-12 text-md-center">
+            <h2 class="text-uppercase">Les tendances</h2>
+        </div>
+    </div>
+    <div class="wrap">
+        <ul id="carousel-fashion" class="carousel is-set">
+            <li class="carousel-seat">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+            <li class="carousel-seat is-ref">
+                <a href="#"><img src="./images/veste-homme.jpg" class="img-fluid" alt="Veste homme bleue" title="Veste homme bleue" /></a>
+            </li>
+        </ul>
+    </div>
+    <div class="row controls">
+        <button class="toggle col-md-1" data-slide="#carousel-fashion" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+        <button class="toggle col-md-1 col-md-offset-10" data-slide="#carousel-fashion" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+    </div>           
+</section>
+<section class="container highlight locations">
+    <div class="row">
+        <div class="col-md-12 text-md-center">
+            <h2 class="text-uppercase">Les plus beaux lieux</h2>
+        </div>
+    </div>
+    <div class="wrap">
+        <ul id="carousel-locations" class="carousel is-set">
+            <li class="carousel-seat">
+                <h2>1</h2>                    
+            </li>
+            <li class="carousel-seat">
+                <h2>2</h2>
+            </li>
+            <li class="carousel-seat">
+                <h2>3</h2>
+            </li>                    
+        </ul>
+    </div>
+    <div class="row controls">
+        <button class="toggle col-md-1" data-slide="#carousel-location" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+        <button class="toggle col-md-1 col-md-offset-10" data-slide="#carousel-location" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+    </div>
+</section>
+<% include ./partials/footer.ejs%>

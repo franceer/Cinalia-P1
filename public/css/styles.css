@@ -22,11 +22,12 @@ Do a flip down placard effect
     transform: rotateX(0deg);  
 */
 .commercials-nav{    
-    color: #6B7D86;
+    color: #454242;
     display: flex;
     flex-direction: column;
     align-items: center;
     align-content: center;    
+    background-color: #f1f1f1;
 }
 .commercials-nav > div{
     width: 100%;
@@ -65,7 +66,7 @@ Do a flip down placard effect
     width: 40px;
     opacity: 0;
     text-align: center;
-    font-size: 0.9em;
+    font-size: 0.75rem;
     transition: all 500ms ease;
 }
 .commercials-nav > div:hover svg{
@@ -92,7 +93,7 @@ Do a flip down placard effect
     display: flex;
     flex-direction: row;   
     align-items: center; 
-    width: 885px;    
+    width: 650px;    
     transition: width 500ms ease;
 }
 .expanded{

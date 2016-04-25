@@ -1,0 +1,42 @@
+﻿        <footer>
+            <div class="container">
+                <nav class="row">
+                    <ul class="list-unstyled col-md-5">
+                        <li>Home</li>
+                        <li>Contactez-nous</li>
+                        <li>A propos</li>
+                        <li>Mentions légales</li>
+                    </ul>
+                    <ul id="social-nav" class="list-unstyled col-md-3 col-md-offset-4">
+                        <li><i class="fa fa-facebook-square" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-twitter-square" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-google-plus-square" aria-hidden="true"></i></li>
+                    </ul>
+                </nav>
+                <div id="copyright" class="row">
+                    <div class="col-md-12 text-md-center">
+                        &copy; 2016 PickedIn
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script type="text/javascript">
+                    var timeline = <%- JSON.stringify(timeline);%>;
+
+                    (function(d, p){
+                        var a = new XMLHttpRequest(),
+                        b = d.body;
+                        a.open('GET', p, true);
+                        a.send();
+                        a.onload = function() {
+                            var c = d.createElement('div');
+                            c.setAttribute('hidden', '');
+                            c.innerHTML = a.responseText;
+                            b.insertBefore(c, b.childNodes[0]);
+                        };
+                    })(document, '/images/sprite.svg');
+                    plyr.setup();
+        </script>
+    </body>
+</html>

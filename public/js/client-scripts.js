@@ -1,9 +1,13 @@
 ﻿$(function () {
-
+   
     var $player = $('.plyr'),
         playerElement = $player[0],
         animating = false;
     //////////////////////////////////////////
+    $('.video-overlay').on('click', function () {
+        $(this).hide();
+        $(this).parent()[0].plyr.play();
+    });
     $('.left').on('click', function (event) {
         if (animating)
             return;
@@ -151,8 +155,120 @@
         }
 
         playerElement.tickTime = roundedCurrentTime;
-    });   
+    });
+    initHighlights();
 });
+
+function initHighlights() {
+    $('.pagin a').on('click', function (e) {
+        e.preventDefault();
+        var $carousel = $('#video-carousel');
+        $carousel.fadeOut(300, function () {
+            var $paginLink = $(e.currentTarget);
+            $('.pagin .active').removeClass('active');
+            var indexOfActive = $paginLink.addClass('active').parent().index();
+            indexOfActive = indexOfActive === 0 ? 4 : indexOfActive - 1;
+            var $seats = $carousel.find('.carousel-seat').removeClass('is-ref');
+            var $newSeat = $seats.filter(':eq(' + indexOfActive + ')');
+            $newSeat.addClass('is-ref').css('order', 1);
+
+            for (var i = 2; i <= $seats.length; i++) {
+                $newSeat = next($newSeat, $seats).css('order', i);
+            }
+
+            $carousel.fadeIn('fast');
+        });        
+    });
+
+    $('.toggle').on('click', function (e) {
+        var $currSliderControl = $(e.currentTarget);
+        var $carousel = $($currSliderControl.data('slide'));
+        var $seats = $carousel.find('.carousel-seat');
+        var $newSeat;
+        var $el = $seats.filter('.is-ref');
+
+        // Info: e.target is what triggers the event dispatcher to trigger and e.currentTarget is what you assigned your listener to.
+
+        $el.removeClass('is-ref');
+        if ($currSliderControl.data('toggle') === 'next') {
+            $newSeat = next($el, $seats);
+            $carousel.removeClass('is-reversing');
+        } else {
+            $newSeat = prev($el, $seats);
+            $carousel.addClass('is-reversing');
+        }
+
+        $carousel.removeClass('is-set');
+        $newSeat.addClass('is-ref').css('order', 1);
+
+        if ($carousel.hasClass('main'))
+            changeActivePage($newSeat);
+
+        for (var i = 2; i <= $seats.length; i++) {
+            $newSeat = next($newSeat, $seats).css('order', i);
+        }
+        return setTimeout(function () {
+            return $carousel.addClass('is-set');
+        }, 50);        
+    });
+
+    function next($el, $seats) {
+        if ($el.next().length) {
+            return $el.next();
+        } else {
+            return $seats.first();
+        }
+    }
+
+    function prev($el, $seats) {
+        if ($el.prev().length) {
+            return $el.prev();
+        } else {
+            return $seats.last();
+        }
+    }
+
+    function changeActivePage($newSeat) {
+        var newSeatIndex = $newSeat.index();
+        newSeatIndex = newSeatIndex === 4 ? 0 : newSeatIndex + 1;
+        var $paginElements = $('.pagin li');
+        $paginElements.children('.active').removeClass('active');
+        $paginElements.filter(':eq(' + newSeatIndex + ')').children('a').addClass('active');
+    }
+}
+
+function initVideoCarousel() {
+    var $videoCarousel = $('#player-carousel');
+    $videoCarousel.find('.controls button').on('click', function (e) {
+        $currentButton = $(e.currentTarget);
+        $videoSheets = $videoCarousel.find('ul>li.row')
+        $currentActiveVideo = $videoSheets.filter('.active');
+
+        if ($currentButton.data('toggle') === 'next') {
+            $newSeat = next($currentActiveVideo);
+            $carousel.removeClass('is-reversing');
+        } else {
+            $newSeat = prev($currentActiveVideo);
+            $carousel.addClass('is-reversing');
+        }
+
+        function next($el) {
+            if ($el.next().length) {
+                return $el.next();
+            } else {
+                return $videoSheets.first();
+            }
+        }
+
+        function prev($el) {
+            if ($el.prev().length) {
+                return $el.prev();
+            } else {
+                return $videoSheets.last();
+            }
+        }
+    });
+}
 
 function hideDomElement($element) {
     $element.fadeOut().hide(1000);
