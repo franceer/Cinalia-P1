@@ -1,0 +1,85 @@
+﻿<% include ../partials/header.ejs%>
+<div class="container">
+    <section id="location-details-section">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="location-img">
+                    <img src="/images/location1.jpg" alt="Yosemite" title="Yosemite" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="location-info drop-shadow">
+                    <div class="flex-row">
+                        <h1>Parc national de Yosemite</h1>
+                        <button class="interactive-button">Sauvegarder</button>
+                    </div>
+                    <p class="subtitle">Californie - USA</p>
+                    <p class="description text-justify">
+                        Le parc national de Yosemite se situe dans les montagnes de la Sierra Nevada, dans l'est de la Californie, aux États-Unis. Avec une superficie totale de 3 079 km2, il est le troisième plus grand parc de Californie. Classé parc national en 1890, le Yosemite est le deuxième plus ancien de l’histoire américaine, après celui de Yellowstone.<br />
+                        Plus de 3,5 millions de touristes le fréquentent chaque année, ce qui en fait, avec le Grand Canyon du Colorado et les Great Smoky Mountains, l’un des sites naturels les plus visités du pays. Ses chutes d’eau et ses dômes granitiques spectaculaires attirent chaque année des milliers de randonneurs et de grimpeurs venant du monde entier. Le Yosemite est un parc de haute montagne dont la diversité naturelle et paysagère a été reconnue patrimoine de l’humanité par l’UNESCO en 1984. Mais l’intense fréquentation touristique, au printemps et en été, pose des problèmes environnementaux dans la vallée de Yosemite.
+                        <button class="button-overlay dark">
+                            <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+                        </button>
+                    </p>
+                    <p class="font-weight-bold as-seen">
+                        Vu dans <span class="text-important">Five</span>
+                    </p>
+                    <p>
+                        A voir également dans :
+                        <ul>
+                            <li>Five</li>
+                            <li>Spectre</li>
+                            <li>Dr DoLittle</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 location-map">
+                <iframe width="350" height="auto" frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJxeyK9Z3wloAR_gOA7SycJC0&key=AIzaSyDQSk8BfTd87Ix_thSCfhw9YOMPwOLAHNI&zoom=7&center=37.8637956,-119.5398457" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+    <section id="similar-locations">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-uppercase">Lieux en lien</h2>
+                <div class="row asset-line">
+                    <div class="col-md-4 asset-figure">
+                        <div class="asset-img">
+                            <a href="#"><img src="/images/location2.jpg" alt="Thaïlande" title="Thaïlande" /></a>
+                            <button class="button-overlay red">Sauvegarder</button>
+                        </div>
+                        <div class="asset-legend drop-shadow">
+                            <a href="#" class="asset-title">Baie de Thaïlande 1</a>
+                            <a href="#" class="asset-desc">Thaïlande</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 asset-figure">
+                        <div class="asset-img">
+                            <a href="#"><img src="/images/location3.jpg" alt="Thaïlande" title="Thaïlande" /></a>
+                            <button class="button-overlay red">Sauvegarder</button>
+                        </div>
+                        <div class="asset-legend drop-shadow">
+                            <a href="#" class="asset-title">Baie de Thaïlande 2</a>
+                            <a href="#" class="asset-desc">Thaïlande</a>
+                        </div>
+                    </div>    
+                    <div class="col-md-4 asset-figure">
+                        <div class="asset-img">
+                            <a href="#"><img src="/images/location1.jpg" alt="Yosemite" title="Yosemite" /></a>
+                            <button class="button-overlay red">Sauvegarder</button>
+                        </div>
+                        <div class="asset-legend drop-shadow">
+                            <a href="#" class="asset-title">Parc National de Yosemite</a>
+                            <a href="#" class="asset-desc">Californie - USA</a>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<% include ../partials/footer.ejs%>

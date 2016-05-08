@@ -1,5 +1,13 @@
 ﻿$(function () {
-   
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 1) {
+            $('header').addClass("sticky");
+        }
+        else {
+            $('header').removeClass("sticky");
+        }
+    });
+
     var $player = $('.plyr'),
         playerElement = $player[0],
         animating = false;
@@ -168,7 +176,7 @@ function initHighlights() {
             $('.pagin .active').removeClass('active');
             var indexOfActive = $paginLink.addClass('active').parent().index();
             indexOfActive = indexOfActive === 0 ? 4 : indexOfActive - 1;
-            var $seats = $carousel.find('.carousel-seat').removeClass('is-ref');
+            var $seats = $carousel.find('> .carousel-seat').removeClass('is-ref');
             var $newSeat = $seats.filter(':eq(' + indexOfActive + ')');
             $newSeat.addClass('is-ref').css('order', 1);
 
@@ -182,8 +190,8 @@ function initHighlights() {
 
     $('.toggle').on('click', function (e) {
         var $currSliderControl = $(e.currentTarget);
-        var $carousel = $($currSliderControl.data('slide'));
-        var $seats = $carousel.find('.carousel-seat');
+        var $carousel = $currSliderControl.data('slide') === undefined ? $currSliderControl.closest($currSliderControl.data('parent')) : $($currSliderControl.data('slide') + ":eq(0)");
+        var $seats = $carousel.find('> .carousel-seat');
         var $newSeat;
         var $el = $seats.filter('.is-ref');
 

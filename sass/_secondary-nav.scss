@@ -1,0 +1,23 @@
+#secondary-nav{
+    ul{
+        display: flex;
+        flex: 1 0 auto;
+        align-items: stretch;
+        justify-content: center;
+        margin-bottom: 0;
+        color: white;
+        position: relative;
+        top: 3px;
+        font-size: 12px;   
+
+        li{
+            flex: 1 0 auto;
+        }
+        .fa-search{
+            font-size: 1rem;
+        }
+        .fa-caret-down {
+            margin-left: 3px;
+        }
+    }
+}

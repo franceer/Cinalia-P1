@@ -1,0 +1,119 @@
+#primary-nav{
+    text-transform: uppercase;
+    font-weight: 500;
+    display: flex;
+    flex: 1 0 auto;
+
+    & > ul > li { 
+        & > a{
+            border-bottom: 3px solid transparent;
+
+            &:hover{
+                 border-bottom: 3px solid $clear-red;                
+            }
+        }
+
+        &:hover{
+            & .level1{
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    ul{
+        display: flex;
+        flex: 1 0 auto;
+        align-items: stretch;
+        justify-content: center;
+        margin-bottom: 0;
+
+        li{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 10%;
+        }
+    }
+
+    .primary-nav-sub{
+        position: absolute;    
+        top: 30px;
+        left: 0;
+        right: 0;        
+        transition: opacity 0.2s ease;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 2;
+        font-size: .9rem;
+        
+        &::before{
+            content: "";
+            position: absolute;
+            left: -500rem;
+            right: -500rem;
+            height: 100%;
+            z-index: -1;
+        }
+
+        &.level1{        
+            height: 30px;
+
+            & > li:hover {
+                 & .level2{
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+                & > a{
+                    border-bottom: 2px solid white;    
+                }
+            }
+
+            &::before{
+                background-color: #6e6969;
+                box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        &.level2{
+            margin: 0;
+            padding: 0 .9375rem;
+            font-size: .7rem;
+
+            &::before{
+                background-color: $clear-gray;
+                box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.3);
+            }
+
+            a{
+                color: $dark-gray;
+                border-bottom: 1px solid transparent;
+
+                &:hover {
+                    border-bottom: 1px solid $dark-gray;
+                }
+            }
+
+            .category-title{
+                margin-top: 15px;
+                font-size: 1rem;
+                text-transform: uppercase;
+            }
+
+            .col-md3{
+                display: flex;
+                flex-direction: column;
+                align-items: center;   
+                padding-top: 15px; 
+            }
+
+            ul{
+                display: block;
+                text-transform: none;    
+                padding-bottom: 15px;
+                flex: 0 0 auto;
+            }
+        }
+    }    
+}
