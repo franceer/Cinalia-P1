@@ -1,0 +1,28 @@
+#search-results-section{
+    .asset-figure{
+        transition: transform 300ms ease;
+
+        &:hover{
+            transform: translateY(-10px);
+        }
+    }
+
+    .asset-img{
+        border: 1px solid #f1f1f1;
+    }
+    .asset-legend{
+        text-align: center;
+
+        .asset-title{
+            text-transform: none;
+            font-size: .9rem;
+            font-weight: 500;
+
+            span{
+                font-size: 1rem;
+                font-weight: 600;
+                text-transform: capitalize;
+            }
+        }
+    }
+}

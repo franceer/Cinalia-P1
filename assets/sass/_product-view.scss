@@ -1,0 +1,34 @@
+#product-details-section{    
+    margin-top: 15px;
+    position: relative;
+    padding-bottom: 45px;
+    
+    .col-md-3:not(#user-actions){
+        display: flex;
+        flex-direction: column;
+    }
+
+    .matching-status{
+        flex: 1 0 auto;
+        display: flex;
+        align-items: center;        
+        justify-content: center;
+        margin-top: 15px;        
+        color: white;
+        font-weight: 500;
+        border-radius: 30px;
+        text-shadow: 2px 1px 1px rgba(0,0,0,.5);
+
+        &.close-match{
+            background: $yellow-warning;
+        }
+
+        &.exact-match{
+            background: $green;
+        }
+    }
+	
+	#category-tags{
+		padding: 0;
+	}
+}

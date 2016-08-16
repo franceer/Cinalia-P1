@@ -1,85 +1,124 @@
-﻿<% include ../partials/header.ejs%>
-<div class="container">
-    <section id="location-details-section">
+<section id="location-details-section">
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="location-img">
-                    <img src="/images/location1.jpg" alt="Yosemite" title="Yosemite" />
+                <div class="wide-img">
+                    <img src="<%= location.picture_url -%>" alt="<%= location.picture_alt -%>" title="<%= location.picture_title -%>" />
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-8">
-                <div class="location-info drop-shadow">
-                    <div class="flex-row">
-                        <h1>Parc national de Yosemite</h1>
-                        <button class="interactive-button">Sauvegarder</button>
+                <div class="location-info">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h1><%= location.name -%></h1>
+                        </div>
+                        <div id="user-actions" class="col-md-3">
+                            <a href="#" class="bookmark">
+                                <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" class="like">
+                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                <i class="fa fa-heart" aria-hidden="true"></i>
+                            </a>
+                            <div class="html-tooltip">
+                                <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                <div class="tooltip-content bottom">
+                                    <a href="#">
+                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="#">
+                                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="#">
+                                        <i class="fa fa-instagram" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="subtitle">Californie - USA</p>
+                    <p class="subtitle"><%= location.city_state_country -%></p>
                     <p class="description text-justify">
-                        Le parc national de Yosemite se situe dans les montagnes de la Sierra Nevada, dans l'est de la Californie, aux États-Unis. Avec une superficie totale de 3 079 km2, il est le troisième plus grand parc de Californie. Classé parc national en 1890, le Yosemite est le deuxième plus ancien de l’histoire américaine, après celui de Yellowstone.<br />
-                        Plus de 3,5 millions de touristes le fréquentent chaque année, ce qui en fait, avec le Grand Canyon du Colorado et les Great Smoky Mountains, l’un des sites naturels les plus visités du pays. Ses chutes d’eau et ses dômes granitiques spectaculaires attirent chaque année des milliers de randonneurs et de grimpeurs venant du monde entier. Le Yosemite est un parc de haute montagne dont la diversité naturelle et paysagère a été reconnue patrimoine de l’humanité par l’UNESCO en 1984. Mais l’intense fréquentation touristique, au printemps et en été, pose des problèmes environnementaux dans la vallée de Yosemite.
+                        <%- location.description -%>
                         <button class="button-overlay dark">
                             <i class="fa fa-angle-double-down" aria-hidden="true"></i>
                         </button>
                     </p>
+                    <%_ if(location.sawIn){ _%>
                     <p class="font-weight-bold as-seen">
-                        Vu dans <span class="text-important">Five</span>
+                        Vu dans <span class="text-important"><%= location.sawIn.title -%></span>
                     </p>
+                    <p class="description text-justify">
+                        <%= location.sawIn._pivot_appearing_context -%>
+                    </p>
+                    <%_ } _%>
+                    <%_ if(location.videoMedias.length > 0){ _%>
                     <p>
-                        A voir également dans :
+                        A voir<%= location.sawIn ? ' également' : '' -%> dans :
                         <ul>
-                            <li>Five</li>
-                            <li>Spectre</li>
-                            <li>Dr DoLittle</li>
+                            <%_ location.videoMedias.forEach(function(videoMedia){ _%>
+                            <li><%= videoMedia.title _%></li>
+                            <%_ });_%>
                         </ul>
                     </p>
+                    <%_ } _%>
                 </div>
             </div>
             <div class="col-md-4 location-map">
-                <iframe width="350" height="auto" frameborder="0" style="border:0"
-                        src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJxeyK9Z3wloAR_gOA7SycJC0&key=AIzaSyDQSk8BfTd87Ix_thSCfhw9YOMPwOLAHNI&zoom=7&center=37.8637956,-119.5398457" allowfullscreen></iframe>
+                <iframe width="auto" height="auto" frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?q=place_id:<%= location.place_id -%>&key=AIzaSyDQSk8BfTd87Ix_thSCfhw9YOMPwOLAHNI&zoom=<%= location.zoom -%>&center=<%= location.latitude -%>,<%= location.longitude -%>" allowfullscreen></iframe>
             </div>
         </div>
-    </section>
+    </div>
+    <button class="down-button drop-shadow" data-down-to="#similar-locations">
+        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button>
+</section>
+<div class="jumbotron jumbotron-fluid even">
     <section id="similar-locations">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="text-uppercase">Lieux en lien</h2>
-                <div class="row asset-line">
-                    <div class="col-md-4 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/location2.jpg" alt="Thaïlande" title="Thaïlande" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Lieux en lien</h2>
+                    <div class="row asset-line">
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location2.jpg" alt="Thaïlande" title="Thaïlande" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Baie de Thaïlande 1</a>
+                                <a href="#" class="asset-desc">Thaïlande</a>
+                            </div>
                         </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Baie de Thaïlande 1</a>
-                            <a href="#" class="asset-desc">Thaïlande</a>
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location3.jpg" alt="Thaïlande" title="Thaïlande" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Baie de Thaïlande 2</a>
+                                <a href="#" class="asset-desc">Thaïlande</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location1.jpg" alt="Yosemite" title="Yosemite" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Parc National de Yosemite</a>
+                                <a href="#" class="asset-desc">Californie - USA</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/location3.jpg" alt="Thaïlande" title="Thaïlande" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Baie de Thaïlande 2</a>
-                            <a href="#" class="asset-desc">Thaïlande</a>
-                        </div>
-                    </div>    
-                    <div class="col-md-4 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/location1.jpg" alt="Yosemite" title="Yosemite" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Parc National de Yosemite</a>
-                            <a href="#" class="asset-desc">Californie - USA</a>
-                        </div>
-                    </div>    
                 </div>
             </div>
         </div>
     </section>
 </div>
-<% include ../partials/footer.ejs%>
+<%- contentFor('extraScripts') %>
+<script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>

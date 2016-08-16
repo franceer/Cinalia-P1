@@ -1,0 +1,128 @@
+﻿<section id="look-products-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <h1><%= look.name %></h1>
+            </div>
+            <div id="user-actions" class="col-md-3">
+                <a href="#" class="bookmark">
+                    <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="like">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                </a>
+                <div class="html-tooltip">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                    <div class="tooltip-content bottom">
+                        <a href="#">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead text-justify">
+                    <%= look.description %>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="font-weight-bold as-seen">
+                    Vu dans <span class="text-important"><%= look.videoMedia.title %></span>
+                </p>
+            </div>
+        </div>        
+        <div id="look-products" class="row">
+            <div class="col-md-4 offset-md-1">
+                <img id="dark-silhouette" src="/images/man-silhouette.png" alt="Man" title="Man" />               
+                <div id="body-markers">
+                    <div id="head-marker" class="matching-icon" data-asset-line="head-line" style="top: 30px;left: 145px;" ></div>
+                    <div id="chest-marker" class="matching-icon" data-asset-line="chest-line" style="top: 130px;left: 145px;"></div>
+                    <div id="hands-marker" class="matching-icon" data-asset-line="hands-line" style="top: 255px;left: 75px;"></div>
+                    <div id="legs-marker" class="matching-icon" data-asset-line="legs-line" style="top: 280px;left: 160px;"></div>
+                    <div id="feet-marker" class="matching-icon" data-asset-line="feet-line" style="top: 515px;left: 155px;"></div>
+                </div>
+            </div>
+            <div id="product-lines" class="col-md-7">
+                <% Object.keys(products).forEach(function(key){ -%>
+                <div id="<%= key %>-line" class="product-line">
+                    <% products[key].forEach(function(iteratee){-%>
+                    <div id="<%= iteratee.product.name -%>" class="asset-img">
+                        <a data-modal="true" href="/products/<%= iteratee.product.id -%>">
+                            <img src="<%= iteratee.product.picture_url -%>" />
+                        </a>
+                        <div class="asset-info">
+                            <a data-modal="true" class="title" href="/products/<%= iteratee.product.id -%>"><%= iteratee.product.brand.name + ' - ' + iteratee.product.name -%></a>
+                            <span class="price"><%= iteratee.product.price -%>€</span>
+                            <a data-modal="true" href="/products/<%= iteratee.product.id -%>" class="interactive-button">Détails</a>
+                        </div>
+                    </div>
+                    <% }); -%>
+                </div>
+                <% }); -%>                
+            </div>
+        </div>        
+    </div>
+    <button class="down-button drop-shadow" data-down-to="#similar-looks">
+        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button>
+</section>
+<div class="jumbotron jumbotron-fluid even">
+    <section id="similar-looks">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Looks en lien</h2>
+                    <div class="row asset-line">
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location2.jpg" alt="Thaïlande" title="Thaïlande" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Baie de Thaïlande 1</a>
+                                <a href="#" class="asset-desc">Thaïlande</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location3.jpg" alt="Thaïlande" title="Thaïlande" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Baie de Thaïlande 2</a>
+                                <a href="#" class="asset-desc">Thaïlande</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location1.jpg" alt="Yosemite" title="Yosemite" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Parc National de Yosemite</a>
+                                <a href="#" class="asset-desc">Californie - USA</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<%- contentFor('extraScripts') %>
+<script type="text/javascript" src="/js/lib/iframeResizer.min.js"></script>
+<script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/mainLook.js"></script>

@@ -1,0 +1,37 @@
+#location-details-section{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+   
+    .flex-row{
+        h1{
+            flex: 0 0 75%;
+        }
+        button{
+            flex: 0 0 20%;
+            align-self: center;
+        }
+    }
+
+    .wide-img{
+        height: 350px;
+        margin-bottom: 15px;
+    }
+}
+.location-info{
+    .description{
+        position: relative;        
+        overflow-y: hidden;
+
+        &:nth-child(3){
+            height: 150px;
+        }
+    }    
+}
+.location-map{
+    display: flex; 
+
+    iframe{
+        flex: 1 0 auto;
+    }
+}

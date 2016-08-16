@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+        <!--<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>-->
+        <link rel="stylesheet" href="/css/bootstrap.css" />
+        <link rel="stylesheet" href="https://cdn.plyr.io/1.8.7/plyr.css" />
+        <link rel="stylesheet" href="/css/mainCss.css" />
+        <!--<script src="/js/lib/bootstrap.js"></script>
+        <script src="/js/lib/plyr.js"></script>-->
+        <!--<script type="text/javascript" src="/js/client-scripts.js"></script>-->        
+        <%- extraScripts %>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    </head>
+    <body>
+		<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="signup-modal-label" aria-hidden="true">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">					
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Rejoignez la communauté PickedIn.com</h4>
+						<small>Découvrez des centaines de produits et lieux, participez à l'enrichissement du site et bénéficiez de biens d'autres avantages en vous enregistrant sur PickedIn.com</small>
+					</div>
+					<div class="modal-body">
+						<div class="login-dp">						
+							<form class="form" role="form" method="post" action="/signup" novalidate accept-charset="UTF-8" id="signup-nav">
+								<div class="alert alert-danger" hidden></div>
+								<fieldset id="step1">
+									<div class="form-group row">
+										<label class="sr-only" for="username">Adresse email</label>
+										<input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="username" name="username" placeholder="Addresse email" autocomplete="off">
+									</div>
+									<div class="form-group row">
+										<label class="sr-only" for="password">Mot de passe</label>
+										<input type="password" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="password" name="password" placeholder="Mot de passe">
+									</div>	
+									<div class="form-group row">
+										<button class="btn btn-primary next col-md-3 offset-md-6" type="button">Suivant</button>
+									</div>	
+								</fieldset>	
+								<fieldset id="step2">
+									<div class="form-group row">
+										<label class="sr-only" for="firstname">Prénom</label>
+										<input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="firstname" name="firstname" placeholder="Prénom" autocomplete="off">
+									</div>
+									<div class="form-group row">
+										<label class="sr-only" for="password">Nom</label>
+										<input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="lastname" name="lastname" placeholder="Nom" autocomplete="off">
+									</div>	
+									<div class="form-group row">
+										<div class="col-md-6 offset-md-3">
+											<div class="form-check checkbox">
+												<label class="form-check-label">
+													<input class="form-check-input" id="agree" name="agree" type="checkbox">
+													Je reconnais avoir lu les <a href="#">conditions d'utilisations</a> de PickedIn.com
+												</label>
+											</div>	
+										</div>	
+									</div>										
+									<div class="form-group row">
+										<div class="col-md-3 offset-md-3">
+											<button class="btn back" type="button">Précédent</button>
+										</div>
+										<div class="col-md-3">
+											<button type="submit" class="btn btn-primary">Créer mon compte</button>
+										</div>
+									</div>	
+								</fieldset>											
+							</form>                                       
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+        <% if (typeof message !== 'undefined' && Object.keys(message).length > 0) { %>
+        <div id="auth-message" hidden data-message-type="<%= message.type _%>"><%= message.message _%></div>
+        <% } %>        
+        <div class="header-placeholder modal-hidden">
+            <header class="drop-shadow">
+                <div class="container">					
+                    <div class="row">
+                        <nav id="secondary-nav" class="col-md-2 offset-md-10">
+                            <ul class="list-unstyled">
+                                <li class="dropdown">
+								<%_ if (typeof user !== 'undefined') { _%>
+									<a id="account-toggle" href="#" class="dropdown-toggle" data-toggle="dropdown"><%= user.firstname _%></a>
+                                    <ul id="account-menu" class="dropdown-menu">
+                                        <li>
+											<a href="/profile">Profil</a>                                            
+                                        </li>
+										<li>
+											<a href="/logout">Se déconnecter</a>
+										</li>
+                                    </ul>
+								<%_ } else { _%>
+                                    <a id="login-toggle" href="#" class="dropdown-toggle" data-toggle="dropdown">Login</a>
+                                    <ul class="login-dp dropdown-menu">
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    Se connecter via
+                                                    <div class="social-buttons">
+                                                        <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                                                        <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+                                                    </div>
+                                                    ou
+                                                    <form class="form" role="form" method="post" action="/signin" accept-charset="UTF-8" id="signin-nav">
+														<div class="alert alert-danger" hidden></div>
+                                                        <div class="form-group">
+                                                            <label class="sr-only" for="signinEmail">Adresse email</label>
+                                                            <input type="email" class="form-control" id="signinEmail" name="username" placeholder="Adresse email" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="sr-only" for="signinPassword">Mot de passe</label>
+                                                            <input type="password" class="form-control" id="signinPassword" name="password" placeholder="Mot de passe" required>
+                                                            <div class="help-block text-right"><a href="">Mot de passe oublié ?</a></div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox"> rester connecté
+                                                            </label>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="bottom text-center">
+                                                    Pas encore de compte ? <button data-toggle="modal" data-target="#signup-modal"><b>Rejoignez-nous</b></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+								<%_ } _%>
+                                <li>
+									<button id="search-button"><i class="fa fa-search" aria-hidden="true"></i></button>
+								</li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="row align-items-stretched">
+                        <div id="brand" class="col-md-2">
+                            <h1><a href="/">Picked<span>I</span>n</a></h1>
+                        </div>
+                        <div class="col-md-12 flex-row justify-content-center">
+                            <nav id="primary-nav">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="#">Films</a>
+                                        <ul class="primary-nav-sub level1 list-unstyled">
+                                            <li>
+                                                <a href="#">Test 1</a>
+                                                <div class="primary-nav-sub level2 row">
+                                                    <div class="col-md-3">
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                            <li><a href="#">Subtest3</a></li>
+                                                            <li><a href="#">Subtest4</a></li>
+                                                            <li><a href="#">Subtest5</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 2</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 3</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 4</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 5</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 3</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                            <li><a href="#">Subtest3</a></li>
+                                                            <li><a href="#">Subtest4</a></li>
+                                                            <li><a href="#">Subtest5</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 2</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                            <li><a href="#">Subtest3</a></li>
+                                                            <li><a href="#">Subtest4</a></li>
+                                                            <li><a href="#">Subtest5</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li><a href="#">Test 2</a></li>
+                                            <li><a href="#">Test 3</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Produits</a>
+                                        <ul class="primary-nav-sub level1 list-unstyled">
+                                            <li>
+                                                <a href="/search?cat=2">Mode</a>
+                                                <div class="primary-nav-sub level2 row">
+                                                    <div class="col-md-3">
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="/search?cat=4">Vêtements Homme</a></li>
+                                                            <li><a href="/search?cat=7">Vestes</a></li>
+                                                            <li><a href="/search?cat=13">Pantalons</a></li>
+                                                            <li><a href="/search?cat=5">T-shirts</a></li>
+                                                            <li><a href="/search?cat=6">Polos</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="/search?cat=19">Chaussures Homme</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="/search?cat=25">Accessoires Hommes</a></li>
+                                                            <li><a href="/search?cat=30">Lunettes</a></li>
+                                                            <li><a href="/search?cat=31">Chapeaux &Aacute; casquettes</a></li>
+                                                            <li><a href="/search?cat=29">Echarpes et foulards</a></li>
+                                                            <li><a href="/search?cat=27">Montres</a></li>
+                                                        </ul> 
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 4</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 5</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 3</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                            <li><a href="#">Subtest3</a></li>
+                                                            <li><a href="#">Subtest4</a></li>
+                                                            <li><a href="#">Subtest5</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                        </ul>
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 2</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <ul class="list-unstyled">
+                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
+                                                            <li><a href="#">Subtest1</a></li>
+                                                            <li><a href="#">Subtest2</a></li>
+                                                            <li><a href="#">Subtest3</a></li>
+                                                            <li><a href="#">Subtest4</a></li>
+                                                            <li><a href="#">Subtest5</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li><a href="/search?cat=Décoration_et_HighTech">Décoration et High Tech</a></li>
+                                            <li><a href="/search?cat=Transport">Transport</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Lieux</a>
+                                        <ul class="primary-nav-sub level1 list-unstyled">
+                                            <li><a href="#">Test 7</a></li>
+                                            <li><a href="#">Test 8</a></li>
+                                            <li><a href="#">Test 9</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Looks</a>
+                                        <ul class="primary-nav-sub level1 list-unstyled">
+                                            <li><a href="#">Test 10</a></li>
+                                            <li><a href="#">Test 11</a></li>
+                                            <li><a href="#">Test 12</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Décors</a>
+                                        <ul class="primary-nav-sub level1 list-unstyled">
+                                            <li><a href="#">Test 10</a></li>
+                                            <li><a href="#">Test 11</a></li>
+                                            <li><a href="#">Test 12</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Blog</a>
+                                        <ul class="primary-nav-sub level1 list-unstyled">
+                                            <li><a href="#">Test 10</a></li>
+                                            <li><a href="#">Test 11</a></li>
+                                            <li><a href="#">Test 12</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+					<div id="search-bar" class="row">
+						<div class="col-md-10">
+							<form role="form" method="get" action="/search" accept-charset="UTF-8" id="search-form">										
+								<i class="fa fa-search" aria-hidden="true"></i><input type="text" placeholder="Rechercher sur PickedIn.com" name="q" id="top-search-box" autocomplete="off" />
+							</form>										
+						</div>
+						<div class="col-md-2">
+							<button id="close-search-bar-button"><i class="fa fa-close" aria-hidden="true"></i><button>
+						</div>
+					</div>
+                </div>
+            </header>
+        </div>
+        <div class="content">
+            <%- body -%>
+        </div>
+        <footer class="modal-hidden">
+            <div class="container">
+                <nav class="row">
+                    <ul class="list-unstyled col-md-5">
+                        <li>Home</li>
+                        <li>Contactez-nous</li>
+                        <li>A propos</li>
+                        <li>Mentions légales</li>
+                    </ul>
+                    <ul id="social-nav" class="list-unstyled col-md-3 offset-md-4">
+                        <li><i class="fa fa-facebook-square" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-twitter-square" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-google-plus-square" aria-hidden="true"></i></li>
+                    </ul>
+                </nav>
+                <div id="copyright" class="row">
+                    <div class="col-md-12 text-md-center">
+                        &copy; 2016 PickedIn
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div id="tchat-box" class="modal-hidden">
+            <div id="top-bar">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span>Laissez-nous un message</span>
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </div>
+            <div id="message-box">
+                <div>
+                    <i class="fa fa-at" aria-hidden="true"></i>
+                    <input placeholder="Email" />
+                </div>
+                <div>
+                    <i class="fa fa-question" aria-hidden="true"></i>
+                    <input placeholder="Objet" />
+                </div>
+                <div>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <textarea placeholder="Message"></textarea>
+                </div>
+                <button>Envoyer</button>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            (function (d, p) {
+                var a = new XMLHttpRequest(),
+                b = d.body;
+                a.open('GET', p, true);
+                a.send();
+                a.onload = function () {
+                    var c = d.createElement('div');
+                    c.setAttribute('hidden', '');
+                    c.innerHTML = a.responseText;
+                    b.insertBefore(c, b.childNodes[0]);
+                };
+            })(document, '/images/sprite.svg');           
+        </script>
+    </body>
+</html>

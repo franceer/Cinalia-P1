@@ -1,0 +1,121 @@
+<section id="set-map-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="wide-img">
+                    <img src="<%= set.picture_url -%>" alt="<%= set.picture_alt -%>" title="<%= set.picture_title -%>" />
+                </div>
+                <div id="mapped-tooltips">
+                    <% products.forEach(function(iteratee){ -%>
+                    <div class="html-tooltip <%= iteratee.matchingStatus.name -%>-match" style="top: <%= iteratee.y_offset -%>px; left: <%= iteratee.x_offset -%>px;">
+                        <div class="matching-icon"><%= iteratee.matchingStatus.display_name -%></div>
+                        <div class="tooltip-content bottom">
+                            <span class="title"><%= iteratee.product.brand.name + ' - ' + iteratee.product.name -%></span>
+                            <img class="img-fluid" src="<%= iteratee.product.picture_url -%>" alt="<%= iteratee.product.picture_alt -%>" title="<%= iteratee.product.picture_title -%>"/>
+                            <span><%= iteratee.product.price -%>€</span>
+                            <div class="controls">
+                                <button class="interactive-button">Acheter</button>
+                                <a href="/products/<%= iteratee.product.id -%>" class="interactive-button">Détails</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); -%>                   
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="location-info">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h1>Salon de la coloc'</h1>
+                        </div>
+                        <div id="user-actions" class="col-md-3">
+                            <a href="#" class="bookmark">
+                                <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" class="like">
+                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                <i class="fa fa-heart" aria-hidden="true"></i>
+                            </a>
+                            <div class="html-tooltip">
+                                <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                <div class="tooltip-content bottom">
+                                    <a href="#">
+                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="#">
+                                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="#">
+                                        <i class="fa fa-instagram" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="subtitle"><% set.place -%></p>
+                    <p class="description text-justify">
+                        <%= set.description -%>
+                        <!--<button class="button-overlay dark">
+                            <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+                        </button>-->
+                    </p>
+                    <p class="font-weight-bold as-seen">
+                        Vu dans <span class="text-important"><%= set.videoMedia.title -%></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="down-button drop-shadow" data-down-to="#similar-sets">
+        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button>
+</section>
+<div class="jumbotron jumbotron-fluid even">
+    <section id="similar-sets">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Décors en lien</h2>
+                    <div class="row asset-line">
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location2.jpg" alt="Thaïlande" title="Thaïlande" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Baie de Thaïlande 1</a>
+                                <a href="#" class="asset-desc">Thaïlande</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location3.jpg" alt="Thaïlande" title="Thaïlande" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Baie de Thaïlande 2</a>
+                                <a href="#" class="asset-desc">Thaïlande</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 asset-figure">
+                            <div class="asset-img">
+                                <a href="#"><img src="/images/location1.jpg" alt="Yosemite" title="Yosemite" /></a>
+                                <button class="button-overlay red">Sauvegarder</button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="#" class="asset-title">Parc National de Yosemite</a>
+                                <a href="#" class="asset-desc">Californie - USA</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<%- contentFor('extraScripts') %>
+<script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>

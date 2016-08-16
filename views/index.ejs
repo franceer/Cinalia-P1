@@ -1,4 +1,4 @@
-﻿<% include ./partials/header.ejs%>
+﻿<% layout('layout')%>
 <section id="player-carousel" class="container">
     <div class="wrap">
         <ul id="video-carousel" class="list-unstyled carousel is-set full-size main">
@@ -730,7 +730,7 @@
         </ul>
     </div>       
     <div class="row">
-        <button class="toggle col-md-1 col-md-offset-1" data-slide="#video-carousel" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+        <button class="toggle col-md-1 offset-md-1" data-slide="#video-carousel" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
         <ul class="pagin col-md-8 list-unstyled">
             <li><a href="#" class="active"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
             <li><a href="#"><img src="./images/creed-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
@@ -955,31 +955,34 @@
     <div class="wrap">
         <ul id="carousel-movies" class="carousel is-set">
             <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                <a href="#" alt="" title=""><img src="./images/deadpool-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
             </li>
             <li class="carousel-seat">
                 <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
             </li>
             <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                <a href="#" alt="" title=""><img src="./images/3-freres-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#" alt="" title=""><img src="./images/creed-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#" alt="" title=""><img src="./images/les-gazelles-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+            </li>
+            <li class="carousel-seat">
+                <a href="#" alt="" title=""><img src="./images/deadpool-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
             </li>
             <li class="carousel-seat">
                 <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
             </li>
             <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                <a href="#" alt="" title=""><img src="./images/3-freres-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
             </li>
             <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                <a href="#" alt="" title=""><img src="./images/creed-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
             </li>
             <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat is-ref">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                <a href="#" alt="" title=""><img src="./images/les-gazelles-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
             </li>
         </ul>
     </div>    
@@ -989,4 +992,3 @@
 <script type="text/javascript">
     var timeline = <%- JSON.stringify(timeline);%>;
 </script>
-<% include ./partials/footer.ejs%>

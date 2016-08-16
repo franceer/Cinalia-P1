@@ -1,0 +1,57 @@
+.modal-dialog {
+    width: auto;
+    
+    .modal-content{
+        border: none;
+    }
+    #iframe-go-back{
+        visibility: hidden;
+
+        &.visible{
+            visibility: visible;
+        }
+    }
+
+    iframe{
+        overflow: hidden;
+        width: 100%;
+        border: none;
+        min-height: 900px;
+    }
+}
+@media screen and (min-width: 544px){
+    .modal-dialog {
+        max-width: 576px;
+		
+		&.modal-sm{
+			width: 400px;
+		}
+    }
+}
+@media screen and (min-width: 768px){
+    .modal-dialog {
+        max-width: 720px;
+		
+		&.modal-sm{
+			width: 400px;
+		}
+    }
+}
+@media screen and (min-width: 992px){
+    .modal-dialog {
+        max-width: 940px;
+		
+		&.modal-sm{
+			width: 600px;
+		}
+    }
+}
+@media screen and (min-width: 1200px){
+    .modal-dialog {
+        max-width: 1140px;
+		
+		&.modal-sm{
+			width: 600px;
+		}
+    }
+}

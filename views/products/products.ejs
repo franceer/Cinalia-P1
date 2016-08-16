@@ -1,0 +1,144 @@
+<section id="product-details-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="asset-img wide-img">
+                    <div><img src="<%= product.picture_url %>" alt="<%= product.picture_alt %>" title="<%= product.picture_title %>" /></div>
+                </div>
+                <% if(typeof contextualInfo != 'undefined'){ %>
+                <div class="matching-status <%= contextualInfo.matchingStatus.id === 1 ? 'exact-match' : 'close-match' %>">
+                    <%= contextualInfo.matchingStatus.name  %>
+                </div>
+                <% } %>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1><%= product.brand.name %></h1>
+                    </div>
+                    <div id="user-actions" class="col-md-3 offset-md-3">
+                        <a href="#" class="bookmark<%= typeof bookmark !== 'undefined' ? ' bookmarked' : '' _%>" data-object-id="<%= product.id _%>" data-object-type="product">
+                            <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+                            <i class="fa fa-bookmark" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="like">
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                        </a>
+                        <div class="html-tooltip">
+                            <i class="fa fa-share-alt" aria-hidden="true"></i>
+                            <div class="tooltip-content bottom">
+                                <a href="#">
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="row">
+					<div class="col-md-12">
+						<p class="subtitle"><%= product.name %> - <span class="font-weight-bold"><%= product.price %>€</span></p>					
+						<p class="description text-justify"><%= product.description %></p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<ul id="category-tags">
+						<%_product.categories.forEach(function(category){ _%>
+							<li class="tag tag-default"><%= category.name _%></li>
+						<%_ });_%>
+						</ul>
+					</div>
+				</div>              
+                <% if(typeof media != 'undefined'){ %>
+				<div class="row">
+					<div class="col-md-12">
+						<p class="font-weight-bold as-seen">
+							Vu dans <span class="text-important"><%= media.title%></span>
+						</p>
+						<% if(contextualInfo.appearingContext) {%>
+						<p class="description text-justify">
+							<%= contextualInfo.appearingContext %>
+						</p>
+						<%
+						}
+						_%>
+					</div>
+				</div>
+                <%_ 
+				}
+                _%>
+                <%_ if((medias.length > 0 && typeof media === 'undefined') || (medias.length > 1 && typeof media !== 'undefined')){ %>
+                <div class="row">
+					<div class="col-md-12">
+						<p>
+							A voir<%= typeof media !== 'undefined' ? ' également' : '' %> dans :
+							<ul>
+								<% for(var l = medias.length, i = 0; i < l; i++){
+								var videoMedia = medias[i];
+								if(typeof media != 'undefined' && media.id === videoMedia.id)
+								{
+									continue;
+								}
+								%>
+								<li>
+									<%= videoMedia.title %>
+								</li>
+								<% } %>
+							</ul>
+						</p>
+					</div>
+				</div>
+                <% } %>
+                <div>
+                    <button class="interactive-button">Acheter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="down-button drop-shadow" data-down-to="#similar-products">
+        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button>
+</section>
+<%_ if(typeof product.similarProducts !== 'undefined' && product.similarProducts.length > 0){ _%>
+<section id="similar-products" class="jumbotron jumbotron-fluid even">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-uppercase">Les produits similaires</h2>
+				<%_
+				var newRow = true;
+				for(var i = 1; i <= product.similarProducts.length; i++){
+				var simProduct = product.similarProducts[i-1];
+				if(newRow){
+				_%>				
+                <div class="row asset-line">
+				<%_ newRow = false; } _%>
+                    <div class="col-md-3 asset-figure">
+                        <div class="asset-img">
+                            <a href="/<%= simProduct.section_url _%>/<%= simProduct.id _%>"><img src="<%= simProduct.picture_url %>" alt="<%= simProduct.picture_alt %>" title="<%= simProduct.picture_title %>" /></a>
+                            <button class="button-overlay red">Sauvegarder</button>
+                        </div>
+                        <div class="asset-legend drop-shadow">
+                            <a href="/<%= simProduct.section_url _%>/<%= simProduct.id _%>" class="asset-title"><%= simProduct.brand.name %></a>
+                            <a href="/<%= simProduct.section_url _%>/<%= simProduct.id _%>" class="asset-desc"><%= simProduct.name %></a>
+                        </div>
+                    </div>
+					<%_ if(i % 4 === 0 || i === product.similarProducts.length){ _%>
+				</div>
+				<%_ newRow = true;} _%>
+				<%_ } _%>                    
+            </div>
+        </div>
+    </div>
+</section>
+<%_ } _%>
+<%- contentFor('extraScripts') %>
+<script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>

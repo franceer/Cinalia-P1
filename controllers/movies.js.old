@@ -1,0 +1,109 @@
+'use strict';
+
+let express = require('express'),
+    router = express.Router(),
+    VideoMedia = require('../models/video-media'),
+    WorkersInVideoMedia = require('../models/workers-in-video-media'),
+    bookshelf = require('../database/database'),
+    moment = require('moment'),
+    _ = require('lodash');
+
+router.get('/:id', function (req, res, next) {
+    var timelineArray = {
+        1: [{ title: 'Produit1', pictureURL: '/images/assets-small/ceinture.jpg', position: 'first' }, { title: 'Produit2', pictureURL: '/images/assets-small/chapeau.jpg' }, { title: 'Produit3', pictureURL: '/images/assets-small/foulard.jpg' }],
+        4: [{ title: 'Produit1', pictureURL: '/images/assets-small/ceinture.jpg' }, { title: 'Produit2', pictureURL: '/images/assets-small/chapeau.jpg' }, { title: 'Produit3', pictureURL: '/images/assets-small/foulard.jpg' }],
+        7: [{ title: 'Produit4', pictureURL: '/images/assets-small/veste.jpg' }],
+        10: [{ title: 'Produit5', pictureURL: '/images/assets-small/bouilloire.jpg' }, { title: 'Produit6', pictureURL: '/images/assets-small/chaussures.jpg' }, { title: 'Produit7', pictureURL: '/images/assets-small/lunettes.jpg' }],
+        13: [{ title: 'Produit5', pictureURL: '/images/assets-small/bouilloire.jpg' }, { title: 'Produit6', pictureURL: '/images/assets-small/chaussures.jpg' }, { title: 'Produit7', pictureURL: '/images/assets-small/lunettes.jpg' }],
+        14: [{ title: 'Produit8', pictureURL: '/images/assets-small/pantalon.jpg' }],
+        16: [{ title: 'Produit9', pictureURL: '/images/assets-small/polo.jpg' }],
+        18: [{ title: 'Produit10', pictureURL: '/images/assets-small/tabouret.jpg' }],
+        20: [{ title: 'Produit1', pictureURL: '/images/assets-small/ceinture.jpg' }, { title: 'Produit2', pictureURL: '/images/assets-small/chapeau.jpg' }, { title: 'Produit3', pictureURL: '/images/assets-small/foulard.jpg' }],
+        22: [{ title: 'Produit1', pictureURL: '/images/assets-small/ceinture.jpg' }, { title: 'Produit2', pictureURL: '/images/assets-small/chapeau.jpg' }, { title: 'Produit3', pictureURL: '/images/assets-small/foulard.jpg' }],
+        25: [{ title: 'Produit1', pictureURL: '/images/assets-small/ceinture.jpg' }, { title: 'Produit2', pictureURL: '/images/assets-small/chapeau.jpg' }, { title: 'Produit3', pictureURL: '/images/assets-small/foulard.jpg', position: 'last' }]
+    };
+
+    let timelines = {
+        fashion: {
+            domID : 'fashion',
+            assetTypeCaption: 'Prêt-à-porter',
+            assetTypeIcon: 'icon-shirt',
+            assets: {}
+        },
+
+        objects: {
+            domID: 'objects',
+            assetTypeCaption: 'Objets',
+            assetTypeIcon: 'icon-objects',
+            assets: {}
+        },
+
+        locations: {
+            domID: 'locations',
+            assetTypeCaption: 'Lieux',
+            assetTypeIcon: 'icon-map',
+            assets: {}
+        }
+    }   
+
+    VideoMedia.findById(req.params.id, { withRelated: ['mediaGenre', 'sets', 'sets.products', 'looks', 'looks.products', 'looks.character', 'looks.character.type', 'products', 'products.type', 'products.brand', 'locations'], require: true })
+    .then(function (videoMedia) {
+        moment.locale('fr');
+        res.locals.moment = moment;
+        res.locals.videoMedia = videoMedia.toJSON();
+        dispatchAssets(timelines, res.locals.videoMedia.products);
+        dispatchAssets(timelines, res.locals.videoMedia.looks);
+        dispatchAssets(timelines, res.locals.videoMedia.sets);
+        dispatchAssets(timelines, res.locals.videoMedia.locations);
+
+        return WorkersInVideoMedia.findAll({ video_media_id: videoMedia.id }, { withRelated: ['workerType', 'worker'] });
+    })
+    .then(function (workers) {
+        var workersGroupedByType = _.groupBy(workers.toJSON(), function (worker) {
+            return worker.workerType.name;
+        });
+
+        res.render('movies/movie', { workingTeam: workersGroupedByType, timeline: timelineArray, timeline2: timelines });
+    })
+    .catch(bookshelf.NotFoundError, function (err) {
+        res.send("Not Found", 404);
+    })
+    .catch(function (err) {
+        return next(new Error(err));
+    });
+});
+
+function dispatchAssets(timelines, assets) {
+    assets.forEach(function (asset) {
+        let type = asset.type.name || asset.type;
+
+        switch (type) {
+            case 'Mode':
+            case 'Look':
+                var positions = asset.time_codes || asset._pivot_time_codes;
+
+                positions.forEach(function (position) {
+                    timelines.fashion.assets[position] === undefined ? timelines.fashion.assets[position] = [asset] : timelines.fashion.assets[position].push(asset);
+                });
+                break;
+            case 'Décoration':
+            case 'Transport':
+            case 'Set':
+                var positions = asset.time_codes || asset._pivot_time_codes;
+
+                positions.forEach(function (position) {
+                    timelines.objects.assets[position] === undefined ? timelines.objects.assets[position] = [asset] : timelines.objects.assets[position].push(asset);
+                });
+                break;
+            case 'Location':
+                var positions = asset.time_codes || asset._pivot_time_codes;
+
+                positions.forEach(function (position) {
+                    timelines.locations.assets[position] === undefined ? timelines.locations.assets[position] = [asset] : timelines.locations.assets[position].push(asset);
+                });
+                break;              
+        }
+    });
+}
+
+module.exports = router

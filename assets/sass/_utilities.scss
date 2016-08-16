@@ -1,0 +1,414 @@
+.inline{
+    display: inline;
+}
+.flex-row{
+    display: flex;
+}
+.justify-content-center{
+    justify-content: center;
+}
+.interactive-button{
+    background-color: $dark-gray;
+    color: white;
+    text-align: center;
+    outline: none;
+    border: 0;
+    min-width: 150px;
+    transition: all 200ms ease-out;
+
+    &:hover{
+        background-color: $clear-red;
+    }
+}
+.button-overlay{
+    position: absolute;
+    bottom: 0;
+    width: 100%;    
+    color: white;
+    text-align: center;
+    outline: none;
+    border: 0;    
+    transition: all 200ms ease-out;
+
+    &:active, &:focus{
+        outline: none;
+    }
+    
+    &.red{
+        opacity: .6;
+        height: 10%;
+        background-color: $clear-red;
+
+        &:hover{ 
+            opacity: .9;
+            height: 15%;
+        }
+    }
+
+    &.dark{
+        color: $dark-gray;
+        font-size: 1.2rem;
+        left: 0;
+        height: 15%;
+        background: linear-gradient(to bottom, rgba(241,241,241,0.8) 0%,rgba(241,241,241,1) 100%);
+
+        &:hover{
+             height: 20%;
+        }
+    }
+}
+.align-items-stretched{
+    align-items: stretch; 
+}
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+   
+  & > [class^="col-"],
+  & > [class*=" col-"] {
+      padding-right: 0;
+      padding-left: 0;
+  }
+}
+.drop-shadow{
+    box-shadow: 0 4px 2px -1px rgba(0,0,0,.3);
+}
+.fa-plus{
+    margin-right: 5px;
+}
+.subtitle{
+    font-size: 1.3rem;
+}
+.description{
+    text-indent: 30px;
+}
+.text-important{
+    color: $clear-red;
+}
+.text-validated{
+    color: mediumseagreen;
+}
+.text-warning{
+    color: #ffdc68;
+}
+#user-actions{
+    position: relative;
+    display:flex;
+    align-items:center;
+    justify-content: space-around;
+    
+    & > a, & > a:hover, & > a:active, & > a:focus{
+        color: $dark-gray;
+        text-decoration: none;
+    }
+
+    i{
+        font-size: 1.5rem;       
+    }   
+
+    .bookmark:hover .fa-bookmark-o,
+    .bookmark .fa-bookmark,
+	.bookmarked .fa-bookmark-o{
+        display: none;
+    }
+    .bookmark:hover .fa-bookmark,
+	.bookmarked .fa-bookmark{
+        display: inline;
+    }
+	
+	& > a.bookmarked, & > a.bookmarked:hover, & > a.bookmarked:active, & > a.bookmarked:focus{
+		color: $clear-red;
+	}
+
+    .like:hover .fa-heart-o,
+    .like .fa-heart {
+        display: none;
+    }
+    .like:hover .fa-heart {
+        display: inline;
+    }
+}
+.html-tooltip {
+    .tooltip-content{
+        background: $dark-gray;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;        
+        right: 0;        
+        opacity: 0;        
+        pointer-events: none;
+        position: absolute;
+        z-index: 2;
+        min-width: 200px;
+        min-height: 50px;        
+        transition: all .25s ease-out;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);  
+        
+        .title{
+            font-family: Raleway;
+            font-weight: 500;
+        }    
+
+        &.bottom{
+            top: 100%;
+            transform: translateY(-10px);
+
+            &::before{
+                top: -20px;
+            }
+
+            &::after{
+                top: -10px;
+                border-bottom: solid $dark-gray 10px;
+            }
+        }
+
+        &.top{
+            bottom: 100%;
+            margin-bottom: 15px;
+            transform: translateY(10px);
+
+            &::before{
+                bottom: -20px;
+            }
+
+            &::after{
+                bottom: -10px;                
+                border-top: solid $dark-gray 10px;
+            }
+        }
+
+        & > a, & > a:hover, & > a:active, & > a:focus{
+            color: white;
+            text-decoration: none;
+        }
+       
+        &::before{/* This bridges the gap so you can mouse into the tooltip without it disappearing */            
+            content: " ";
+            display: block;
+            height: 20px;
+            left: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        &::after{/* CSS Arrow */                       
+            content: " ";
+            border-left: solid transparent 10px;
+            border-right: solid transparent 10px;
+            height: 0;
+            left: 80%;
+            margin-left: -13px;
+            position: absolute;
+            width: 0;            
+        }
+    }
+
+    &:hover .tooltip-content{
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0px);
+    }  
+}
+.dark-corner-gradient {
+    background: linear-gradient(45deg, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 61%,rgba(0,0,0,0) 100%);
+}
+.dark-overlay{
+    &::before{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0,0,0,.3);
+        z-index: 1;
+    }
+}
+.toggle, .toggle:active, .toggle:focus{
+    position: absolute;
+    outline: none;
+    text-decoration: none;
+    border: 0;
+}
+.modal-view{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;  
+
+    iframe{
+        position: absolute;
+        border: 0;
+        overflow: hidden;
+    }
+}
+.portrait-img, .wide-img{
+    position: relative;    
+    overflow: hidden;
+}
+.portrait-img img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+.wide-img img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+.asset-line{
+    margin-bottom: 30px;
+}
+.asset-figure{
+    display: flex;
+    flex-direction: column;
+    min-height: 350px;
+}
+.asset-img{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    height: 300px;
+
+    &.taller{
+        height: 400px;
+    }
+
+    & > a, & > div {
+        position: relative;
+        flex: 1 0 auto;
+        overflow: hidden;
+    }
+    
+    & img{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        height: 100%;
+        width: auto;
+        transform: translate(-50%,-50%);
+    }
+
+    &.wide-img img{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        height: inherit;
+        width: 100%;        
+        transform: translate(-50%,-50%);
+    }
+}
+.asset-legend{
+    flex: 1 0 auto;
+    background-color: $clear-gray;
+    padding: 15px;
+}
+.asset-title,
+.asset-title:visited,
+.asset-title:active{
+    display: block;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    color: $dark-gray;
+    text-transform: uppercase;
+    
+}
+.asset-title span{
+    font-size: .8rem;
+    text-transform: lowercase;
+}
+.asset-desc,
+.asset-desc:visited,
+.asset-desc:active{
+    font-size: .75rem;
+    text-decoration: none;
+    color: $dark-gray;
+    line-height: normal;
+}
+.pagination{
+    display: flex;
+    list-style-type: none;
+    margin: 0 0 30px 0;
+    padding: 0;
+    justify-content: center;
+
+    li{
+        a{
+            padding: 8px 16px;   
+            color: $dark-gray;        
+        }
+
+        &.active a{
+            background-color: $clear-red;
+            color: white;
+        }
+    }
+}
+#search-bar{
+	display: none;
+	color: white;
+	height: 100%;
+	
+	& > div{
+		display: flex;
+		align-items: center;		
+		
+		& .fa-close{
+			font-size: 1.3rem;
+		}
+	}
+	
+	button{
+		border: none;
+		background: none;
+	}
+	
+	form{
+		display: flex;
+		align-items: center;
+		height: 100%;
+		width: 100%;
+		font-size: 1.3rem;
+		
+		.fa-search{
+			flex: 1 0 5%;
+		}
+		
+		#top-search-box{
+			border: none;
+			background: none;
+			flex: 1 0 95%;
+			align-self: stretch;
+			font-family: Raleway;
+			
+			&::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+				color: white;
+			}
+			&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+			   color: white;
+			   opacity:  1;
+			}
+			&::-moz-placeholder { /* Mozilla Firefox 19+ */
+			   color: white;
+			   opacity:  1;
+			}
+			&:-ms-input-placeholder { /* Internet Explorer 10-11 */
+			   color: white;
+			}
+		}
+	}
+}

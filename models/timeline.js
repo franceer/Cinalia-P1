@@ -7,7 +7,7 @@ var pg = require('pg');
  //Get a particular timeline
 module.exports.get = function(id, callback) {
   // Get a Postgres client from the connection pool    
-    var connectionString = 'postgres://postgres:password@localhost:5432/ShopInMedia';
+    var connectionString = 'postgres://postgres:password@localhost:5432/PickedIn';
     
     pg.connect(connectionString, function (err, client, done) {
         if (err) {
@@ -15,7 +15,7 @@ module.exports.get = function(id, callback) {
         }
         
         var timeline = [];
-        client.query('SELECT "Media"."Title", "MediaProductTimeline"."TimeCodes", "Product"."Title", "Product"."PictureURL", "Product"."CommercialLink" FROM public."Media", public."MediaProductTimeline", public."Product" WHERE "Media"."ID" = "MediaProductTimeline"."MediaID" AND "Product"."ID" = "MediaProductTimeline"."ProductID" AND "Media"."ID" = $1;', id, function (err, results) {
+        client.query('SELECT "video-medias"."title", "MediaProductTimeline"."TimeCodes", "products"."name", "products"."picture-url", "products"."commercial-url" FROM public."video-medias", public."MediaProductTimeline", public."products" WHERE "video-medias"."id" = "MediaProductTimeline"."MediaID" AND "products"."id" = "MediaProductTimeline"."ProductID" AND "video-medias"."id" = $1;', id, function (err, results) {
             //call `done()` to release the client back to the pool
             if (err) {
                 return console.error('error running query', err);

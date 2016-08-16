@@ -1,0 +1,73 @@
+/***** FILM PAGE*****/
+#player-section {
+    padding-top: 15px;
+    padding-bottom: 30px;
+    position: relative;
+    
+    h1{
+        margin: 0; 
+    }
+    
+    .more-info{
+        margin-bottom: 15px;
+        margin-top: 15px;
+
+        .col-md-6{
+            display: flex;
+        }
+
+        ul{
+            flex: 1 0 auto;
+            display: flex;
+            color: #6f6f6f;
+            font-size: .85rem;
+            margin: 0;
+        }
+
+        li{
+            flex: 1 0 auto;
+        }
+    }
+}
+.info-separator{
+    color: #c1c1c1;
+}
+.movie-year{
+    font-size: 1.2rem;
+    color: #6f6f6f;
+}
+.title-legend{
+    font-size: .8rem;
+    color: #6f6f6f;
+    font-style: italic;
+}
+.synopsis {
+    text-indent: 30px;
+    font-size: .9rem;
+    text-align: justify;
+}
+#movie-info{
+    h3{
+        font-size: .9rem;
+        font-weight: 600;
+
+        &.movie-title{
+            font-size: 1rem;
+        }
+    }
+
+    div button{
+        font-size: .9rem;
+        border: 0;
+        background: none;
+
+        i{
+            color: $clear-red;
+            margin: 0 5px;
+        }
+    }
+
+    a, span{
+        font-size: .9rem;
+    }
+}
