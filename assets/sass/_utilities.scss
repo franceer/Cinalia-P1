@@ -45,6 +45,15 @@
         }
     }
 
+    &.bookmarked{
+        background-color: darkseagreen;
+
+        &:hover{
+            opacity: .6;
+            height: 10%;
+        }        
+    }
+
     &.dark{
         color: $dark-gray;
         font-size: 1.2rem;
@@ -97,9 +106,9 @@
     align-items:center;
     justify-content: space-around;
     
-    & > a, & > a:hover, & > a:active, & > a:focus{
-        color: $dark-gray;
-        text-decoration: none;
+    & > button{
+        border: none;
+        background: none;
     }
 
     i{
@@ -116,15 +125,18 @@
         display: inline;
     }
 	
-	& > a.bookmarked, & > a.bookmarked:hover, & > a.bookmarked:active, & > a.bookmarked:focus{
+	& > .bookmarked, & > .bookmarked:hover,
+    & > .liked, & > .liked:hover, {
 		color: $clear-red;
 	}
 
     .like:hover .fa-heart-o,
-    .like .fa-heart {
+    .like .fa-heart, 
+    .liked .fa-heart-o {
         display: none;
     }
-    .like:hover .fa-heart {
+    .like:hover .fa-heart,
+    .liked .fa-heart {
         display: inline;
     }
 }
@@ -345,14 +357,23 @@
     margin: 0 0 30px 0;
     padding: 0;
     justify-content: center;
+    font-family: "Open Sans";
+    font-weight: 200;
 
     li{
-        a{
+        flex: 1 0 auto;
+
+        &.disabled span{
+            color: #d1d1d1;                        
+        }
+
+        a, span {
             padding: 8px 16px;   
             color: $dark-gray;        
         }
 
-        &.active a{
+        &.active span{
+            padding: 8px 16px;   
             background-color: $clear-red;
             color: white;
         }

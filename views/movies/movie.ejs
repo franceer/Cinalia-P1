@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <a id="iframe-go-back" href="./">Retourner à la page </a>
+                <a id="iframe-go-back" href="./">Retourner à la page <span></span></a>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,7 +15,7 @@
 <section id="player-section" class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1><%= videoMedia.title %> <span class="movie-year">(<%= moment(videoMedia.theater_release_date).year() %>)</span><span class="title-legend"> - Découvrez les tenues, produits et lieux de Five</span></h1>
+            <h1><%= videoMedia.name %> <span class="movie-year">(<%= moment(videoMedia.theater_release_date).year() %>)</span><span class="title-legend"> - Découvrez les tenues, produits et lieux de Five</span></h1>
         </div>
     </div>
     <div class="more-info">
@@ -41,14 +41,15 @@
                 </ul>
             </div>
             <div id="user-actions" class="col-md-2 offset-md-6">
-                <a href="#" class="bookmark<%= typeof bookmark !== 'undefined' ? ' bookmarked' : '' _%>" data-object-id="<%= videoMedia.id _%>" data-object-type="video media">
+                <button class="bookmark<%= typeof bookmark !== 'undefined' ? ' bookmarked' : '' _%>" data-object-id="<%= videoMedia.id _%>" data-object-type="video media">
                     <i class="fa fa-bookmark-o" aria-hidden="true"></i>
                     <i class="fa fa-bookmark" aria-hidden="true"></i>
-                </a>
-                <a href="#" class="like">
+                </button>
+                <button class="like<%= typeof like !== 'undefined' ? ' liked' : '' _%>" data-object-id="<%= videoMedia.id _%>" data-object-type="video media">
                     <i class="fa fa-heart-o" aria-hidden="true"></i>
                     <i class="fa fa-heart" aria-hidden="true"></i>
-                </a>
+                    <span id="like-count"><%= typeof likeCount !== 'undefined' ? likeCount : '' _%></span>
+                </button>
                 <div class="html-tooltip">
                     <i class="fa fa-share-alt" aria-hidden="true"></i>
                     <div class="tooltip-content top">
@@ -70,11 +71,12 @@
         <div class="col-md-9">
             <div class="pickedin-player">
                 <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
-                <video poster="<%= videoMedia.poster_url %>" controls>
-                    <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
+                <!--<video poster="<%= videoMedia.poster_url %>" controls>
+                    <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />-->
                     <!--Fallback for browsers that don't support the <video> element-->
-                    <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
-                </video>
+                    <!--<a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
+                </video>-->
+                <div data-type="youtube" data-video-id="9Lij2vKRCBc"></div> 
                 <div class="video-overlay">
                     <i class="fa fa-play" aria-hidden="true"></i>
                     <div><%= videoMedia.video_caption %></div>
@@ -111,13 +113,12 @@
                             isRefString = ' is-ref';
                             count = 0
                             }
-                            var timedAssetType= timedAsset.type.name ? timedAsset.type.name.toLowerCase() : timedAsset.type.toLowerCase()
                             %>
                             <li class="carousel-seat<%= isRefString -%>" data-time-code="<%= timeCode -%>">
                                 <div class="asset-img">
-                                    <a data-modal="true" data-modal-type="<%= timedAssetType -%>" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>"<%- ' class="' + timedAssetType + '"' _%>><% if(timedAsset.picture_url){ %><img src="<%- timedAsset.picture_url %>" /><%_ }else{ _%><%= timedAsset.character.firstname.charAt(0) + timedAsset.character.lastname.charAt(0) _%><%_ } _%></a>
+                                    <a data-modal="true" data-modal-type="<%= timedAsset.type -%>" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>/<%= timedAsset.urlRewrite _%>?mediaid=<%= videoMedia.id _%>"<%- ' class="' + timedAsset.type + '"' _%>><% if(timedAsset.picture_url){ %><img src="<%- timedAsset.picture_url %>" /><%_ }else{ _%><%= timedAsset.character.firstname.charAt(0) + timedAsset.character.lastname.charAt(0) _%><%_ } _%></a>
                                     <div class="asset-info">
-                                        <a data-modal="true" data-modal-type="<%= timedAssetType -%>" class="title" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>" target="_blank"><%= (timedAsset.brand ? timedAsset.brand.name + ' ' : '') + timedAsset.name -%></a>
+                                        <a data-modal="true" data-modal-type="<%= timedAsset.type -%>" class="title" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>" target="_blank"><%= (timedAsset.brand ? timedAsset.brand.name + ' ' : '') + timedAsset.name -%></a>
                                         <%_ if(timedAsset.price){ _%><span class="price"><%= timedAsset.price -%>€</span><a href="#" class="interactive-button">Acheter</a><%_ } _%>                                        
                                     </div>
                                 </div>
@@ -160,7 +161,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <h3 class="movie-title"><%= videoMedia.title %> :</h3>
+                <h3 class="movie-title"><%= videoMedia.name %> :</h3>
                 <p class="synopsis"><%= videoMedia.synopsis %></p>
             </div>
         </div>
@@ -181,7 +182,7 @@
                 <h3 class="inline">Date de prochaine diffusion TV :</h3>
                 <button><i class="fa fa-bell" aria-hiden="true"></i><%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') %> sur <%= videoMedia.tv_broadcaster %></button>
             </div>
-			<%_ if(workingTeam.director.length > 0){ _%>
+			<%_ if(workingTeam.director && workingTeam.director.length > 0){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Réalisateur (s) :</h3>
                 <% workingTeam.director.forEach(function(workerInVideoMedia){ %>
@@ -193,25 +194,25 @@
                 <h3 class="inline">Production :</h3>
                 <a href="#">Les Films du Kiosque</a>
             </div>
-			<%_ if(workingTeam.actor.length > 0){ _%>
+			<%_ if(workingTeam.actor && workingTeam.actor.length > 0){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Casting :</h3>
                 <%_ for(var l = workingTeam.actor.length, i = 0; i < l; i++){ var workerInVideoMedia = workingTeam.actor[i]; if(i !== 0){ _%><%- '<span>, </span>' _%><%_ } _%><a href="#"><%= workerInVideoMedia.worker.firstname + ' ' + workerInVideoMedia.worker.lastname _%></a><%_ } _%>
             </div>
 			<%_ } _%>
-			<%_ if(workingTeam['costume supervisor'].length > 0){ _%>
+			<%_ if(workingTeam['costume supervisor'] && workingTeam['costume supervisor'].length > 0){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Chef(s) costumière(s) :</h3>
 				<%_ for(var l = workingTeam['costume supervisor'].length, i = 0; i < l; i++){ var workerInVideoMedia = workingTeam['costume supervisor'][i]; if(i !== 0){ _%><%- '<span>, </span>' _%><%_ } _%><button><i class="fa fa-comments" aria-hiden="true"></i><%= workerInVideoMedia.worker.firstname + ' ' + workerInVideoMedia.worker.lastname _%></button><%_ } _%>                
             </div>
 			<%_ } _%>
-			<%_ if(workingTeam['key set decorator'].length > 0){ _%>
+			<%_ if(workingTeam['key set decorator'] && workingTeam['key set decorator'].length > 0){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Chef(s) décorateur(s) :</h3>
 				<%_ for(var l = workingTeam['key set decorator'].length, i = 0; i < l; i++){ var workerInVideoMedia = workingTeam['key set decorator'][i]; if(i !== 0){ _%><%- '<span>, </span>' _%><%_ } _%><button><i class="fa fa-comments" aria-hiden="true"></i><%= workerInVideoMedia.worker.firstname + ' ' + workerInVideoMedia.worker.lastname _%></button><%_ } _%>                
             </div>
 			<%_ } _%>
-			<%_ if(workingTeam['set dresser'].length > 0){ _%>
+			<%_ if(workingTeam['set dresser'] && workingTeam['set dresser'].length > 0){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Ensemblier(s) :</h3>
 				<%_ for(var l = workingTeam['set dresser'].length, i = 0; i < l; i++){ var workerInVideoMedia = workingTeam['set dresser'][i]; if(i !== 0){ _%><%- '<span>, </span>' _%><%_ } _%><button><i class="fa fa-comments" aria-hiden="true"></i><%= workerInVideoMedia.worker.firstname + ' ' + workerInVideoMedia.worker.lastname _%></button><%_ } _%>                
@@ -223,98 +224,7 @@
         <i class="fa fa-angle-double-down" aria-hidden="true"></i>
     </button>
 </section>
-<section id="movie-assets" class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Tous les produits et lieux du film</h2>
-                <p class="lead">Découvrez toutes les tenues, produits et lieux du film Five ! Utilisez les filtres ci-dessous pour raffiner votre recherche.</p>
-                <div class="selectfield">
-                    <label>Standard Select</label>
-                    <select id="1">
-                        <option disabled selected>Type d'élément</option>
-                        <option>Mode</option>
-                        <option>Lieu</option>
-                        <option>Objet</option>
-                    </select>
-                </div>
-                <div class="selectfield">
-                    <label>Standard Select</label>
-                    <select id="1">
-                        <option disabled selected>Type d'élément</option>
-                        <option>Mode</option>
-                        <option>Lieu</option>
-                        <option>Objet</option>
-                    </select>
-                </div>
-                <div class="row asset-line">
-                    <div class="col-md-6 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/location1.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Dior Homme</a>
-                            <a href="#" class="asset-desc">Veste bleue polaire high fashion</a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Dior Homme</a>
-                            <a href="#" class="asset-desc">Veste bleue polaire high fashion</a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Dior Homme</a>
-                            <a href="#" class="asset-desc">Veste bleue polaire high fashion</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row asset-line">
-                    <div class="col-md-3 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Dior Homme</a>
-                            <a href="#" class="asset-desc">Veste bleue polaire high fashion</a>
-                        </div>
-                    </div>
-                    <div class="col-md-6 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/location1.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Dior Homme</a>
-                            <a href="#" class="asset-desc">Veste bleue polaire high fashion</a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 asset-figure">
-                        <div class="asset-img">
-                            <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                            <button class="button-overlay red">Sauvegarder</button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="#" class="asset-title">Dior Homme</a>
-                            <a href="#" class="asset-desc">Veste bleue polaire high fashion</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<%- include('../partials/video-media-assets', { allProducts:  allProducts }) %>
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/lib/iframeResizer.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>

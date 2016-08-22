@@ -58,7 +58,7 @@ passport.use('local-signup', new LocalStrategy({
                     // create the user
                     User.create({ username: email, password: password, email: email, firstname: req.body.firstname, lastname: req.body.lastname })
                     .then(function (user) {
-                        return done(null, user, req.flash('signupMessage', 'YEAH CREATED'));
+                        return done(null, user);
                     })
 					// .catch(User.ValidationError, function(err){
 						// return done(null, false, req.flash('signupMessage', err.toJSON()));

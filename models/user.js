@@ -13,8 +13,7 @@ var User = bookshelf.Model.extend({
     tableName: 'users',
     hasTimestamps: true,
     initialize: function(){
-        this.on('creating', this.generateHash);
-		this.on('saving', this.validateSave);
+        this.on('creating', this.generateHash, this.validateSave);
     },
 
     videoMedias: function(){

@@ -1,6 +1,7 @@
 'use strict';
 
-let bookshelf = require('../database/database');
+let bookshelf = require('../database/database'),
+    helper = require('../helpers/helper');
 
 require('./media-genre');
 require('./social-data');
@@ -10,6 +11,7 @@ require('./look');
 require('./product');
 require('./products-in-video-media');
 require('./location');
+require('./category');
 
 var VideoMedia = bookshelf.Model.extend({
     tableName: 'video_medias',
@@ -42,6 +44,16 @@ var VideoMedia = bookshelf.Model.extend({
 
     locations: function () {
         return this.belongsToMany('Location').withPivot(['time_codes', 'appearing_context']);
+    },
+
+    categories: function () {
+        return this.belongsToMany('Category');
+    },
+
+    virtuals: {
+        urlRewrite: function () {
+            return helper.toURLFormat(this.get('name'));
+        }
     }
 });
 

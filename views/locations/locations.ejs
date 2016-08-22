@@ -15,14 +15,15 @@
                             <h1><%= location.name -%></h1>
                         </div>
                         <div id="user-actions" class="col-md-3">
-                            <a href="#" class="bookmark">
+                            <button class="bookmark<%= typeof bookmark !== 'undefined' ? ' bookmarked' : '' _%>" data-object-id="<%= location.id _%>" data-object-type="location">
                                 <i class="fa fa-bookmark-o" aria-hidden="true"></i>
                                 <i class="fa fa-bookmark" aria-hidden="true"></i>
-                            </a>
-                            <a href="#" class="like">
+                            </button>
+                            <button class="like<%= typeof like !== 'undefined' ? ' liked' : '' _%>" data-object-id="<%= location.id _%>" data-object-type="location">
                                 <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 <i class="fa fa-heart" aria-hidden="true"></i>
-                            </a>
+                                <span id="like-count"><%= typeof likeCount !== 'undefined' ? likeCount : '' _%></span>
+                            </button>
                             <div class="html-tooltip">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i>
                                 <div class="tooltip-content bottom">
@@ -48,7 +49,7 @@
                     </p>
                     <%_ if(location.sawIn){ _%>
                     <p class="font-weight-bold as-seen">
-                        Vu dans <span class="text-important"><%= location.sawIn.title -%></span>
+                        Vu dans <span class="text-important"><%= location.sawIn.name -%></span>
                     </p>
                     <p class="description text-justify">
                         <%= location.sawIn._pivot_appearing_context -%>
@@ -59,7 +60,7 @@
                         A voir<%= location.sawIn ? ' également' : '' -%> dans :
                         <ul>
                             <%_ location.videoMedias.forEach(function(videoMedia){ _%>
-                            <li><%= videoMedia.title _%></li>
+                            <li><%= videoMedia.name _%></li>
                             <%_ });_%>
                         </ul>
                     </p>

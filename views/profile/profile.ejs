@@ -1,13 +1,112 @@
 <section id="profile-section">
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<h1><%= user.firstname %> <%= user.lastname _%></h1>
-			<%= user.email _%>
-		</div>
-	</div>
-</div>
+    <div class="container">
+        <div id="profile-info" class="row">
+            <div class="col-md-2 text-md-center">
+                <div id="image-info">
+                    <img id="profile-image" src="<%= gravatarURL _%>" alt="Image de profil de <%= user.firstname %> <%= user.lastname _%>" title="<%= user.firstname %> <%= user.lastname _%>" />
+                    <a href="http://www.gravatar.com" target="_blank">Editer sur gravatar.com<i class="fa fa-pencil" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div id="name-info">
+                    <div id="display-name">
+                        <h1><%= user.firstname %> <%= user.lastname _%></h1>
+                        <button class="edit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    </div>
+                    <div id="edit-name">
+                        <input id="firstname" name="firstname" type="text" value="<%= user.firstname %>" /> <input id="lastname" name="lastname" type="text" value="<%= user.lastname _%>" />
+                        <button class="save"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button class="cancel"><i class="fa fa-close" aria-hidden="true"></i></button>
+                    </div>
+                </div>                
+                <div id="email-info">
+                    <div id="display-email">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i><span><%= user.email _%></span>
+                        <button class="edit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    </div>
+                    <div id="edit-email">
+                        <input id="email" name="email" type="text" value="<%= user.email _%>" />
+                        <button class="save"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button class="cancel"><i class="fa fa-close" aria-hidden="true"></i></button>
+                    </div>
+                </div>               
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <div class="row">
+                    <div class="col-md-12 nav-button">
+                        <button class="active" data-pane-id="bookmark-pane"><i class="fa fa-bookmark" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 nav-button">
+                        <button data-pane-id="like-pane"><i class="fa fa-heart" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="active-panes" class="col-md-11">
+                <div id="bookmark-pane" class="row active">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12 text-md-center">
+                                <h2>Vos bookmarks</h2>
+                            </div>
+                        </div>
+                        <%_ if(bookmarks.length === 0){ _%>
+                        <p>Vous n'avez sauvegardé aucun élément pour le moment. Naviguez sur le site afin de découvrir vos films, produits et lieux préférés.</p>
+                        <%_ } _%>
+                        <%_ bookmarks.forEach(function(bookmark){ _%>
+                        <div class="row bookmark-sheet">
+                            <%_ if(bookmark.picture_url){ _%>
+                            <div class="col-md-4">
+                                <a href="<%= bookmark.url _%>"><img src="<%= bookmark.picture_url _%>" alt="<%= bookmark.picture_alt _%>" title="<%= bookmark.picture_title _%>" /></a>
+                            </div>
+                            <%_ } _%>
+                            <div class="<%= bookmark.picture_url ? 'col-md-7': 'col-md-11' _%>">
+                                <h3><a href="<%= bookmark.url _%>"><%= bookmark.name _%></a></h3>
+                                <p><%= bookmark.description _%></p>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="delete" data-type="bookmark" data-object-id="<%= bookmark.bookmark_id _%>" data-object-type="<%= bookmark.bookmark_type _%>"><i class="fa fa-close" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <%_ }); _%>
+                    </div>
+                </div>
+                <div id="like-pane" class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12 text-md-center">
+                                <h2>Vous avez aimé</h2>
+                            </div>
+                        </div>
+                        <%_ if(likes.length === 0){ _%>
+                        <p>Vous n'avez aimé aucun élément pour le moment. Naviguez sur le site afin de découvrir vos films, produits et lieux préférés.</p>
+                        <%_ } _%>
+                        <%_ likes.forEach(function(like){ _%>
+                        <div class="row like-sheet">
+                            <%_ if(like.picture_url){ _%>
+                            <div class="col-md-4">
+                                <a href="<%= like.url _%>"><img src="<%= like.picture_url _%>" alt="<%= like.picture_alt _%>" title="<%= like.picture_title _%>" /></a>
+                            </div>
+                            <%_ } _%>
+                            <div class="<%= like.picture_url ? 'col-md-7': 'col-md-11' _%>">
+                                <h3><a href="<%= like.url _%>"><%= like.name _%></a></h3>
+                                <p><%= like.description _%></p>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="delete" data-type="like" data-object-id="<%= like.target_id _%>" data-object-type="<%= like.target_type _%>"><i class="fa fa-close" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <%_ }); _%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/mainProfile.js"></script>

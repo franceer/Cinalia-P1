@@ -1,0 +1,50 @@
+<section id="movie-assets" class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Tous les produits et lieux du film</h2>
+                <p class="lead">Découvrez toutes les tenues, produits et lieux du film Five ! Utilisez les filtres ci-dessous pour raffiner votre recherche.</p>
+                <div class="selectfield">
+                    <label>Standard Select</label>
+                    <select id="1">
+                        <option disabled selected>Type d'élément</option>
+                        <option>Mode</option>
+                        <option>Lieu</option>
+                        <option>Objet</option>
+                    </select>
+                </div>
+                <div class="selectfield">
+                    <label>Standard Select</label>
+                    <select id="1">
+                        <option disabled selected>Type d'élément</option>
+                        <option>Mode</option>
+                        <option>Lieu</option>
+                        <option>Objet</option>
+                    </select>
+                </div>
+                <%_
+                var newRow = true;
+                for(var i = 1; i <= allProducts.length; i++){
+                var product = allProducts[i-1];
+                if(newRow){
+                _%>
+                <div class="row asset-line">
+                    <%_ newRow = false; } _%>
+                    <div class="col-md-3 asset-figure">
+                        <div class="asset-img wide-img">
+                            <a href="/<%= product.section_url + '/' + product.id _%>"><img src="<%= product.picture_url _%>" alt="<%= product.picture_alt _%>" title="<%= product.picture_title _%>" /></a>
+                            <button class="button-overlay red bookmark<%= product.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= product.id _%>" data-object-type="product"><%= typeof product.bookmark_id !== 'undefined' ? 'Sauvegardé' : 'Sauvegarder' _%></button>
+                        </div>
+                        <div class="asset-legend drop-shadow">
+                            <a href="/<%= product.section_url + '/' + product.id _%>" class="asset-title"><%= product.brand_name _%></a>
+                            <a href="/<%= product.section_url + '/' + product.id _%>" class="asset-desc"><%- product.name _%></a>
+                        </div>
+                    </div>
+                    <%_ if(i % 4 === 0 || i === allProducts.length){ _%>
+                </div>
+                <%_ newRow = true;} _%>
+                <%_ } _%>                
+            </div>
+        </div>
+    </div>
+</section>

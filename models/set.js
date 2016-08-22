@@ -1,9 +1,11 @@
 'use strict';
 
-let bookshelf = require('../database/database');
+let bookshelf = require('../database/database'),
+    helper = require('../helpers/helper');
 
 require('./video-media');
 require('./product');
+require('./category');
 
 let Set = bookshelf.Model.extend({
     tableName: 'sets',
@@ -17,12 +19,19 @@ let Set = bookshelf.Model.extend({
         return this.belongsToMany('Product').through('ProductsInSet');
     },
 
+    categories: function () {
+        return this.belongsToMany('Category');
+    },
+
     virtuals: {
         type: function () {
-            return 'Set';
+            return 'décor';
         },
         sectionUrl: function () {
             return 'sets';
+        },
+        urlRewrite: function () {
+            return helper.toURLFormat(this.get('name'));
         }
     }
 });

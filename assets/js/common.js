@@ -46,7 +46,7 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 
             var clicked = jquery(this);
 
-            jquery('#iframe-go-back').attr('href', clicked.attr('href')).append(clicked.attr('data-modal-type'));
+            jquery('#iframe-go-back').attr('href', clicked.attr('href')).children('span').text(clicked.attr('data-modal-type'));
             jquery('#main-modal iframe').attr('src', clicked.attr('href'));
             setTimeout(function () {
                 $('#main-modal').modal();
@@ -144,7 +144,7 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 		jquery('#top-search-box, #home-search-box').keypress(function (e) {
 			if (e.which === 13) {
 				jquery(this).closest('form').submit();
-				return false;    //<---- Add this line
+				return false;
 			}
 		});
 		
@@ -152,13 +152,40 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 			var $this = jquery(this);
 			
 			jquery.post('/save-bookmark', {action: $this.hasClass('bookmarked') ? 'destroy' : 'save', objectID: $this.attr('data-object-id'), objectType: $this.attr('data-object-type')}).done(function(data){
-				if(data.status === 'saved')
-					$this.addClass('bookmarked');
-				else if(data.status === 'destroyed')
-					$this.removeClass('bookmarked');
-				else if(data.status === 'error')
-					console.log(data.message);
+			    if (data.status === 'saved') {
+			        $this.addClass('bookmarked');
+
+			        if ($this.text() == 'Sauvegarder')
+			            $this.text('Sauvegardé');
+			    }
+			    else if (data.status === 'destroyed') {
+			        $this.removeClass('bookmarked');
+
+			        if ($this.text() == 'Sauvegardé')
+			            $this.text('Sauvegarder');
+			    }
+			    else if (data.status === 'error')
+			        console.log(data.message);
 			});
+		});
+
+		jquery('.like').on('click', function (e) {
+		    var $this = jquery(this);
+
+		    jquery.post('/like', { action: $this.hasClass('liked') ? 'unlike' : 'like', objectID: $this.attr('data-object-id'), objectType: $this.attr('data-object-type') }).done(function (data) {
+		        if (data.status === 'liked') {
+		            $this.addClass('liked');
+		            var $el = jquery('#like-count');
+		            $el.text(parseInt($el.text().trim()) + 1)
+		        }
+		        else if (data.status === 'unliked') {
+		            $this.removeClass('liked');
+		            var $el = jquery('#like-count');
+		            $el.text(parseInt($el.text().trim()) - 1)
+		        }
+		        else if (data.status === 'error')
+		            console.log(data.message);
+		    });
 		});
     });
 });

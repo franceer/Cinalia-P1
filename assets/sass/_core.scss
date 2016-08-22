@@ -5,7 +5,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 body{
     overflow-x: hidden;
-    font-family: Roboto, sans-serif !important;
+    font-family: Raleway, Roboto, sans-serif !important;
     color: #454242;
 }
 body{
@@ -88,31 +88,6 @@ button, a, input{
         height: 60px * 1.1;
         width: 60px * 1.1;
     }
-}
- /*.modal-hidden{
-     display: none;
- }*/
-/***** CUSTOM STYLES PLAYER *****/
-.plyr__video-wrapper{
-    overflow-y: hidden;
-    height: 344px;
-}
-.plyr__video-wrapper video{
-    margin-top: -59px;
-    z-index: -1;
-}
-.plyr__controls{
-    background-color: $dark-gray;    
-    z-index: 1;
-}
-.plyr__controls button{
-    color: white;
-}
-.plyr__tooltip{
-    color: $dark-gray;
-}
-.plyr__controls .plyr__time{
-    color: white;
 }
 /***** SELECT *****/
 /* ==========  Select Field Variables ========== */

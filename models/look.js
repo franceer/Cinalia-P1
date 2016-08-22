@@ -1,9 +1,11 @@
 'use strict';
 
-let bookshelf = require('../database/database');
+let bookshelf = require('../database/database'), 
+    helper = require('../helpers/helper');
 
 require('./video-media');
 require('./product');
+require('./category');
 require('./media-character');
 
 let Look = bookshelf.Model.extend({
@@ -12,6 +14,10 @@ let Look = bookshelf.Model.extend({
 	
 	character: function(){
 		return this.belongsTo('MediaCharacter');
+	},
+
+	categories: function () {
+	    return this.belongsToMany('Category');
 	},
 
     videoMedia: function () {
@@ -24,10 +30,13 @@ let Look = bookshelf.Model.extend({
 
     virtuals: {
         type: function() {
-            return 'Look';
+            return 'look';
         },
         sectionUrl: function () {
             return 'looks';
+        },
+        urlRewrite: function () {
+            return helper.toURLFormat(this.get('name'));
         }
     }    
 });

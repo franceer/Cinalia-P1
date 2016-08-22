@@ -133,6 +133,7 @@ $seatMargin : (($width/14) * .1)/2;
             display: none;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
             flex-direction: column;
+            justify-content: center;
 
             *{
                 opacity: 0;
@@ -206,18 +207,42 @@ input[type=range] {
     i{
         opacity: .8;
         font-size: 10rem;
-    }
-
-    div{
-        position: absolute;
-        bottom: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+    }    
 }
 .pickedin-player{
     position: relative;
 }
+.plyr{
+    overflow-y: hidden;
+    height: 345px;
+    
+    iframe{
+        margin-top: -60px;
+        z-index: -1;
+    }
+}
+
+/*.plyr__video-wrapper{
+    overflow-y: hidden;
+    height: 344px;
+}
+.plyr__video-wrapper video{
+    margin-top: -59px;
+    z-index: -1;
+}
+.plyr__controls{
+    background-color: $dark-gray;    
+    z-index: 1;
+}
+.plyr__controls button{
+    color: white;
+}
+.plyr__tooltip{
+    color: $dark-gray;
+}
+.plyr__controls .plyr__time{
+    color: white;
+}*/
 /***** PLAYER CAROUSEL *****/
 /*#player-carousel{
     position: relative;

@@ -15,7 +15,7 @@ define(['./pickedin-player', 'plyr', 'bootstrap','tether', 'jquery'], function (
             }, options);
 
             var init = function () {
-                plyr.setup($this.get());
+                plyr.setup($this.get(), { controls: ['play', 'progress', 'current-time', 'mute', 'volume'] });
 
                 $this.each(function () {
                     pickedInPlayers.push(new PickedInPlayer($(this), settings.timelineClass));

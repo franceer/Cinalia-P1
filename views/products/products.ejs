@@ -17,18 +17,19 @@
                         <h1><%= product.brand.name %></h1>
                     </div>
                     <div id="user-actions" class="col-md-3 offset-md-3">
-                        <a href="#" class="bookmark<%= typeof bookmark !== 'undefined' ? ' bookmarked' : '' _%>" data-object-id="<%= product.id _%>" data-object-type="product">
+                        <button class="bookmark<%= typeof bookmark !== 'undefined' ? ' bookmarked' : '' _%>" data-object-id="<%= product.id _%>" data-object-type="product">
                             <i class="fa fa-bookmark-o" aria-hidden="true"></i>
                             <i class="fa fa-bookmark" aria-hidden="true"></i>
-                        </a>
-                        <a href="#" class="like">
+                        </button>
+                        <button class="like<%= typeof like !== 'undefined' ? ' liked' : '' _%>" data-object-id="<%= product.id _%>" data-object-type="product">
                             <i class="fa fa-heart-o" aria-hidden="true"></i>
                             <i class="fa fa-heart" aria-hidden="true"></i>
-                        </a>
+                            <span id="like-count"><%= typeof likeCount !== 'undefined' ? likeCount : '' _%></span>
+                        </button>
                         <div class="html-tooltip">
                             <i class="fa fa-share-alt" aria-hidden="true"></i>
                             <div class="tooltip-content bottom">
-                                <a href="#">
+                                <a data-url="<%= pageURL _%>" href="http://www.facebook.com/sharer.php?u=<%= pageURL _%>" class="share-facebook" target="_blank">
                                     <i class="fa fa-facebook" aria-hidden="true"></i>
                                 </a>
                                 <a href="#">
@@ -60,7 +61,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<p class="font-weight-bold as-seen">
-							Vu dans <span class="text-important"><%= media.title%></span>
+							Vu dans <span class="text-important"><%= media.name _%></span>
 						</p>
 						<% if(contextualInfo.appearingContext) {%>
 						<p class="description text-justify">
@@ -88,7 +89,7 @@
 								}
 								%>
 								<li>
-									<%= videoMedia.title %>
+									<%= videoMedia.name %>
 								</li>
 								<% } %>
 							</ul>

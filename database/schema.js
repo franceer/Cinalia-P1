@@ -46,17 +46,17 @@ var schema = {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         name: { type: 'string', maxlength: 64, nullable: false, unique: true }
     },
-    product_categories: {
+    categories: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         name: { type: 'string', maxlength: 64, nullable: false },
         path: {type: 'specific', specificType: 'ltree', nullable: false, unique: true}
         //sequence: { type: 'integer', nullable: false },
         //parent_id: { type: 'integer', nullable: false, unsigned: true }
     },
-    product_types: {
-        id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
-        name: { type: 'string', maxlength: 64, nullable: false, unique: true }
-    },
+    //product_types: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    name: { type: 'string', maxlength: 64, nullable: false, unique: true }
+    //},
     social_data: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         likes: { type: 'integer', nullable: false, unsigned: true, defaultTo: 0 },
@@ -72,7 +72,7 @@ var schema = {
     },   
     video_medias: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
-        title: { type: 'string', maxlength: 64, nullable: false },
+        name: { type: 'string', maxlength: 64, nullable: false },
         description: { type: 'text', nullable: true },
         theater_release_date: { type: 'date', nullable: false },
         tv_release_date: { type: 'date', nullable: false },
@@ -80,8 +80,9 @@ var schema = {
         poster_url: { type: 'string', maxlength: 400, nullable: false },
         poster_alt: { type: 'string', maxlength: 128, nullable: false },
         poster_title: { type: 'string', maxlength: 128, nullable: false },
+        video_thumbnail_url: { type: 'string', maxlength: 400, nullable: true },
         video_url: { type: 'string', maxlength: 400, nullable: false },
-        video_caption: { type: 'string', maxlength: 64, nullable: false },
+        video_caption: { type: 'string', maxlength: 64, nullable: true },
         synopsis: { type: 'text', nullable: true },
         tv_broadcaster: { type: 'string', maxlength: 64, nullable: false },
         media_genre_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_genres' },
@@ -99,7 +100,7 @@ var schema = {
         price: { type: 'decimal', nullable: false },
         description: { type: 'text', nullable: true },
         brand_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'brands' },
-        product_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'product_types' },
+        //product_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'product_types' },
 		parent_product_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'products' },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
@@ -125,6 +126,12 @@ var schema = {
 		user_id: {type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'users'},
 		bookmark_type: {type: 'string', maxlength: 32, nullable: false},
 		bookmark_id: {type: 'integer', nullable: false, unsigned: true }
+	},
+	user_likes: {
+	    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+	    user_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'users' },
+	    target_type: { type: 'string', maxlength: 32, nullable: false },
+	    target_id: { type: 'integer', nullable: false, unsigned: true }
 	},
 	workers: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
@@ -154,10 +161,20 @@ var schema = {
         location_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'locations' },
         video_media_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'video_medias' }
     },
-    product_categories_products: {
+    categories_products: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products' },
-        product_category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'product_categories' }
+        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories' }
+    },
+    categories_video_medias: {
+        id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+        video_media_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'video_medias' },
+        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories' }
+    },
+    categories_locations: {
+        id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+        location_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'locations' },
+        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories' }
     },
     looks: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
@@ -177,6 +194,11 @@ var schema = {
         body_location_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'body_locations' },
         look_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'looks' },
         product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products' }
+    },
+    categories_looks: {
+        id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+        look_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'looks' },
+        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories' }
     },
     sets: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
@@ -199,6 +221,11 @@ var schema = {
         y_offset: { type: 'integer', nullable: false, defaultTo: 0 },
         product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products' },
         set_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'sets' }
+    },
+    categories_sets: {
+        id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+        set_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'sets' },
+        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories' }
     }
 };
 module.exports = schema;

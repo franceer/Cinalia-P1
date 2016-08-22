@@ -1,0 +1,98 @@
+#profile-section{
+    button{
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+    }
+    a, a:hover, a:active, a:focus{
+        color: inherit;
+    }
+    .fa-envelope-o{
+        margin-right: 5px;
+    }
+    .fa-pencil{
+        margin-left: 5px;
+    }
+    h1{
+        display: inline-block;
+    }
+
+    #profile-info{
+        padding-bottom: 30px;
+        border-bottom: 1px solid #f1f1f1;    
+        
+        [id*="-info"] {
+            & > a, & .edit{
+                visibility: hidden;
+            }
+            
+            &:hover > a, &:hover .edit{
+                visibility: visible;
+            }            
+        }
+
+        [id*="edit-"]{
+            display: none;
+        }
+
+        #name-info{
+            min-height: 60px;
+        }
+
+        #email-info{
+            min-height: 25px;
+        }
+
+        .fa-check{
+            color: $clear-red;
+        }
+    }
+
+    .nav-button{
+        display: flex;
+        padding: 0;
+
+        button{
+            flex : 1 0 auto;
+            padding: 10px;
+            transition: border-color 500ms ease;
+            border-bottom: 1px solid #f1f1f1;     
+            font-size: 1.4rem;
+
+            &.active, &:hover{
+                border-bottom: 3px solid;
+                border-color: $clear-red;
+            }
+        } 
+    }
+
+    #active-panes{
+        min-height: 400px;
+        border-left: 1px solid #f1f1f1;
+
+        h2{
+            padding: 20px;
+        }
+
+        [id*="-pane"]{
+            display: none;
+
+            &.active{
+                display: flex;
+            }
+        }       
+    }
+
+    .bookmark-sheet, .like-sheet{        
+        padding: 30px;
+        border-bottom: 1px solid #f1f1f1;
+        
+        img{
+            display: block;
+            margin: 0 auto;
+            max-height: 250px;
+            max-width: 100%;
+        }
+    }
+}

@@ -4,55 +4,21 @@ let express = require('express'),
     router = express.Router(),
     bookshelf = require('../database/database'),
     Product = require('../models/product'),
+	Bookmark = require('../models/bookmark'),
+    Like = require('../models/like'),
     ProductsInMovie = require('../models/products-in-video-media'),
 	ProductsInLook = require('../models/products-in-look'), 
 	_ = require('lodash');
 
-router.get('/:id', function (req, res, next) {	
-    //if (req.query.movieid) {
-    //    ProductsInMovie.forge({ product_id: req.params.id, video_media_id: req.query.movieid })
-    //    .fetch({ withRelated: ['product', 'product.brand', 'product.type', 'product.categories', 'product.videoMedias', 'product.looks.videoMedia', 'videoMedia', 'matchingStatus', 'product.similarProducts', 'product.similarProducts.brand']})
-    //    .then(function (productsInMovie) {
-	//		if(!productsInMovie){
-	//			ProductsInLook.forge({product_id: req.params.id})				
-	//			.fetch({ withRelated: ['product', 'product.brand', 'product.type', 'product.categories', 'product.videoMedias', 'product.looks.videoMedia', {'look': function(query){
-	//				query.where('video_media_id', '=', req.query.movieid);
-	//			}}, 'look.videoMedia', 'matchingStatus', 'product.similarProducts', 'product.similarProducts.brand']})
-	//			.then(function(productsInLook){
-	//				if(!productsInLook){
-	//					forgeProduct();
-	//				}else{					
-	//					let jSONObject = productsInLook.toJSON();
-	//					let videoMedias = buildVideoMediaCollection(jSONObject.product.videoMedias, jSONObject.product.looks);		
-	//					let contextualInfo = {matchingStatus : jSONObject.matchingStatus, appearingContext: jSONObject.appearing_context }
-	//					res.render('products/products', { product: jSONObject.product, contextualInfo: contextualInfo, media: jSONObject.look.videoMedia, medias: videoMedias });
-	//				}
-	//			})				
-	//			.catch(function(err) {
-	//				return next(new Error(err));
-	//			}); 
-	//		}else{            
-	//			let jSONObject = productsInMovie.toJSON();
-	//			let videoMedias = buildVideoMediaCollection(jSONObject.product.videoMedias, jSONObject.product.looks);				
-	//			let contextualInfo = {matchingStatus : jSONObject.matchingStatus, appearingContext: jSONObject.appearing_context }
-	//			res.render('products/products', { product: jSONObject.product, contextualInfo: contextualInfo, media: jSONObject.videoMedia, medias: videoMedias });
-	//		}
-    //    })
-	//	.catch(function(err) {
-	//		return next(new Error(err));
-	//	});         
-	//}else{
-	//	forgeProduct();
-	//}
-	
-	if (req.query.movieid) {
-		ProductsInMovie.forge({ product_id: req.params.id, video_media_id: req.query.movieid })
-		.fetch({ withRelated: ['product', 'product.brand', 'product.type', 'product.categories', 'product.videoMedias', 'product.looks.videoMedia', 'videoMedia', 'matchingStatus', 'product.similarProducts', 'product.similarProducts.brand']})
+router.get('/:id*', function (req, res, next) {	
+    if (req.query.mediaid) {
+        ProductsInMovie.forge({ product_id: req.params.id, video_media_id: req.query.mediaid })
+		.fetch({ withRelated: ['product', 'product.brand', 'product.categories', 'product.videoMedias', 'product.looks.videoMedia', 'videoMedia', 'matchingStatus', 'product.similarProducts', 'product.similarProducts.brand']})
 		.then(function (productsInMovie) {
 			if(!productsInMovie){
-				ProductsInLook.forge({product_id: req.params.id})				
-				.fetch({ withRelated: ['product', 'product.brand', 'product.type', 'product.categories', 'product.videoMedias', 'product.looks.videoMedia', {'look': function(query){
-					query.where('video_media_id', '=', req.query.movieid);
+				return ProductsInLook.forge({product_id: req.params.id})				
+				.fetch({ withRelated: ['product', 'product.brand', 'product.categories', 'product.videoMedias', 'product.looks.videoMedia', {'look': function(query){
+				    query.where('video_media_id', '=', req.query.mediaid);
 				}}, 'look.videoMedia', 'matchingStatus', 'product.similarProducts', 'product.similarProducts.brand']})
 				.then(function(productsInLook){
 					if(!productsInLook){
@@ -68,19 +34,73 @@ router.get('/:id', function (req, res, next) {
 			}
 		})
 		.then(function (builtJSON) {
-		    res.render('products/products', builtJSON);
+		    res.locals = _.merge(res.locals, builtJSON);
+
+		    if (req.isAuthenticated()) {
+			return Bookmark.forge({ user_id: req.user.id, bookmark_type: 'product', bookmark_id: res.locals.product.id }).fetch()
+            .then(function (bookmark) {
+                if (bookmark)
+                    res.locals.bookmark = true;
+
+                return Like.forge({ user_id: req.user.id, target_type: 'product', target_id: res.locals.product.id }).fetch()
+                .then(function (like) {
+                    return like;
+                });
+            });
+        } else {
+            return null;
+        }
 		})
+        .then(function (like) {
+            if (like)
+                res.locals.like = true;
+
+            return bookshelf.knex.whereRaw('target_type = ? and target_id = ?', ['product', res.locals.product.id]).from('user_likes').select(bookshelf.knex.raw('count(id) as like_count'));
+        })
+        .then(function (likeCount) {
+            if (likeCount && likeCount.length > 0)
+                res.locals.likeCount = likeCount[0].like_count;
+
+            res.render('products/products');
+        })
         .catch(function(err) {
             return next(new Error(err));
         });     
 	} else {
 	    forgeProduct()
         .then(function (builtJSON) {
-            res.render('products/products', builtJSON);
+            res.locals = _.merge(res.locals, builtJSON);
+
+            if (req.isAuthenticated()) {
+                return Bookmark.forge({ user_id: req.user.id, bookmark_type: 'product', bookmark_id: res.locals.product.id }).fetch()
+                .then(function (bookmark) {
+                    if (bookmark)
+                        res.locals.bookmark = true;
+
+                    return Like.forge({ user_id: req.user.id, target_type: 'product', target_id: res.locals.product.id }).fetch()
+                    .then(function (like) {
+                        return like;
+                    });
+                });
+            } else {
+                return null;
+            }
+        })
+        .then(function (like) {
+            if (like)
+                res.locals.like = true;
+
+            return bookshelf.knex.whereRaw('target_type = ? and target_id = ?', ['product', res.locals.product.id]).from('user_likes').select(bookshelf.knex.raw('count(id) as like_count'));
+        })
+        .then(function (likeCount) {
+            if (likeCount && likeCount.length > 0)
+                res.locals.likeCount = likeCount[0].like_count;
+
+            res.render('products/products');
         })
         .catch(function (err) {
             return next(new Error(err));
-        });
+        });      
 	}	
 
 	function buildVideoMediaCollection(coll1, coll2){
@@ -94,28 +114,12 @@ router.get('/:id', function (req, res, next) {
 
 	function forgeProduct() {
 	    return Product.forge({ id: req.params.id })
-		.fetch({ withRelated: ['brand', 'type', 'categories', 'videoMedias', 'looks.videoMedia', 'similarProducts', 'similarProducts.brand'], require: true })
+		.fetch({ withRelated: ['brand', 'categories', 'videoMedias', 'looks.videoMedia', 'similarProducts', 'similarProducts.brand'], require: true })
 		.then(function (product) {
 		    let jSONObject = product.toJSON();
 		    return { product: jSONObject, medias: buildVideoMediaCollection(jSONObject.videoMedias, jSONObject.looks) };
 		});
 	}
-	
-	//function forgeProduct(){
-	//	Product.forge({ id: req.params.id })
-	//	.fetch({ withRelated: ['brand', 'type', 'categories', 'videoMedias', 'looks.videoMedia', 'similarProducts', 'similarProducts.brand'], require: true })
-	//	.then(function (product) {
-	//		let jSONObject = product.toJSON();
-	//		let videoMedias = buildVideoMediaCollection(jSONObject.videoMedias, jSONObject.looks);				
-	//		res.render('products/products', { product: product.toJSON(), medias: videoMedias });
-	//	})	
-	//	.catch(bookshelf.NotFoundError, function (err) {
-	//		res.status(404).send("Not Found");
-	//	})
-	//	.catch(function(err) {
-	//		return next(new Error(err));
-	//	});		
-	//}	
 });
 
 module.exports = router

@@ -10,9 +10,10 @@
         <!--<script src="/js/lib/bootstrap.js"></script>
         <script src="/js/lib/plyr.js"></script>-->
         <!--<script type="text/javascript" src="/js/client-scripts.js"></script>-->        
-        <%- extraScripts %>
+        <%- defineContent('extraScripts') %>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <%- defineContent('sEOMetas') %>
     </head>
     <body>
 		<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="signup-modal-label" aria-hidden="true">
@@ -151,100 +152,31 @@
                             <nav id="primary-nav">
                                 <ul class="list-unstyled">
                                     <li>
-                                        <a href="#">Films</a>
-                                        <ul class="primary-nav-sub level1 list-unstyled">
-                                            <li>
-                                                <a href="#">Test 1</a>
-                                                <div class="primary-nav-sub level2 row">
-                                                    <div class="col-md-3">
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                            <li><a href="#">Subtest3</a></li>
-                                                            <li><a href="#">Subtest4</a></li>
-                                                            <li><a href="#">Subtest5</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 2</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 3</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 4</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 5</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 3</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                            <li><a href="#">Subtest3</a></li>
-                                                            <li><a href="#">Subtest4</a></li>
-                                                            <li><a href="#">Subtest5</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 2</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                            <li><a href="#">Subtest3</a></li>
-                                                            <li><a href="#">Subtest4</a></li>
-                                                            <li><a href="#">Subtest5</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li><a href="#">Test 2</a></li>
-                                            <li><a href="#">Test 3</a></li>
-                                        </ul>
+                                        <a href="/search?cat=105">Films</a>                                        
                                     </li>
                                     <li>
-                                        <a href="#">Produits</a>
+                                        <a href="/search?cat=2">Produits</a>
                                         <ul class="primary-nav-sub level1 list-unstyled">
                                             <li>
-                                                <a href="/search?cat=2">Mode</a>
+                                                <a href="/search?cat=3">Mode</a>
                                                 <div class="primary-nav-sub level2 row">
                                                     <div class="col-md-3">
                                                         <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="/search?cat=4">Vêtements Homme</a></li>
-                                                            <li><a href="/search?cat=7">Vestes</a></li>
-                                                            <li><a href="/search?cat=13">Pantalons</a></li>
-                                                            <li><a href="/search?cat=5">T-shirts</a></li>
-                                                            <li><a href="/search?cat=6">Polos</a></li>
+                                                            <li class="category-title"><a href="/search?cat=5">Vêtements Homme</a></li>
+                                                            <li><a href="/search?cat=8">Vestes</a></li>
+                                                            <li><a href="/search?cat=14">Pantalons</a></li>
+                                                            <li><a href="/search?cat=6">T-shirts</a></li>
+                                                            <li><a href="/search?cat=7">Polos</a></li>
                                                         </ul>
                                                         <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="/search?cat=19">Chaussures Homme</a></li>
+                                                            <li class="category-title"><a href="/search?cat=20">Chaussures Homme</a></li>
                                                         </ul>
                                                         <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="/search?cat=25">Accessoires Hommes</a></li>
-                                                            <li><a href="/search?cat=30">Lunettes</a></li>
-                                                            <li><a href="/search?cat=31">Chapeaux &Aacute; casquettes</a></li>
-                                                            <li><a href="/search?cat=29">Echarpes et foulards</a></li>
-                                                            <li><a href="/search?cat=27">Montres</a></li>
+                                                            <li class="category-title"><a href="/search?cat=26">Accessoires Hommes</a></li>
+                                                            <li><a href="/search?cat=31">Lunettes</a></li>
+                                                            <li><a href="/search?cat=32">Chapeaux &Aacute; casquettes</a></li>
+                                                            <li><a href="/search?cat=30">Echarpes et foulards</a></li>
+                                                            <li><a href="/search?cat=28">Montres</a></li>
                                                         </ul> 
                                                     </div>
                                                     <div class="col-md-3">
@@ -289,42 +221,27 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li><a href="/search?cat=Décoration_et_HighTech">Décoration et High Tech</a></li>
-                                            <li><a href="/search?cat=Transport">Transport</a></li>
+                                            <li><a href="/search?cat=87">Décoration et High Tech</a></li>
+                                            <li><a href="/search?cat=97">Transport</a></li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="#">Lieux</a>
-                                        <ul class="primary-nav-sub level1 list-unstyled">
-                                            <li><a href="#">Test 7</a></li>
-                                            <li><a href="#">Test 8</a></li>
-                                            <li><a href="#">Test 9</a></li>
-                                        </ul>
+                                        <a href="/search?cat=102">Lieux</a>                                       
                                     </li>
                                     <li>
-                                        <a href="#">Looks</a>
-                                        <ul class="primary-nav-sub level1 list-unstyled">
-                                            <li><a href="#">Test 10</a></li>
-                                            <li><a href="#">Test 11</a></li>
-                                            <li><a href="#">Test 12</a></li>
-                                        </ul>
+                                        <a href="/search?cat=103">Looks</a>                                      
                                     </li>
                                     <li>
-                                        <a href="#">Décors</a>
-                                        <ul class="primary-nav-sub level1 list-unstyled">
-                                            <li><a href="#">Test 10</a></li>
-                                            <li><a href="#">Test 11</a></li>
-                                            <li><a href="#">Test 12</a></li>
-                                        </ul>
+                                        <a href="/search?cat=104">Décors</a>                                       
                                     </li>
-                                    <li>
+                                    <!--<li>
                                         <a href="#">Blog</a>
                                         <ul class="primary-nav-sub level1 list-unstyled">
                                             <li><a href="#">Test 10</a></li>
                                             <li><a href="#">Test 11</a></li>
                                             <li><a href="#">Test 12</a></li>
                                         </ul>
-                                    </li>
+                                    </li>-->
                                 </ul>
                             </nav>
                         </div>
@@ -349,16 +266,16 @@
             <div class="container">
                 <nav class="row">
                     <ul class="list-unstyled col-md-5">
-                        <li>Home</li>
-                        <li>Contactez-nous</li>
-                        <li>A propos</li>
-                        <li>Mentions légales</li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="#">Contactez-nous</a></li>
+                        <li><a href="#">A propos</a></li>
+                        <li><a href="/mentions-legales">Mentions légales</a></li>
                     </ul>
                     <ul id="social-nav" class="list-unstyled col-md-3 offset-md-4">
-                        <li><i class="fa fa-facebook-square" aria-hidden="true"></i></li>
-                        <li><i class="fa fa-twitter-square" aria-hidden="true"></i></li>
-                        <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
-                        <li><i class="fa fa-google-plus-square" aria-hidden="true"></i></li>
+                        <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
                     </ul>
                 </nav>
                 <div id="copyright" class="row">

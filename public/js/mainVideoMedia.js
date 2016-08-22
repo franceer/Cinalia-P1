@@ -1,4 +1,4 @@
-webpackJsonp([4],[
+webpackJsonp([5],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -19,7 +19,7 @@ webpackJsonp([4],[
 	            }, options);
 
 	            var init = function () {
-	                plyr.setup($this.get());
+	                plyr.setup($this.get(), { controls: ['play', 'progress', 'current-time', 'mute', 'volume'] });
 
 	                $this.each(function () {
 	                    pickedInPlayers.push(new PickedInPlayer($(this), settings.timelineClass));
@@ -256,14 +256,17 @@ webpackJsonp([4],[
 	        };
 
 	        var setAssetMouseHandlers = function () {
-	            this.$nodeElement.find('.asset-img').mouseenter(function (e) {
-	                console.log(e.target.className);
+	            var t = this;
+
+	            t.$nodeElement.find('.asset-img').mouseenter(function (e) {
 	                jquery(this).children('a').velocity('stop').velocity({ scale: 2 }, { duration: 100 });
 	                jquery(this).children('.asset-info').velocity('stop').velocity({ opacity: 1, maxWidth: 500 }, { delay: 100, duration: 100, display: 'flex' }).children().velocity('stop').velocity({ opacity: 1 }, { delay: 200 });
 
 	            }).mouseleave(function (e) {
 	                jquery(this).children('.asset-info').velocity("stop").velocity({ opacity: 0, maxWidth: 0 }, { duration: 100, display: 'none' }).children().velocity('stop').velocity({ opacity: 0 });
 	                jquery(this).children('a').velocity("stop").velocity({ scale: 1 }, { duration: 100, delay: 100 });
+	            }).on('click', function (e) {
+	                t.pickedInPlayer.plyrInstance.pause();
 	            });
 	        };
 

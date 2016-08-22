@@ -28,5 +28,7 @@ router.use('/logout', require('./logout'));
 router.use('/search', require('./search'));
 router.use('/profile', require('./profile'));
 router.use('/save-bookmark', require('./save-bookmark'));
+router.use('/like', require('./like'));
+router.use('/mentions-legales', require('./legal'));
 
 module.exports = router

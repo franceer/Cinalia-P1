@@ -16,6 +16,7 @@ module.exports = [{
         mainVideoMedia: './main-video-media',
         mainLook: './main-look',
         mainSearch: './main-search',
+        mainProfile: './main-profile',
         commons: './common'
     },
     output: {

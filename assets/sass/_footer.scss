@@ -3,6 +3,10 @@ footer{
     min-height: 150px;
     color: white;    
     padding-top: 30px;
+    
+    a, a:hover, a:active, a:focus{
+        color: inherit;
+    }
 
     nav{
         font-weight: 500;

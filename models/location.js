@@ -1,8 +1,10 @@
 'use strict';
 
-let bookshelf = require('../database/database');
+let bookshelf = require('../database/database'),
+    helper = require('../helpers/helper');
 
 require('./video-media');
+require('./category');
 
 let Location = bookshelf.Model.extend({
     tableName: 'locations',
@@ -12,12 +14,19 @@ let Location = bookshelf.Model.extend({
         return this.belongsToMany('VideoMedia').withPivot(['time_codes', 'appearing_context']);
     },
 
+    categories: function () {
+        return this.belongsToMany('Category');
+    },
+
     virtuals: {
         type: function () {
-            return 'Location';
+            return 'lieu';
         },
         sectionUrl: function () {
             return 'locations';
+        },
+        urlRewrite: function () {
+            return helper.toURLFormat(this.get('name'));
         }
     }
 });
