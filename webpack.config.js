@@ -7,7 +7,8 @@ module.exports = [{
         alias: {
             'velocity': path.join(__dirname, '/bower_components/velocity/velocity.min'),
 			'jquery.validation': path.join(__dirname, '/bower_components/jquery-validation/dist/jquery.validate.min'),
-			'bootstrap': path.join(__dirname, '/node_modules/bootstrap/dist/js/bootstrap.min')
+			'bootstrap': path.join(__dirname, '/node_modules/bootstrap/dist/js/bootstrap.min'),
+			'notify': path.join(__dirname, '/bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min')
         }
     },
     context: __dirname + '/assets/js',

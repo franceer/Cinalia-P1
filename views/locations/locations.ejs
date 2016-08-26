@@ -82,8 +82,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Lieux en lien</h2>
+                    <h2>Les lieux du moment</h2>
                     <div class="row asset-line">
+                        <%_ if(lastLocations.length === 0){ _%>
+                        <div class="col-md-12">
+                            Aucun lieu à afficher pour l'instant.
+                        </div>
+                        <%_ } _%>
+                        <%_
+                        for(var i = 1; i <= lastLocations.length; i++){
+                        var locationTemp = lastLocations[i-1]; _%>                       
+                        <div class="col-md-3 asset-figure">
+                            <div class="asset-img">
+                                <a href="/<%= locationTemp.sectionUrl + '/' + locationTemp.id _%>"><img src="<%= locationTemp.picture_url _%>" alt="<%= locationTemp.picture_alt _%>" title="<%= locationTemp.picture_title _%>" /></a>
+                                <button class="button-overlay red bookmark<%= locationTemp.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= locationTemp.id _%>" data-object-type="<%= locationTemp.type _%>"><%= locationTemp.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="/<%= locationTemp.sectionUrl + '/' + locationTemp.id _%>" class="asset-title"><%= locationTemp.name _%></a>
+                                <a href="/<%= locationTemp.sectionUrl + '/' + locationTemp.id _%>" class="asset-desc"><%= locationTemp.city_state_country _%></a>
+                            </div>
+                        </div>
+                        <%_ } _%>
+                    </div>
+                    <!--<div class="row asset-line">
                         <div class="col-md-4 asset-figure">
                             <div class="asset-img">
                                 <a href="#"><img src="/images/location2.jpg" alt="Thaïlande" title="Thaïlande" /></a>
@@ -114,7 +135,7 @@
                                 <a href="#" class="asset-desc">Californie - USA</a>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

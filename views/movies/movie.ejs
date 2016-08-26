@@ -116,9 +116,9 @@
                             %>
                             <li class="carousel-seat<%= isRefString -%>" data-time-code="<%= timeCode -%>">
                                 <div class="asset-img">
-                                    <a data-modal="true" data-modal-type="<%= timedAsset.type -%>" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>/<%= timedAsset.urlRewrite _%>?mediaid=<%= videoMedia.id _%>"<%- ' class="' + timedAsset.type + '"' _%>><% if(timedAsset.picture_url){ %><img src="<%- timedAsset.picture_url %>" /><%_ }else{ _%><%= timedAsset.character.firstname.charAt(0) + timedAsset.character.lastname.charAt(0) _%><%_ } _%></a>
+                                    <a data-modal="true" data-modal-type="<%= timedAsset.displayType -%>" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>/<%= timedAsset.urlRewrite _%>?mediaid=<%= videoMedia.id _%>"<%- ' class="' + timedAsset.type + '"' _%>><% if(timedAsset.picture_url){ %><img src="<%- timedAsset.picture_url %>" /><%_ }else{ _%><%= timedAsset.character.firstname.charAt(0) + timedAsset.character.lastname.charAt(0) _%><%_ } _%></a>
                                     <div class="asset-info">
-                                        <a data-modal="true" data-modal-type="<%= timedAsset.type -%>" class="title" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>" target="_blank"><%= (timedAsset.brand ? timedAsset.brand.name + ' ' : '') + timedAsset.name -%></a>
+                                        <a data-modal="true" data-modal-type="<%= timedAsset.displayType -%>" class="title" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>" target="_blank"><%= (timedAsset.brand ? timedAsset.brand.name + ' ' : '') + timedAsset.name -%></a>
                                         <%_ if(timedAsset.price){ _%><span class="price"><%= timedAsset.price -%>€</span><a href="#" class="interactive-button">Acheter</a><%_ } _%>                                        
                                     </div>
                                 </div>
@@ -224,7 +224,29 @@
         <i class="fa fa-angle-double-down" aria-hidden="true"></i>
     </button>
 </section>
-<%- include('../partials/video-media-assets', { allProducts:  allProducts }) %>
+<section id="movie-assets" class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Tous les produits et lieux du film</h2>
+                <p class="lead">Découvrez toutes les tenues, produits et lieux du film Five ! Utilisez les filtres ci-dessous pour raffiner votre recherche.</p>
+                <div class="selectfield">
+                    <label>Standard Select</label>
+                    <select id="filter-products">
+                        <option selected value="Produits">Tous les produits</option>
+                        <option value="Mode">Mode</option>
+                        <option value="Décoration_et_High_Tech">
+                            Déco &amp; High Tech
+                        </option>
+                        <option value="Transport">Transport</option>
+                        <option value="Lieux">Lieu</option>
+                    </select>
+                </div>               
+            </div>
+        </div>
+        <%- include('../partials/video-media-assets', { allAssets:  allAssets }) %>
+    </div>
+</section>
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/lib/iframeResizer.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>

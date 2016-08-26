@@ -1,5 +1,5 @@
 ﻿CREATE MATERIALIZED VIEW document_search_mview
-(id, name, description, picture_url, picture_alt, picture_title, section_url, tsv)
+(id, name, description, picture_url, picture_alt, picture_title, section_url, "type", tsv)
 AS
 SELECT p.id,
 '<span>' || b.name || '</span> ' || p.name,
@@ -8,6 +8,7 @@ p.picture_url,
 p.picture_alt,
 p.picture_title,
 'products',
+'product',
 setweight(to_tsvector(unaccent(p.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(b.name)), 'B') || setweight(to_tsvector(unaccent(coalesce(p.description,''))), 'D')
 FROM products p
 JOIN brands b ON p.brand_id = b.id
@@ -22,6 +23,7 @@ NULL,
 NULL,
 NULL,
 'looks',
+'look',
 setweight(to_tsvector(unaccent(l.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c2.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(coalesce(l.description,''))), 'D')
 FROM looks l
 JOIN categories_looks cl ON l.id = cl.look_id
@@ -35,6 +37,7 @@ s.picture_url,
 s.picture_alt,
 s.picture_title,
 'sets',
+'set',
 setweight(to_tsvector(unaccent(s.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c3.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(coalesce(s.description,''))), 'D')
 FROM sets s
 JOIN categories_sets cs ON s.id = cs.set_id
@@ -48,6 +51,7 @@ v.poster_url,
 v.poster_alt,
 v.poster_title,
 'movies',
+'video media',
 setweight(to_tsvector(unaccent(v.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c4.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(coalesce(v.description,''))), 'D')
 FROM video_medias v
 JOIN categories_video_medias cv ON v.id = cv.video_media_id
@@ -61,6 +65,7 @@ loc.picture_url,
 loc.picture_alt,
 loc.picture_title,
 'locations',
+'location',
 setweight(to_tsvector(unaccent(loc.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c5.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(coalesce(loc.description,''))), 'D')
 FROM locations loc
 JOIN categories_locations cloc ON loc.id = cloc.location_id

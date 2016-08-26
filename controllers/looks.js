@@ -10,7 +10,7 @@ let express = require('express'),
     _ = require('lodash');
 
 router.get('/:id*', function (req, res, next) {
-    Look.findById(req.params.id, { withRelated: ['videoMedia'] })
+    Look.findById(req.params.id, { withRelated: ['videoMedia', 'character', 'character.type'] })
     .then(function (look) {
         res.locals.look = look.toJSON();
         return ProductsInLook.findAll({ look_id: req.params.id }, { withRelated: ['product', 'product.brand', 'bodyLocation', 'matchingStatus'] });
@@ -45,6 +45,10 @@ router.get('/:id*', function (req, res, next) {
         if (likeCount && likeCount.length > 0)
             res.locals.likeCount = likeCount[0].like_count;
 
+        return Look.getLastLooks(res.locals.look.id);
+    })
+    .then(function (lastLooks) {
+        res.locals.lastLooks = lastLooks.toJSON();
         res.render('looks/looks');
     })
     .catch(function (err) {

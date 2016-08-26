@@ -11,6 +11,100 @@
         margin: 0 30px;
     }
 
+    #body-markers{
+        &.man{
+            #head-marker{
+                top: 30px;
+                left: 145px;
+            }
+            #chest-marker{
+                top: 130px;
+                left: 145px;
+            }
+            #hands-marker{
+                top: 255px;
+                left: 75px;
+            }
+            #legs-marker{
+                top: 280px;
+                left: 160px;
+            }
+            #feet-marker{
+                top: 515px;
+                left: 155px;
+            }
+        }
+
+        &.woman{
+             #head-marker{
+                top: 30px;
+                left: 140px;
+            }
+            #chest-marker{
+                top: 130px;
+                left: 145px;
+            }
+            #hands-marker{
+                top: 215px;
+                left: 95px;
+            }
+            #legs-marker{
+                top: 310px;
+                left: 175px;
+            }
+            #feet-marker{
+                top: 515px;
+                left: 160px;
+            }
+        }
+
+        &.boy{
+            #head-marker{
+                top: 30px;
+                left: 115px;
+            }
+            #chest-marker{
+                top: 150px;
+                left: 115px;
+            }
+            #hands-marker{
+                top: 315px;
+                left: 55px;
+            }
+            #legs-marker{
+                top: 360px;
+                left: 145px;
+            }
+            #feet-marker{
+                top: 515px;
+                left: 145px;
+            }
+        }
+
+        &.girl{
+             #head-marker{
+                top: 40px;
+                left: 115px;
+            }
+            #chest-marker{
+                top: 150px;
+                left: 115px;
+            }
+            #hands-marker{
+                top: 255px;
+                left: 55px;
+            }
+            #legs-marker{
+                top: 400px;
+                left: 140px;
+            }
+            #feet-marker{
+                top: 515px;
+                left: 140px;
+            }
+        }
+    }
+
     .matching-icon{
         color: transparent;
         cursor: pointer;
@@ -54,7 +148,12 @@
                 border-radius: 50px;
                 box-shadow: 0 0 5px rgba(0,0,0,.5);
                 background: white;
-                z-index: 2;                           
+                z-index: 2;     
+                
+                img{
+                    max-height: 100%;
+                    max-width: 100%;
+                }                      
             }          
 
             & .asset-info{    

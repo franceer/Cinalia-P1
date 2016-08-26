@@ -35,7 +35,12 @@
         }
 		
 		.help-block{
-			font-size:12px    
+			font-size:12px;
+			
+			button{
+				border: none;
+				background: none;
+			}
 		}
 		
 		.bottom{
@@ -52,7 +57,7 @@
 		}
 		
 		.social-buttons{
-			margin:12px 0    
+			margin:12px 0;
 		}
 		
 		.social-buttons a{
@@ -68,7 +73,7 @@
 			background-color:#3b5998;
 		}
 		.btn-fb:hover{
-			background-color:#496ebc 
+			background-color:#496ebc; 
 		}
 		.btn-tw{
 			background-color:#55acee;
@@ -93,10 +98,9 @@
 	font-size: inherit;
 }
 
-#signup-nav{
+#signup-form{
 	#step2{
 		display: none;
-
 	}
 }
 

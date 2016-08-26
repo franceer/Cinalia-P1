@@ -1,0 +1,27 @@
+<section id="legal-policies">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+				<% if (typeof message !== 'undefined' && Object.keys(message).length > 0) { %>
+				<div id="flash-message" hidden data-element="<%= message.element.selector _%>" data-message-type="<%= message.element.type _%>" data-style="<%= message.style _%>"><%= message.message _%></div>
+                <% } %>
+				<form class="form" role="form" method="post" action="" novalidate accept-charset="UTF-8" id="reset-form">
+					<div class="form-group row">
+						<label class="sr-only" for="password">Nouveau mot de passe</label>
+						<input type="password" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="new-password" name="password" placeholder="Nouveau mot de passe" autocomplete="off">
+					</div>
+					<div class="form-group row">
+						<label class="sr-only" for="password">Confirmer le mot de passe</label>
+						<input type="password" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="confirm-password" name="confirm-password" placeholder="Confirmer le mot de passe">
+					</div>
+					<div class="form-group row">
+						<button class="btn btn-primary next col-md-3 offset-md-3" type="submit">Réinitialiser le mot de passe</button>
+					</div>
+				</form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- contentFor('extraScripts') %>
+<script src="/js/common.js"></script>

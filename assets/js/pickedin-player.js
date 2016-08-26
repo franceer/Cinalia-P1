@@ -2,18 +2,17 @@
 
 define(['jquery', './timeline-bar'], function (jquery, TimelineBar) {
 
-    function PickedInPlayer($player, timelineClass) {
+    function PickedInPlayer(plyrInstance, $playerObj, timelineClass) {
         var t = this;
-        this.$plyrObject = $player,
-        this.plyrInstance = $player[0].plyr,
+        this.plyrInstance = plyrInstance,
         this.pausedBeforeNavigatingProducts,
         this.previousTickTime,
-        this.roundedCurrentTime = Math.round(this.plyrInstance.media.currentTime * 100) / 100,
+        this.roundedCurrentTime = Math.round(this.plyrInstance.getCurrentTime() * 100) / 100,
         this.forward = true,
         this.timelineBarObjects = [],
-        this.$overlay = $player.children('.video-overlay');
+        this.$overlay = $playerObj.children('.video-overlay');
         
-        $player.next('.assets-nav').find(timelineClass).each(function () {
+        $playerObj.next('.assets-nav').find(timelineClass).each(function () {
             t.timelineBarObjects.push(new TimelineBar(jquery(this), t));
         });
 
@@ -24,7 +23,7 @@ define(['jquery', './timeline-bar'], function (jquery, TimelineBar) {
     PickedInPlayer.prototype = function () {
 
         var actualize = function () {
-            this.roundedCurrentTime = Math.round(this.plyrInstance.media.currentTime * 100) / 100;
+            this.roundedCurrentTime = Math.round(this.plyrInstance.getCurrentTime() * 100) / 100;
 
             if (this.roundedCurrentTime === this.previousTickTime)
                 throw 'Ticking too fast';
@@ -35,10 +34,18 @@ define(['jquery', './timeline-bar'], function (jquery, TimelineBar) {
         var setOnTimeUpdate = function () {
             var t = this;
 
-            this.$plyrObject.on('timeupdate', function (e) { 
+            this.plyrInstance.on('timeupdate', function (e) {
+                //if (t.updating) {
+                //    console.log('updating return');
+                //    return;
+                //}
+
+                //t.updating = true;
+
                 try {
                     t.actualize();
                 } catch (err) {
+                    console.log(err);
                     return;
                 }
 
@@ -47,8 +54,9 @@ define(['jquery', './timeline-bar'], function (jquery, TimelineBar) {
                         this.onTimeUpdate();
                     });
                 }
-
+                                
                 t.previousTickTime = t.roundedCurrentTime;
+                //t.updating = false;
             });
         };
 
@@ -60,7 +68,7 @@ define(['jquery', './timeline-bar'], function (jquery, TimelineBar) {
                 t.plyrInstance.play();
             });
 
-            this.$plyrObject.on('play', function (e) {
+            this.plyrInstance.on('play', function (e) {
                 t.$overlay.hide();
             });
         };

@@ -357,34 +357,36 @@ select:focus {
 .asset-figure {
   display: flex;
   flex-direction: column;
-  min-height: 350px; }
+  min-height: 250px; }
+  .asset-figure .asset-img {
+    border: 1px solid #f1f1f1;
+    height: 200px; }
+    .asset-figure .asset-img .button-overlay {
+      height: 15%; }
+      .asset-figure .asset-img .button-overlay:hover {
+        height: 20%; }
+    .asset-figure .asset-img img {
+      max-height: 100%;
+      max-width: 100%; }
+    .asset-figure .asset-img.wide-img img {
+      max-height: 100%;
+      width: auto;
+      max-width: none; }
 
 .asset-img {
   position: relative;
   display: flex;
   flex-direction: column;
-  flex: 0 0 auto;
-  height: 300px; }
-  .asset-img.taller {
-    height: 400px; }
-  .asset-img > a, .asset-img > div {
-    position: relative;
-    flex: 1 0 auto;
-    overflow: hidden; }
+  flex: 0 0 auto; }
   .asset-img img {
     position: absolute;
     left: 50%;
     top: 50%;
-    height: 100%;
-    width: auto;
     transform: translate(-50%, -50%); }
-  .asset-img.wide-img img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: inherit;
-    width: 100%;
-    transform: translate(-50%, -50%); }
+  .asset-img > a, .asset-img > div {
+    position: relative;
+    flex: 1 0 auto;
+    overflow: hidden; }
 
 .asset-legend {
   flex: 1 0 auto;
@@ -392,6 +394,7 @@ select:focus {
   padding: 15px; }
 
 .asset-title,
+.asset-title:hover,
 .asset-title:visited,
 .asset-title:active {
   display: block;
@@ -400,12 +403,15 @@ select:focus {
   text-decoration: none;
   color: #454242;
   text-transform: uppercase; }
-
-.asset-title span {
-  font-size: .8rem;
-  text-transform: lowercase; }
+  .asset-title span,
+  .asset-title:hover span,
+  .asset-title:visited span,
+  .asset-title:active span {
+    font-size: .8rem;
+    text-transform: lowercase; }
 
 .asset-desc,
+.asset-desc:hover,
 .asset-desc:visited,
 .asset-desc:active {
   font-size: .75rem;
@@ -577,7 +583,8 @@ header {
         box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.3); }
       #primary-nav .primary-nav-sub.level2 a {
         color: #454242;
-        border-bottom: 1px solid transparent; }
+        border-bottom: 1px solid transparent;
+        text-align: center; }
         #primary-nav .primary-nav-sub.level2 a:hover {
           border-bottom: 1px solid #454242; }
       #primary-nav .primary-nav-sub.level2 .category-title {
@@ -624,6 +631,9 @@ header {
     color: #454242; }
   #secondary-nav .login-dp .help-block {
     font-size: 12px; }
+    #secondary-nav .login-dp .help-block button {
+      border: none;
+      background: none; }
   #secondary-nav .login-dp .bottom {
     background-color: rgba(255, 255, 255, 0.8);
     border-top: 1px solid #ddd;
@@ -662,7 +672,7 @@ header {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   font-size: inherit; }
 
-#signup-nav #step2 {
+#signup-form #step2 {
   display: none; }
 
 @media (max-width: 768px) {
@@ -678,6 +688,11 @@ footer {
   min-height: 150px;
   color: white;
   padding-top: 30px; }
+  footer button {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0; }
   footer a, footer a:hover, footer a:active, footer a:focus {
     color: inherit; }
   footer nav {
@@ -698,21 +713,29 @@ footer {
   position: fixed;
   bottom: 0;
   right: 5px;
-  transform: translateY(85%); }
+  transform: translateY(87%); }
 
 #top-bar {
   color: white;
   display: flex;
   background-color: #D9534F;
   border-top-left-radius: 10px;
-  border-top-right-radius: 10px; }
+  border-top-right-radius: 10px;
+  margin: 0 -1px;
+  cursor: pointer; }
   #top-bar i {
     display: flex;
     align-items: center;
     justify-content: center; }
-    #top-bar i:first-child {
+    #top-bar i.fa-envelope {
       background-color: #C13D39;
       border-top-left-radius: 10px; }
+  #top-bar button {
+    opacity: 0;
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0; }
   #top-bar span {
     padding-left: 5px; }
   #top-bar * {
@@ -723,7 +746,7 @@ footer {
 #message-box {
   padding: 0 15px 15px 15px;
   background-color: white;
-  box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   align-items: stretch; }
@@ -735,9 +758,13 @@ footer {
   #message-box i {
     width: 20px; }
   #message-box input, #message-box textarea {
+    font-size: .8rem;
     border: none;
-    font-size: .9rem;
-    resize: none; }
+    resize: none;
+    width: 90%; }
+  #message-box textarea {
+    min-height: 80px;
+    outline: none; }
   #message-box div:nth-child(3) {
     display: flex; }
     #message-box div:nth-child(3) i {
@@ -1061,6 +1088,12 @@ footer {
     flex: 0 0 43.39286px;
     height: 43.39286px;
     width: 43.39286px; }
+    .assets .asset-img a.set img, .assets .asset-img a.location img {
+      max-height: 100%;
+      max-width: none; }
+    .assets .asset-img img {
+      max-height: 100%;
+      max-width: 100%; }
     .assets .asset-img .asset-info {
       opacity: 0;
       position: absolute;
@@ -1492,21 +1525,26 @@ input[type=range] {
     display: flex;
     flex-direction: column; }
   #product-details-section .matching-status {
-    flex: 1 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin-top: 15px;
-    color: white;
     font-weight: 500;
     border-radius: 30px;
-    text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.5); }
-    #product-details-section .matching-status.close-match {
-      background: #f0ad4e; }
-    #product-details-section .matching-status.exact-match {
-      background: #77aa49; }
+    font-size: .9rem; }
+    #product-details-section .matching-status i {
+      margin-right: 5px;
+      margin-left: 5px;
+      text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.5); }
+    #product-details-section .matching-status.close-match i {
+      color: #f0ad4e; }
+    #product-details-section .matching-status.exact-match i {
+      color: #77aa49; }
   #product-details-section #category-tags {
-    padding: 0; }
+    padding: 0;
+    display: inline-block; }
+  #product-details-section .asset-img {
+    height: 300px; }
+    #product-details-section .asset-img img {
+      max-height: 100%;
+      max-width: 100%; }
 
 #location-details-section {
   padding-top: 15px;
@@ -1615,6 +1653,66 @@ input[type=range] {
   #look-products-section #dark-silhouette {
     height: 550px;
     margin: 0 30px; }
+  #look-products-section #body-markers.man #head-marker {
+    top: 30px;
+    left: 145px; }
+  #look-products-section #body-markers.man #chest-marker {
+    top: 130px;
+    left: 145px; }
+  #look-products-section #body-markers.man #hands-marker {
+    top: 255px;
+    left: 75px; }
+  #look-products-section #body-markers.man #legs-marker {
+    top: 280px;
+    left: 160px; }
+  #look-products-section #body-markers.man #feet-marker {
+    top: 515px;
+    left: 155px; }
+  #look-products-section #body-markers.woman #head-marker {
+    top: 30px;
+    left: 140px; }
+  #look-products-section #body-markers.woman #chest-marker {
+    top: 130px;
+    left: 145px; }
+  #look-products-section #body-markers.woman #hands-marker {
+    top: 215px;
+    left: 95px; }
+  #look-products-section #body-markers.woman #legs-marker {
+    top: 310px;
+    left: 175px; }
+  #look-products-section #body-markers.woman #feet-marker {
+    top: 515px;
+    left: 160px; }
+  #look-products-section #body-markers.boy #head-marker {
+    top: 30px;
+    left: 115px; }
+  #look-products-section #body-markers.boy #chest-marker {
+    top: 150px;
+    left: 115px; }
+  #look-products-section #body-markers.boy #hands-marker {
+    top: 315px;
+    left: 55px; }
+  #look-products-section #body-markers.boy #legs-marker {
+    top: 360px;
+    left: 145px; }
+  #look-products-section #body-markers.boy #feet-marker {
+    top: 515px;
+    left: 145px; }
+  #look-products-section #body-markers.girl #head-marker {
+    top: 40px;
+    left: 115px; }
+  #look-products-section #body-markers.girl #chest-marker {
+    top: 150px;
+    left: 115px; }
+  #look-products-section #body-markers.girl #hands-marker {
+    top: 255px;
+    left: 55px; }
+  #look-products-section #body-markers.girl #legs-marker {
+    top: 400px;
+    left: 140px; }
+  #look-products-section #body-markers.girl #feet-marker {
+    top: 515px;
+    left: 140px; }
   #look-products-section .matching-icon {
     color: transparent;
     cursor: pointer;
@@ -1649,6 +1747,9 @@ input[type=range] {
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         background: white;
         z-index: 2; }
+        #look-products-section #product-lines .asset-img > a img {
+          max-height: 100%;
+          max-width: 100%; }
       #look-products-section #product-lines .asset-img .asset-info {
         opacity: 0;
         position: absolute;

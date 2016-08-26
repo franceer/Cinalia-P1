@@ -42,6 +42,10 @@ router.get('/:id*', function (req, res, next) {
         if (likeCount && likeCount.length > 0)
             res.locals.likeCount = likeCount[0].like_count;
 
+        return Set.getLastSets(res.locals.set.id);
+    })
+    .then(function (lastSets) {
+        res.locals.lastSets = lastSets.toJSON();
         res.render('sets/sets');
     })
     .catch(function (err) {

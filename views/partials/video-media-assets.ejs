@@ -1,50 +1,30 @@
-<section id="movie-assets" class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Tous les produits et lieux du film</h2>
-                <p class="lead">Découvrez toutes les tenues, produits et lieux du film Five ! Utilisez les filtres ci-dessous pour raffiner votre recherche.</p>
-                <div class="selectfield">
-                    <label>Standard Select</label>
-                    <select id="1">
-                        <option disabled selected>Type d'élément</option>
-                        <option>Mode</option>
-                        <option>Lieu</option>
-                        <option>Objet</option>
-                    </select>
+<div id="filtered-assets" class="row">
+    <div class="col-md-12">
+        <%_
+        var newRow = true;
+        for(var i = 1; i <= allAssets.length; i++){
+        var asset = allAssets[i-1];
+        if(newRow){
+        _%>
+        <div class="row asset-line">
+            <%_ newRow = false; } _%>
+            <div class="col-md-<%= asset.type === 'product' ? '3' : '4' %> asset-figure">
+                <div class="asset-img <%= asset.type === 'location' ? 'wide-img' : '' %>">
+                    <a href="/<%= asset.section_url + '/' + asset.id _%>"><img src="<%= asset.picture_url _%>" alt="<%= asset.picture_alt _%>" title="<%= asset.picture_title _%>" /></a>
+                    <button class="button-overlay red bookmark<%= asset.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= asset.id _%>" data-object-type="<%= asset.type _%>"><%= asset.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
                 </div>
-                <div class="selectfield">
-                    <label>Standard Select</label>
-                    <select id="1">
-                        <option disabled selected>Type d'élément</option>
-                        <option>Mode</option>
-                        <option>Lieu</option>
-                        <option>Objet</option>
-                    </select>
+                <div class="asset-legend drop-shadow">
+                    <%_ if(asset.brand_name){ _%>
+                    <a href="/<%= asset.section_url + '/' + asset.id _%>" class="asset-title"><%= asset.brand_name _%></a>
+                    <a href="/<%= asset.section_url + '/' + asset.id _%>" class="asset-desc"><%- asset.name _%></a>
+                    <%_ } else { _%>
+                    <a href="/<%= asset.section_url + '/' + asset.id _%>" class="asset-title"><%= asset.name _%></a>
+                    <%_ } _%>
                 </div>
-                <%_
-                var newRow = true;
-                for(var i = 1; i <= allProducts.length; i++){
-                var product = allProducts[i-1];
-                if(newRow){
-                _%>
-                <div class="row asset-line">
-                    <%_ newRow = false; } _%>
-                    <div class="col-md-3 asset-figure">
-                        <div class="asset-img wide-img">
-                            <a href="/<%= product.section_url + '/' + product.id _%>"><img src="<%= product.picture_url _%>" alt="<%= product.picture_alt _%>" title="<%= product.picture_title _%>" /></a>
-                            <button class="button-overlay red bookmark<%= product.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= product.id _%>" data-object-type="product"><%= typeof product.bookmark_id !== 'undefined' ? 'Sauvegardé' : 'Sauvegarder' _%></button>
-                        </div>
-                        <div class="asset-legend drop-shadow">
-                            <a href="/<%= product.section_url + '/' + product.id _%>" class="asset-title"><%= product.brand_name _%></a>
-                            <a href="/<%= product.section_url + '/' + product.id _%>" class="asset-desc"><%- product.name _%></a>
-                        </div>
-                    </div>
-                    <%_ if(i % 4 === 0 || i === allProducts.length){ _%>
-                </div>
-                <%_ newRow = true;} _%>
-                <%_ } _%>                
             </div>
+            <%_ if((asset.type === 'product' && (i % 4 === 0 || i === allAssets.length)) || (asset.type === 'location' && (i % 3 === 0 || i === allAssets.length))){ _%>
         </div>
+        <%_ newRow = true;} _%>
+        <%_ } _%>                
     </div>
-</section>
+</div>

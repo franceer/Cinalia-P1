@@ -1,4 +1,4 @@
-define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], function (bootstrap, tether, jquery, velocity, validation) {
+define(['bootstrap', 'tether', 'jquery', 'jquery.validation', 'notify', 'velocity'], function (bootstrap, tether, jquery, validation, notify, velocity) {
     jquery(function () {
         jquery(window).scroll(function () {
             if (jquery(this).scrollTop() > 1) {
@@ -22,18 +22,40 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
             }
         }   
 
-		jquery('#auth-message').each(function(){
-			var $element = jquery(this)
+		jquery('#flash-message').each(function(){
+			var $element = jquery(this);
 			
-			if($element.attr('data-message-type') === 'signin'){
-				jquery('#signin-nav .alert-danger').text($element.text()).removeAttr('hidden');
-				jquery('#login-toggle').click();
-			}
-			else{
-				jquery('#signup-modal .alert-danger').text($element.text()).removeAttr('hidden');
-				jquery('#signup-modal').modal();
-			}
-					
+			if($element.attr('data-message-type') === 'notify')
+			{
+				jquery.notify({
+					message: $element.text()					
+				},{
+					element: 'body',
+					allow_dismiss: true,
+					placement: {
+						from: 'top',
+						align: 'center'
+					},
+					offset: 50,
+					type: $element.attr('data-style'),
+					delay: 5000
+				});
+			}else{
+				jquery($element.attr('data-element') + ' .alert')
+				.attr('class', 'alert alert-' + $element.attr('data-style'))
+				.text($element.text())
+				.removeAttr('hidden');
+				
+				if($element.attr('data-message-type') === 'nav'){				
+					jquery($element.attr('data-actionnable')).click();
+				}else if($element.attr('data-message-type') === 'modal'){
+					jquery($element.attr('data-actionnable')).modal();
+				}	
+			}					
+		});
+
+		jquery('#main-modal').on('hidden.bs.modal', function (e) {
+		    jquery('#iframe-go-back').removeClass('visible');
 		});
 
         jquery('a[data-modal]').on('click', function (e) {
@@ -49,7 +71,7 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
             jquery('#iframe-go-back').attr('href', clicked.attr('href')).children('span').text(clicked.attr('data-modal-type'));
             jquery('#main-modal iframe').attr('src', clicked.attr('href'));
             setTimeout(function () {
-                $('#main-modal').modal();
+                jquery('#main-modal').modal();
             }, 300);
         });
 
@@ -66,18 +88,18 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 		})
 		
 		jquery('#step1 .next').on('click', function (){
-			if(validator.form()){
+			if(signupValidator.form()){
 				jquery('#step1').hide('fast');
-				jquery('#step2').show('slow');
+				jquery('#step2').show('slow').find('#firstname').focus();
 			}
 		});
 		
 		jquery('#step2 .back').on('click', function (){
 			jquery('#step2').hide('fast');
-			jquery('#step1').show('slow');
+			jquery('#step1').show('slow').find('#username').focus();
 		});
 		
-		 var validator = jquery('#signup-nav').validate({
+		 var signupValidator = jquery('#signup-form').validate({
 			 rules:  {
 				 firstname: 'required',
                  lastname: 'required',
@@ -91,6 +113,10 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 					 required: true,
 					 minlength: 5
 				 },
+				 'confirm-password': {
+					 equalTo: '#password',
+					 required: true
+				 },
 				 agree: 'required'
 			 },
 			 messages: {
@@ -100,12 +126,74 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 					 required: 'Merci d\'indiquer un mot de passe',
 					 minlength: 'Votre mot de passe doit comporter 5 charactères minimum'
 				 },
+				 'confirm-password': {
+					 equalTo: 'Les mots de passe doivent correspondre',
+					 required: 'Ce champ est requis'
+				 },
 				 username:
 				 {
 					 required: 'Merci d\'indiquer votre adresse email', 
-					 email: 'Merci de respecter le format d\'email suivant: email@domain.com'
+					 email: 'Merci de respecter le format d\'email suivant: email@domaine.com'
 				 },
 				 agree: 'Merci d\'accepter nos conditions d\'utilisation'
+			 },
+			 highlight: function(element) {					
+				 getValidatorParent(element).removeClass('has-success').addClass('has-danger');
+			 },
+			 unhighlight: function(element) {
+				 getValidatorParent(element).removeClass('has-danger').addClass('has-success');
+			 },
+			 errorPlacement: function(error, element){
+				 error.addClass('form-control-label col-md-6 offset-md-3');
+				 error.appendTo(element.closest('.form-group'));
+			 }
+		 });
+		 
+		 jquery('#reset-form').validate({
+			 rules:  {				
+                 password: {
+					 required: true,
+					 minlength: 5
+				 },
+				 'confirm-password': {
+					 equalTo: '#new-password',
+					 required: true
+				 }
+			 },
+			 messages: {
+				 password: {
+					 required: 'Merci d\'indiquer un mot de passe',
+					 minlength: 'Votre mot de passe doit comporter 5 charactères minimum'
+				 },
+				 'confirm-password': {
+					 equalTo: 'Les mots de passe doivent correspondre',
+					 required: 'Ce champ est requis'
+				 }
+			 },
+			 highlight: function(element) {					
+				 getValidatorParent(element).removeClass('has-success').addClass('has-danger');
+			 },
+			 unhighlight: function(element) {
+				 getValidatorParent(element).removeClass('has-danger').addClass('has-success');
+			 },
+			 errorPlacement: function(error, element){
+				 error.addClass('form-control-label col-md-6 offset-md-3');
+				 error.appendTo(element.closest('.form-group'));
+			 }
+		 });
+		 
+		 jquery('#forgot-form').validate({
+			 rules:  {				
+                 email: {
+					 required: true,
+					 email: true
+				 }
+			 },
+			 messages: {				
+				 email: {
+					 required: 'Vous devez spécifier un email',
+					 email: 'Merci de respecter le format d\'email suivant: email@domaine.com'
+				 }
 			 },
 			 highlight: function(element) {					
 				 getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -148,7 +236,7 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 			}
 		});
 		
-		jquery('.bookmark').on('click', function(e){
+		jquery('.content').on('click', '.bookmark', function(e){
 			var $this = jquery(this);
 			
 			jquery.post('/save-bookmark', {action: $this.hasClass('bookmarked') ? 'destroy' : 'save', objectID: $this.attr('data-object-id'), objectType: $this.attr('data-object-type')}).done(function(data){
@@ -164,8 +252,21 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 			        if ($this.text() == 'Sauvegardé')
 			            $this.text('Sauvegarder');
 			    }
-			    else if (data.status === 'error')
-			        console.log(data.message);
+			    else {
+			        jquery.notify({
+			            message: data.message
+			        }, {
+			            element: 'body',
+			            allow_dismiss: true,
+			            placement: {
+			                from: 'top',
+			                align: 'center'
+			            },
+			            offset: 50,
+			            type: 'danger',
+			            delay: 5000
+			        });
+			    }
 			});
 		});
 
@@ -183,6 +284,67 @@ define(['bootstrap', 'tether', 'jquery', 'velocity', 'jquery.validation'], funct
 		            var $el = jquery('#like-count');
 		            $el.text(parseInt($el.text().trim()) - 1)
 		        }
+		        else {
+		            jquery.notify({
+		                message: data.message
+		            }, {
+		                element: 'body',
+		                allow_dismiss: true,
+		                placement: {
+		                    from: 'top',
+		                    align: 'center'
+		                },
+		                offset: 50,
+		                type: 'danger',
+		                delay: 5000
+		            });
+		        }
+		    });
+		});
+
+		jquery('#top-bar, #contact-us').on('click', function (e) {
+		    var $topBar = jquery('#top-bar');
+		    var $tchatBox = $topBar.parent();
+
+		    if(!$tchatBox.hasClass('visible')){		        
+		        $topBar.css('cursor', 'default').children('button').css('opacity', 1);		        
+		        $tchatBox.velocity({ translateY: ['0', '87%'] }, { duration: 200 });
+		        $tchatBox.toggleClass('visible');
+		    }
+		});
+
+		jquery('#top-bar button').on('click', function (e) {
+		    e.stopPropagation();
+		    var $button = jquery(this);
+		    var $tchatBox = $button.closest('#tchat-box');
+
+		    if ($tchatBox.hasClass('visible')) {
+		        $button.css('opacity', 0);
+		        $tchatBox.children('#top-bar').css('cursor', 'pointer');
+		        $tchatBox.velocity({ translateY: ['87%', '0'] }, { duration: 200 });
+		        $tchatBox.toggleClass('visible');
+		    }
+		});
+
+		jquery('#contact-send').on('click', function (e) {
+		    jquery.post('/contact', { from: jquery('#contact-email').val(), subject: jquery('#contact-subject').val(), message: jquery('#contact-message').val() }).done(function (data) {
+		        if (data.status === 'sent'){
+		            jquery.notify({
+		                message: data.message
+		            }, {
+		                element: 'body',
+		                allow_dismiss: true,
+		                placement: {
+		                    from: 'top',
+		                    align: 'center'
+		                },
+		                offset: 50,
+		                type: 'success',
+		                delay: 5000
+		            });
+
+		            jquery('#tchat-box').toggleClass('visible').velocity({ translateY: ['87%', '0'] }, { duration: 200 }).children('#top-bar').css('cursor', 'pointer');
+		        }		           
 		        else if (data.status === 'error')
 		            console.log(data.message);
 		    });

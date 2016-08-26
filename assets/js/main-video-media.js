@@ -4,7 +4,7 @@ define(['./pickedin-player', 'plyr', 'bootstrap','tether', 'jquery'], function (
    
     // JavaScript source code
     (function ($) {
-        $.fn.timelinePlayer = function (options) {
+        $.fn.timelinePlayer = function (selector, options) {
             var $this = this;
             var pickedInPlayers = [];
 
@@ -15,10 +15,9 @@ define(['./pickedin-player', 'plyr', 'bootstrap','tether', 'jquery'], function (
             }, options);
 
             var init = function () {
-                plyr.setup($this.get(), { controls: ['play', 'progress', 'current-time', 'mute', 'volume'] });
-
                 $this.each(function () {
-                    pickedInPlayers.push(new PickedInPlayer($(this), settings.timelineClass));
+                    var playerInstance = plyr.setup(this, { controls: ['play', 'progress', 'current-time', 'mute', 'volume'] });
+                    pickedInPlayers.push(new PickedInPlayer(playerInstance[0], $(this), settings.timelineClass));
                 });
             };
 
@@ -29,7 +28,12 @@ define(['./pickedin-player', 'plyr', 'bootstrap','tether', 'jquery'], function (
     }(jquery));
 
     jquery(function () {
-        jquery('.pickedin-player').timelinePlayer();        
+        jquery('.pickedin-player').timelinePlayer('.pickedin-player');
+        jquery('#filter-products').change(function (e) {
+            jquery.get(window.location.href, { filter: $(this).val() }).done(function (data) {
+                jquery('#filtered-assets').replaceWith(data);
+            });
+        });
     });
 });
 

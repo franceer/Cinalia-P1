@@ -5,16 +5,23 @@
                 <h1 class="text-md-center m-t-2"><%_ if(typeof categoryName !== 'undefined'){ _%><%= categoryName _%><%_ }else{ _%>Résulats de la recherche pour '<%= keywords _%>'<%_ } _%></h1>
             </div>
         </div>
+        <% if(pagination.rowCount !== 0){ _%>
         <div class="row">
             <div class="col-md-3 offset-md-9">
                 <p>Elements <%= (pagination.page === 1 ? 1 : ((pagination.page - 1) * pagination.pageSize) + 1) + ' '_%> à <%if(pagination.pageCount === 1){%><%= pagination.rowCount %><%_ }else{ _%><%= (pagination.page === 1 ? pagination.pageSize : (pagination.rowCount < (pagination.page * pagination.pageSize) ? pagination.rowCount : (pagination.page * pagination.pageSize))) + ' ' _%><%_ } %> sur un total de <%= pagination.rowCount _%></p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <ul class="pagination" data-item-count="<%= pagination.rowCount _%>" data-page-count="<%= pagination.pageCount _%>" data-current-page="<%= pagination.page _%>"></ul>
+        <% } else { _%>
+         <div class="row">
+            <div class="col-md-6 offset-md-3 text-md-center m-t-3">
+                <% if(typeof catID !== 'undefined'){ _%>
+                Aucuns éléments trouvés pour cette catégorie.
+                <% } else { _%>
+                Aucun résultat pour cette recherche. Essayez avec un autre mot clé.
+                <% } _%>
             </div>
         </div>
+        <% } _%>
         <%_
         var newRow = true;
         for(var i = 1; i <= results.length; i++){
@@ -24,9 +31,9 @@
         <div class="row asset-line">
             <%_ newRow = false; } _%>
             <div class="col-md-3 asset-figure">
-                <div class="asset-img wide-img">
+                <div class="asset-img">
                     <a href="/<%= result.section_url + '/' + result.id _%>"><img src="<%= result.picture_url _%>" alt="<%= result.picture_alt _%>" title="<%= result.picture_title _%>" /></a>
-                    <button class="button-overlay red">Sauvegarder</button>
+                    <button class="button-overlay red bookmark<%= result.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= result.id _%>" data-object-type="<%= result.type _%>"><%= result.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
                 </div>
                 <div class="asset-legend drop-shadow">
                     <a href="/<%= result.section_url + '/' + result.id _%>" class="asset-title"><%_ if (result.brand){ _%><span><%= result.brand.name _%></span><%_ } %> <%- result.name _%></a>
@@ -47,13 +54,13 @@
                     </li>
                     <%_  }else{ _%>
                     <li>
-                        <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%>p=<%= pagination.data.prev _%>'">&laquo; Prev</a>
+                        <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= pagination.data.prev _%>'">&laquo; Prev</a>
                     </li>
                     <%_ }
                     pagination.data.items.forEach(function(page, index){
                     if (page == '...'){ _%>
                     <li class="disabled">
-                        <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%>p=<%= index + 1 _%>">...</a>
+                        <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= index + 1 _%>">...</a>
                     </li>                    
                     <%_ } else {
                     if (page == parseInt(pagination.data.currentPage)){ _%>
@@ -62,7 +69,7 @@
                     </li>
                     <%_ } else { _%>
                     <li>
-                        <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%>p=<%= page _%>"><%= page _%></a>
+                        <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= page _%>"><%= page _%></a>
                     </li>
                     <%_ }}});
                     if (pagination.data.isLastPage){ _%>                
@@ -71,7 +78,7 @@
                     </li>
                     <%_ } else{ _%>
                     <li>
-                        <a href='?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%>p=<%= pagination.data.next _%>'>Next &raquo;</a>
+                        <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= pagination.data.next _%>">Next &raquo;</a>
                     </li> 
                     <%_ } _%>
                 </ul>

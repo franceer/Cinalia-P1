@@ -4,9 +4,9 @@ var express = require('express'),
 
 router.get('/', function(req, res, next){
     req.logout();
-    req.session.destroy();
-    console.log(req.headers.referer);
-    res.redirect(req.headers.referer);
+    req.session.destroy(function (err) {
+        res.redirect(req.headers.referer);
+    });    
 });
 
 module.exports = router

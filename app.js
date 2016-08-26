@@ -11,6 +11,7 @@ var express = require('express')
     , passport = require('./auth/passport')
     , flash = require('connect-flash')
 	, loadUser = require('./middlewares/load-user')
+    , loadFlashMessages = require('./middlewares/load-flash-messages')
     , loadPageURL = require('./middlewares/load-page-url')
     , port = process.env.PORT || 3000;
 
@@ -42,6 +43,8 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash());
 app.use(loadPageURL);
 app.use(loadUser);
+app.use(loadUser);
+app.use(loadFlashMessages);
 app.use(require('./controllers'));
 
 //Listen to port

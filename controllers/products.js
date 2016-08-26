@@ -60,7 +60,14 @@ router.get('/:id*', function (req, res, next) {
         .then(function (likeCount) {
             if (likeCount && likeCount.length > 0)
                 res.locals.likeCount = likeCount[0].like_count;
-
+            if (res.locals.product.similarProducts.length === 0)
+                return Product.getLastProducts(res.locals.product.id);
+            else
+                return null;
+        })
+        .then(function (lastProducts) {
+            if(lastProducts)
+                res.locals.lastProducts = lastProducts.toJSON();
             res.render('products/products');
         })
         .catch(function(err) {
@@ -95,6 +102,15 @@ router.get('/:id*', function (req, res, next) {
         .then(function (likeCount) {
             if (likeCount && likeCount.length > 0)
                 res.locals.likeCount = likeCount[0].like_count;
+
+            if (res.locals.product.similarProducts.length === 0)
+                return Product.getLastProducts(res.locals.product.id);
+            else
+                return null;
+        })
+        .then(function (lastProducts) {
+            if(lastProducts)
+                res.locals.lastProducts = lastProducts.toJSON();
 
             res.render('products/products');
         })

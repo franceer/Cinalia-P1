@@ -1,994 +1,296 @@
-﻿<% layout('layout')%>
-<section id="player-carousel" class="container">
-    <div class="wrap">
-        <ul id="video-carousel" class="list-unstyled carousel is-set full-size main">
-            <li class="carousel-seat row">
-                <div class="col-md-9">
-                    <div class="plyr">
-                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
-                        <video poster="/images/five-launcher.jpg" controls>
-                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
-                            <!--Fallback for browsers that don't support the <video> element-->
-                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
-                        </video>
-                        <div class="video-overlay">
-                            <i class="fa fa-play" aria-hidden="true"></i>
-                            <div>Five un film de fou !</div>
-                        </div>   
-                    </div>
-                    <div class="commercials-nav">
-                        <div id="products" class="visible">
-                            <div class="line-icon">
-                                <span>Prêt-à-porter</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets">
-                                <% Object.keys(timeline).forEach(function(key){
-                                var products = timeline[key];
-                                products.forEach(function(product){
-                                %>
-                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
-                                    <img src="<%-product.PictureURL%>" />
-                                </li>
-                                <% });
-                                });%>
-                            </ul>
-                        </div>
-                        <div id="objects" class="visible">
-                            <div class="line-icon">
-                                <span>Objets</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                        <div id="places" class="visible">
-                            <div class="line-icon">
-                                <span>Lieux</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                    </div>
-                </div>
-                <div id="poster-section" class="col-md-3">
-                    <img id="poster" src="./images/five-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
-                    <div id="date-info" class="drop-shadow">
-                        <h2 class="text-uppercase">Sorties</h2>
-                        <ul class="fa-ul">
-                            <li>
-                                <i class="fa fa-li fa-film" aria-hidden="true"></i>25/05/2016
-                            </li>
-                            <li>
-                                <i class="fa fa-li fa-television" aria-hidden="true"></i>25/05/2016
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="working-people" class="drop-shadow wrap">
-                        <ul class="carousel is-set full-size list-unstyled">
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Casting</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        François Civil
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                    <li>
-                                        Marguot Bancilhon
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (3)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Réalisateur</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Producteur(s)</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat is-ref">
-                                <div>
-                                    <h2 class="text-uppercase">Costumes</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Alexander Mark
-                                    </li>
-                                    <li>
-                                        Robert Finley
-                                    </li>
-                                    <li>
-                                        Charles Magnet
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (5)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>                       
-                    </div>                    
-                </div>
-            </li>
-            <li class="carousel-seat row">
-                <div class="col-md-9">
-                    <div class="plyr">
-                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
-                        <video poster="/images/five-launcher.jpg" controls>
-                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
-                            <!--Fallback for browsers that don't support the <video> element-->
-                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
-                        </video>
-                        <div class="video-overlay">
-                            <i class="fa fa-play" aria-hidden="true"></i>
-                            <div>Creed le film</div>
-                        </div>
-                    </div>
-                    <div class="commercials-nav">
-                        <div id="products" class="visible">
-                            <div class="line-icon">
-                                <span>Prêt-à-porter</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets">
-                                <% Object.keys(timeline).forEach(function(key){
-                                var products = timeline[key];
-                                products.forEach(function(product){
-                                %>
-                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
-                                    <img src="<%-product.PictureURL%>" />
-                                </li>
-                                <% });
-                                });%>
-                            </ul>
-                        </div>
-                        <div id="objects" class="visible">
-                            <div class="line-icon">
-                                <span>Objets</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                        <div id="places" class="visible">
-                            <div class="line-icon">
-                                <span>Lieux</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                    </div>
-                </div>
-                <div id="poster-section" class="col-md-3">
-                    <img id="poster" src="./images/creed-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
-                    <div id="date-info" class="drop-shadow">
-                        <h2 class="text-uppercase">Sorties</h2>
-                        <ul class="fa-ul">
-                            <li>
-                                <i class="fa fa-li fa-film" aria-hidden="true"></i>25/05/2016
-                            </li>
-                            <li>
-                                <i class="fa fa-li fa-television" aria-hidden="true"></i>25/05/2016
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="working-people" class="drop-shadow wrap">
-                        <ul class="carousel is-set full-size list-unstyled">
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Casting</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        François Civil
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                    <li>
-                                        Marguot Bancilhon
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (3)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Réalisateur</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Producteur(s)</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat is-ref">
-                                <div>
-                                    <h2 class="text-uppercase">Costumes</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Alexander Mark
-                                    </li>
-                                    <li>
-                                        Robert Finley
-                                    </li>
-                                    <li>
-                                        Charles Magnet
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (5)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>                     
-                </div>
-            </li>
-            <li class="carousel-seat row">
-                <div class="col-md-9">
-                    <div class="plyr">
-                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
-                        <video poster="/images/five-launcher.jpg" controls>
-                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
-                            <!--Fallback for browsers that don't support the <video> element-->
-                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
-                        </video>
-                        <div class="video-overlay">
-                            <i class="fa fa-play" aria-hidden="true"></i>
-                            <div>Five un film de fou !</div>
-                        </div>
-                    </div>
-                    <div class="commercials-nav">
-                        <div id="products" class="visible">
-                            <div class="line-icon">
-                                <span>Prêt-à-porter</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets">
-                                <% Object.keys(timeline).forEach(function(key){
-                                var products = timeline[key];
-                                products.forEach(function(product){
-                                %>
-                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
-                                    <img src="<%-product.PictureURL%>" />
-                                </li>
-                                <% });
-                                });%>
-                            </ul>
-                        </div>
-                        <div id="objects" class="visible">
-                            <div class="line-icon">
-                                <span>Objets</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                        <div id="places" class="visible">
-                            <div class="line-icon">
-                                <span>Lieux</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                    </div>
-                </div>
-                <div id="poster-section" class="col-md-3">
-                    <img id="poster" src="./images/3-freres-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
-                    <div id="date-info" class="drop-shadow">
-                        <h2 class="text-uppercase">Sorties</h2>
-                        <ul class="fa-ul">
-                            <li>
-                                <i class="fa fa-li fa-film" aria-hidden="true"></i>25/05/2016
-                            </li>
-                            <li>
-                                <i class="fa fa-li fa-television" aria-hidden="true"></i>25/05/2016
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="working-people" class="drop-shadow wrap">
-                        <ul class="carousel is-set full-size list-unstyled">
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Casting</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        François Civil
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                    <li>
-                                        Marguot Bancilhon
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (3)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Réalisateur</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Producteur(s)</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat is-ref">
-                                <div>
-                                    <h2 class="text-uppercase">Costumes</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Alexander Mark
-                                    </li>
-                                    <li>
-                                        Robert Finley
-                                    </li>
-                                    <li>
-                                        Charles Magnet
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (5)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>                     
-                </div>
-            </li>
-            <li class="carousel-seat row">
-                <div class="col-md-9">
-                    <div class="plyr">
-                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
-                        <video poster="/images/five-launcher.jpg" controls>
-                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
-                            <!--Fallback for browsers that don't support the <video> element-->
-                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
-                        </video>
-                        <div class="video-overlay">
-                            <i class="fa fa-play" aria-hidden="true"></i>
-                            <div>Five un film de fou !</div>
-                        </div>
-                    </div>
-                    <div class="commercials-nav">
-                        <div id="products" class="visible">
-                            <div class="line-icon">
-                                <span>Prêt-à-porter</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets">
-                                <% Object.keys(timeline).forEach(function(key){
-                                var products = timeline[key];
-                                products.forEach(function(product){
-                                %>
-                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
-                                    <img src="<%-product.PictureURL%>" />
-                                </li>
-                                <% });
-                                });%>
-                            </ul>
-                        </div>
-                        <div id="objects" class="visible">
-                            <div class="line-icon">
-                                <span>Objets</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                        <div id="places" class="visible">
-                            <div class="line-icon">
-                                <span>Lieux</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                    </div>
-                </div>
-                <div id="poster-section" class="col-md-3">
-                    <img id="poster" src="./images/deadpool-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
-                    <div id="date-info" class="drop-shadow">
-                        <h2 class="text-uppercase">Sorties</h2>
-                        <ul class="fa-ul">
-                            <li>
-                                <i class="fa fa-li fa-film" aria-hidden="true"></i>25/05/2016
-                            </li>
-                            <li>
-                                <i class="fa fa-li fa-television" aria-hidden="true"></i>25/05/2016
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="working-people" class="drop-shadow wrap">
-                        <ul class="carousel is-set full-size list-unstyled">
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Casting</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        François Civil
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                    <li>
-                                        Marguot Bancilhon
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (3)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Réalisateur</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Producteur(s)</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat is-ref">
-                                <div>
-                                    <h2 class="text-uppercase">Costumes</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Alexander Mark
-                                    </li>
-                                    <li>
-                                        Robert Finley
-                                    </li>
-                                    <li>
-                                        Charles Magnet
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (5)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>                     
-                </div>
-            </li>
-            <li class="carousel-seat is-ref row">
-                <div class="col-md-9">
-                    <div class="plyr">
-                        <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
-                        <video poster="/images/five-launcher.jpg" controls>
-                            <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />
-                            <!--Fallback for browsers that don't support the <video> element-->
-                            <a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
-                        </video>
-                        <div class="video-overlay">
-                            <i class="fa fa-play" aria-hidden="true"></i>
-                            <div>Five un film de fou !</div>
-                        </div>
-                    </div>
-                    <div class="commercials-nav">
-                        <div id="products" class="visible">
-                            <div class="line-icon">
-                                <span>Prêt-à-porter</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shirt"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets">
-                                <% Object.keys(timeline).forEach(function(key){
-                                var products = timeline[key];
-                                products.forEach(function(product){
-                                %>
-                                <li data-product-title="<%=product.Title%>" data-time-code="<%=key%>">
-                                    <img src="<%-product.PictureURL%>" />
-                                </li>
-                                <% });
-                                });%>
-                            </ul>
-                        </div>
-                        <div id="objects" class="visible">
-                            <div class="line-icon">
-                                <span>Objets</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-objects"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                        <div id="places" class="visible">
-                            <div class="line-icon">
-                                <span>Lieux</span>
-                                <svg>
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-map"></use>
-                                </svg>
-                            </div>
-                            <ul class="film-assets"></ul>
-                        </div>
-                    </div>
-                </div>
-                <div id="poster-section" class="col-md-3">
-                    <img id="poster" src="./images/les-gazelles-poster.jpg" class="img-fluid drop-shadow" alt="Five affiche du film" title="Five le film" />
-                    <div id="date-info" class="drop-shadow">
-                        <h2 class="text-uppercase">Sorties</h2>
-                        <ul class="fa-ul">
-                            <li>
-                                <i class="fa fa-li fa-film" aria-hidden="true"></i>25/05/2016
-                            </li>
-                            <li>
-                                <i class="fa fa-li fa-television" aria-hidden="true"></i>25/05/2016
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="working-people" class="drop-shadow wrap">
-                        <ul class="carousel is-set full-size list-unstyled">
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Casting</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        François Civil
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                    <li>
-                                        Marguot Bancilhon
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (3)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Réalisateur</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat">
-                                <div>
-                                    <h2 class="text-uppercase">Producteur(s)</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Pierre Niney
-                                    </li>
-                                    <li>
-                                        Igor Gotesman
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="carousel-seat is-ref">
-                                <div>
-                                    <h2 class="text-uppercase">Costumes</h2>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="prev"><i class="fa fa-angle-left"></i></button>
-                                    <button class="toggle" data-parent=".carousel" data-toggle="next"><i class="fa fa-angle-right"></i></button>
-                                </div>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        Alexander Mark
-                                    </li>
-                                    <li>
-                                        Robert Finley
-                                    </li>
-                                    <li>
-                                        Charles Magnet
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-plus"></i>voir plus (5)</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>                     
-                </div>
-            </li>
-        </ul>
-    </div>       
-    <div class="row">
-        <button class="toggle col-md-1 offset-md-1" data-slide="#video-carousel" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-        <ul class="pagin col-md-8 list-unstyled">
-            <li><a href="#" class="active"><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
-            <li><a href="#"><img src="./images/creed-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
-            <li><a href="#"><img src="./images/3-freres-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
-            <li><a href="#"><img src="./images/deadpool-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
-            <li><a href="#"><img src="./images/les-gazelles-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a></li>
-        </ul>
-        <button class="toggle col-md-1" data-slide="#video-carousel" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+﻿<div class="container">
+    <section id="main-carousel-section">
+        <div class="wrap">
+            <div id="main-carousel" class="carousel is-set full-size main">
+                <figure class="carousel-seat">
+                    <a href="#" class="wide-img">
+                        <img src="/images/location5.jpg" />
+                    </a>
+                    <figcaption>
+                        <div class="type">Focus Décor</div>
+                        <a href="#" class="title" title="Découvrez la déco de Five">A voir : la déco stylée de nos 5 colocataires</a>
+                        <div class="description">Vu dans Five</div>
+                    </figcaption>
+                </figure>
+                <figure class="carousel-seat">
+                    <a href="#" class="wide-img">
+                        <img src="/images/location4.jpg" />
+                    </a>
+                    <figcaption>
+                        <div class="type">Focus Lieu</div>
+                        <a href="#" class="title" title="Découvrez Le Perchoir">Découvrez le Restaurant Roof Top Le Perchoir</a>
+                        <div class="description">Vu dans Five</div>
+                    </figcaption>
+                </figure>
+                <figure class="carousel-seat">
+                    <a href="#" class="wide-img">
+                        <img src="/images/location5.jpg" />
+                    </a>
+                    <figcaption>
+                        <div class="type">Focus Décor</div>
+                        <a href="#" class="title" title="Découvrez la déco de Five">A voir : la déco stylée de nos 5 colocataires</a>
+                        <div class="description">Vu dans Five</div>
+                    </figcaption>
+                </figure>
+                <figure class="carousel-seat">
+                    <a href="#" class="wide-img">
+                        <img src="/images/location4.jpg" />
+                    </a>
+                    <figcaption>
+                        <div class="type">Focus Lieu</div>
+                        <a href="#" class="title" title="Découvrez Le Perchoir">Découvrez le Restaurant Roof Top Le Perchoir</a>
+                        <div class="description">Vu dans Five</div>
+                    </figcaption>
+                </figure>
+                <figure class="carousel-seat is-ref">
+                    <a href="#" class="wide-img">
+                        <img src="/images/location1.jpg" />
+                    </a>
+                    <figcaption>
+                        <div class="type">Focus</div>
+                        <a href="#" class="title" title="Découvrez Yosemite">Découvrez le parc Yosemite !</a>
+                        <div class="description">Une nature dans tous ses états.</div>
+                    </figcaption>
+                </figure>
+            </div>
+        </div>
+        <div class="pagin" data-slide="main-carousel">
+            <button class="active"><i class="fa fa-circle" aria-hidden="true"></i></button>
+            <button><i class="fa fa-circle" aria-hidden="true"></i></button>
+            <button><i class="fa fa-circle" aria-hidden="true"></i></button>
+            <button><i class="fa fa-circle" aria-hidden="true"></i></button>
+            <button><i class="fa fa-circle" aria-hidden="true"></i></button>
+        </div>
+        <button class="toggle" data-slide="main-carousel" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+        <button class="toggle" data-slide="main-carousel" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+    </section>
+</div>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="text-md-center">Découvrez les looks, produits et lieux de vos films favoris</h1>
+        <div id="main-search-box" class="m-x-auto">
+			<form role="form" method="get" action="/search" accept-charset="UTF-8" id="search-form-home-page">
+				<input type="text" name="q" id="home-search-box" autocomplete="off" />
+				<div class="placeholder">Chercher des films, looks, produits, lieux et bien plus encore...</div>
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</form>
+        </div>
+        <button class="down-button drop-shadow" data-down-to="#see-on-pickedin">
+            <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+        </button>
     </div>
-</section>
-<section class="highlight fashion">
+</div>
+<div id="see-on-pickedin" class="jumbotron jumbotron-fluid even">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 text-md-center">
-                <h2 class="text-uppercase">Les tendances</h2>
+            <div class="col-md-12">
+                <h2>A voir sur PickedIn</h2>
+                <p class="lead">Toujours plus de films référencés et passés à la loupe chaque semaine dont vous pourrez identifier :</p>
+                <figure>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/see-on-fashion1.jpg" />
+                    </div>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/see-on-fashion2.jpg" />
+                    </div>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/see-on-fashion3.jpg" />
+                    </div>
+                    <div class="wide-img">
+                        <img src="/images/see-on-fashion4.jpg" />
+                    </div>
+                    <figcaption>Les looks et tendances mode de vos personnages favoris</figcaption>
+                </figure>
+                <figure>
+                    <div class="wide-img">
+                        <img src="/images/location1.jpg" />
+                    </div>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/location4.jpg" />
+                    </div>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/location3.jpg" />
+                    </div>                   
+                    <figcaption>Les lieux où ils ont déjeuné, voyagé, se sont embrassés</figcaption>
+                </figure>
+                <figure>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/see-on-deco1.jpg" />
+                    </div>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/see-on-deco2.jpg" />
+                    </div>
+                    <div class="wide-img">
+                        <img src="/images/see-on-deco3.jpg" />
+                    </div>                  
+                    <figcaption>Les articles de décoration et le mobilier qui composent les plus beaux décors</figcaption>
+                </figure>
+                <figure>
+                    <div class="wide-img">
+                        <img src="/images/see-on-transport1.jpg" />
+                    </div>
+                    <div class="wide-img">
+                        <img src="/images/see-on-transport2.jpg" />
+                    </div>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/see-on-transport3.jpg" />
+                    </div>
+                    <div class="wide-img dark-overlay">
+                        <img src="/images/see-on-transport4.jpg" />
+                    </div>
+                    <figcaption>Les véhicules et moyens de transports les plus variés</figcaption>
+                </figure>
+            </div>
+        </div>        
+        <!--<div id="pics" class="col-md-5">
+            <div class="row">
+                <div class="col-md-3">
+                    <img class="img-fluid drop-shadow" src="/images/five-poster.jpg" />
+                </div>
+                <div class="col-md-3">
+                    <img class="img-fluid drop-shadow" src="/images/deadpool-poster.jpg" />
+                </div>
+                <div class="col-md-3">
+                    <img class="img-fluid drop-shadow" src="/images/3-freres-poster.jpg" />
+                </div>
+                <div class="col-md-3">
+                    <img class="img-fluid drop-shadow" src="/images/creed-poster.jpg" />
+                </div>
+            </div>
+            <div class="row" style="margin-top: 30px;">
+                <div class="col-md-4">
+                    <div class="portrait-img drop-shadow">
+                        <img src="/images/sunglasses.jpg" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="portrait-img drop-shadow">
+                        <img src="/images/veste-homme2.jpg" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="portrait-img drop-shadow">
+                        <img src="/images/veste-femme.jpg" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="portrait-img drop-shadow">
+                        <img src="/images/shoes.jpg" />
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 30px;">
+                <div class="col-md-6">
+                    <div class="portrait-img drop-shadow">
+                        <img src="/images/location1.jpg" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="portrait-img drop-shadow">
+                        <img src="/images/location2.jpg" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="portrait-img drop-shadow">
+                        <img src="/images/lambo.jpg" />
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+    <button class="down-button drop-shadow light" data-down-to="#features-detail">
+        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button>
+</div>
+<div id="features-detail" class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-md-center">Pensé pour les spectateurs par des spectateurs</h2>
+                <p class="lead text-md-center">Cras finibus, est quis viverra lobortis, mauris magna dapibus velit, eget iaculis nisi magna in massa.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 text-md-center">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                Utilisez le moteur de recherche pour retracer précisément ce que vous avez repéré dans un film
+            </div>
+            <!--<div class="col-md-2 text-md-center">
+                <i class="fa fa-cubes" aria-hidden="true"></i>
+                Parcourez l’univers du cinéma au travers de tous les éléments qui le composent
+            </div>-->
+            <div class="col-md-3 text-md-center">
+                <i class="fa fa-heart" aria-hidden="true"></i>
+                Créez-vous un compte personnel en quelques clics et sauvegardez vos coups de cœur
+            </div>
+            <div class="col-md-3 text-md-center">
+                <i class="fa fa-television" aria-hidden="true"></i>
+                Demandez à recevoir une notification peu avant la diffusion TV d’un film qui vous intéresse
+            </div>
+            <div class="col-md-3 text-md-center">
+                <i class="fa fa-database" aria-hidden="true"></i>
+                Contribuez à élargir notre base de données en nous proposant des close ou exact match identifiés dans des films
+            </div>
+            <!--<div class="col-md-3 text-md-center">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                Partagez vos découvertes avec la communauté
+            </div>
+            <div class="col-md-3 text-md-center">
+                <i class="fa fa-gears" aria-hidden="true"></i>
+                Des fonctionnalités toujours plus nombreuses
+            </div>-->
+        </div>
+    </div>
+    <button class="down-button drop-shadow" data-down-to="#online-soon">
+        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button>
+</div>
+<div id="online-soon" class="jumbotron jumbotron-fluid even">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-md-center">Prochainement En Ligne</h2>
+                <p class="lead text-md-center">Quels films seront ajoutés prochainement ?</p>
             </div>
         </div>
         <div class="wrap">
-            <ul id="carousel-fashion" class="carousel is-set">
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
+            <ul id="carousel-movies" class="carousel is-set">
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/deadpool-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
                 </li>
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
                 </li>
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/3-freres-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
                 </li>
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/creed-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
                 </li>
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/les-gazelles-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
                 </li>
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/deadpool-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
                 </li>
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
                 </li>
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/3-freres-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
                 </li>
-                <li class="carousel-seat asset-figure">
-                    <div class="asset-img">
-                        <a href="#"><img src="/images/veste-homme2.jpg" alt="Veste homme bleue" title="Veste homme bleue" /></a>
-                        <button class="red-button-overlay">Sauvegarder</button>
-                    </div>
-                    <div class="asset-legend drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span>Five</a>
-                        <a href="#" class="asset-desc">Dior Homme - Veste bleue polaire high fashion</a>
-                    </div>
-                </li>            
+                <li class="carousel-seat">
+                    <a href="#" alt="" title=""><img src="./images/creed-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
+                <li class="carousel-seat is-ref">
+                    <a href="#" alt="" title=""><img src="./images/les-gazelles-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
+                </li>
             </ul>
-        </div>        
-        <button class="toggle" data-slide="#carousel-fashion" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-        <button class="toggle" data-slide="#carousel-fashion" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>     
-    </div>            
-</section>
-<section class="container highlight locations">
-    <div class="row">
-        <div class="col-md-12 text-md-center">
-            <h2 class="text-uppercase">Les plus beaux lieux</h2>
+            <button class="toggle" data-slide="carousel-movies" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+            <button class="toggle" data-slide="carousel-movies" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
         </div>
     </div>
-    <div class="wrap">
-        <ul id="carousel-locations" class="carousel is-set full-size">
-            <li class="carousel-seat">
-                <div class="featured-location-img">
-                    <a href="#"><img class="img-fluid" src="./images/location1.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>
-                <div class="location-img">
-                    <a href="#" class="center-crop"><img src="./images/location2.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>
-                <div class="location-img">
-                    <a href="#" class="center-crop"><img src="./images/location3.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>            
-            </li>
-            <li class="carousel-seat">
-                <div class="featured-location-img">
-                    <a href="#"><img class="img-fluid" src="./images/location1.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>
-                <div class="location-img">
-                    <a href="#" class="center-crop"><img src="./images/location2.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>
-                <div class="location-img">
-                    <a href="#" class="center-crop"><img src="./images/location3.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <li class="carousel-seat">
-                <div class="featured-location-img">
-                    <a href="#"><img class="img-fluid" src="./images/location1.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>
-                <div class="location-img">
-                    <a href="#" class="center-crop"><img src="./images/location2.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>
-                <div class="location-img">
-                    <a href="#" class="center-crop"><img src="./images/location3.jpg" /></a>
-                    <div class="picture-title drop-shadow">
-                        <a href="#" class="asset-title"><span>vu dans</span> FIVE</a>
-                        <a href="#" class="asset-desc">
-                            Dior Homme - Veste bleue polaire high fashion
-                        </a>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <button class="toggle" data-slide="#carousel-locations" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-    <button class="toggle" data-slide="#carousel-locations" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button> 
-</section>
-<section class="container highlight movies">
-    <div class="row">
-        <div class="col-md-12 text-md-center">
-            <h2 class="text-uppercase">A l'affiche</h2>
-        </div>
-    </div>
-    <div class="wrap">
-        <ul id="carousel-movies" class="carousel is-set">
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/deadpool-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/3-freres-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/creed-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/les-gazelles-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/deadpool-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/five-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/3-freres-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/creed-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-            <li class="carousel-seat">
-                <a href="#" alt="" title=""><img src="./images/les-gazelles-poster.jpg" class="img-fluid" alt="Five affiche du film" title="Five le film" /></a>
-            </li>
-        </ul>
-    </div>    
-    <button class="toggle" data-slide="#carousel-movies" data-toggle="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-    <button class="toggle" data-slide="#carousel-movies" data-toggle="next"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
-</section>
-<script type="text/javascript">
-    var timeline = <%- JSON.stringify(timeline);%>;
-</script>
+</div>
+<%- contentFor('extraScripts') %>
+<script src="/js/common.js"></script>
+<script src="/js/mainHome.js"></script>

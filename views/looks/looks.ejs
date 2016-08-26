@@ -46,13 +46,13 @@
         </div>        
         <div id="look-products" class="row">
             <div class="col-md-4 offset-md-1">
-                <img id="dark-silhouette" src="/images/man-silhouette.png" alt="Man" title="Man" />               
-                <div id="body-markers">
-                    <div id="head-marker" class="matching-icon" data-asset-line="head-line" style="top: 30px;left: 145px;" ></div>
-                    <div id="chest-marker" class="matching-icon" data-asset-line="chest-line" style="top: 130px;left: 145px;"></div>
-                    <div id="hands-marker" class="matching-icon" data-asset-line="hands-line" style="top: 255px;left: 75px;"></div>
-                    <div id="legs-marker" class="matching-icon" data-asset-line="legs-line" style="top: 280px;left: 160px;"></div>
-                    <div id="feet-marker" class="matching-icon" data-asset-line="feet-line" style="top: 515px;left: 155px;"></div>
+                <img id="dark-silhouette" src="/images/<%= look.character.type.name _%>-silhouette.png" alt="Man" title="Man" />               
+                <div id="body-markers" class="<%= look.character.type.name _%>">
+                    <div id="head-marker" class="matching-icon" data-asset-line="head-line"></div>
+                    <div id="chest-marker" class="matching-icon" data-asset-line="chest-line"></div>
+                    <div id="hands-marker" class="matching-icon" data-asset-line="hands-line"></div>
+                    <div id="legs-marker" class="matching-icon" data-asset-line="legs-line"></div>
+                    <div id="feet-marker" class="matching-icon" data-asset-line="feet-line"></div>
                 </div>
             </div>
             <div id="product-lines" class="col-md-7">
@@ -84,8 +84,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Looks en lien</h2>
+                    <h2>Looks du moment</h2>
                     <div class="row asset-line">
+                        <%_ if(lastLooks.length === 0){ _%>
+                        <div class="col-md-12">
+                            Aucun look à afficher pour l'instant.
+                        </div>
+                        <%_ } _%>
+                        <%_
+                        for(var i = 1; i <= lastLooks.length; i++){
+                        var look = lastLooks[i-1]; _%>
+                        <div class="col-md-3 asset-figure">
+                            <div class="asset-img">
+                                <a href="/<%= look.sectionUrl + '/' + look.id _%>"><img src="<%= look.picture_url _%>" alt="<%= look.picture_alt _%>" title="<%= look.picture_title _%>" /></a>
+                                <button class="button-overlay red bookmark<%= look.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= look.id _%>" data-object-type="<%= look.type _%>"><%= look.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="/<%= look.sectionUrl + '/' + look.id _%>" class="asset-title"><%= look.name _%></a>
+                                <a href="/<%= look.sectionUrl + '/' + look.id _%>" class="asset-desc">Vu dans <%- look.videoMedia.name _%></a>
+                            </div>
+                        </div>
+                        <%_ } _%>
+                    </div>
+                    <!--<div class="row asset-line">
                         <div class="col-md-4 asset-figure">
                             <div class="asset-img">
                                 <a href="#"><img src="/images/location2.jpg" alt="Thaïlande" title="Thaïlande" /></a>
@@ -116,7 +137,7 @@
                                 <a href="#" class="asset-desc">Californie - USA</a>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

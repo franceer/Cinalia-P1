@@ -32,6 +32,9 @@ let Look = bookshelf.Model.extend({
         type: function() {
             return 'look';
         },
+        displayType: function () {
+            return 'look';
+        },
         sectionUrl: function () {
             return 'looks';
         },
@@ -39,6 +42,15 @@ let Look = bookshelf.Model.extend({
             return helper.toURLFormat(this.get('name'));
         }
     }    
+},
+{
+    getLastLooks: function (id, limit) {
+        return this.query(function (qb) {
+            qb.limit(limit ? limit : 4);
+            qb.orderBy('created_at', 'desc');
+            qb.where('id', '<>', id);
+        }).fetchAll({ withRelated: ['videoMedia'] });
+    }
 });
 
 module.exports = bookshelf.model('Look', Look);

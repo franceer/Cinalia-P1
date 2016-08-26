@@ -49,7 +49,38 @@ var Bookmark = bookshelf.Model.extend({
             this.from('user_bookmarks');
             this.select(bookshelf.knex.raw('user_bookmarks.bookmark_id, user_bookmarks.bookmark_type, loc.id, loc.name, loc.description, loc.picture_url, loc.picture_alt, loc.picture_title, \'/locations/\' || loc.id as url'));
         });
-    })
+    }),
+    areBookmarked: function (assets, user) {
+        return this.query(function(qb){
+            for(var i = 0; i < assets.length; i++){
+                var asset = assets[i]
+
+                if(i === 0)
+                    qb.where({ user_id: user.id, bookmark_id: asset.id, bookmark_type: asset.type });
+                else
+                    qb.orWhere({ user_id: user.id, bookmark_id: asset.id, bookmark_type: asset.type });
+            }
+        })
+        .fetchAll()
+        .then(function(results){
+            var bookmarks = results.toJSON();
+            var newAssets = [];
+            assets.forEach(function (asset) {
+                bookmarks.some(function (bookmark, index) {
+                    var bool = (bookmark.bookmark_id === asset.id && bookmark.bookmark_type === asset.type);
+
+                    if (bool) 
+                        asset.bookmark_id = true;
+
+                    return bool;                    
+                });
+
+                newAssets.push(asset);
+            });
+
+            return newAssets;
+        })
+    }  
 });
 
 module.exports = bookshelf.model('Bookmark', Bookmark);

@@ -14,313 +14,355 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <%- defineContent('sEOMetas') %>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
-    <body>
-		<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="signup-modal-label" aria-hidden="true">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">					
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title" id="myModalLabel">Rejoignez la communauté PickedIn.com</h4>
-						<small>Découvrez des centaines de produits et lieux, participez à l'enrichissement du site et bénéficiez de biens d'autres avantages en vous enregistrant sur PickedIn.com</small>
-					</div>
-					<div class="modal-body">
-						<div class="login-dp">						
-							<form class="form" role="form" method="post" action="/signup" novalidate accept-charset="UTF-8" id="signup-nav">
-								<div class="alert alert-danger" hidden></div>
-								<fieldset id="step1">
-									<div class="form-group row">
-										<label class="sr-only" for="username">Adresse email</label>
-										<input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="username" name="username" placeholder="Addresse email" autocomplete="off">
+<body>
+    <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="signup-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Rejoignez la communauté PickedIn.com</h4>
+                    <small>Découvrez des centaines de produits et lieux, participez à l'enrichissement du site et bénéficiez de biens d'autres avantages en vous enregistrant sur PickedIn.com</small>
+                </div>
+                <div class="modal-body">
+                    <div class="login-dp">
+                        <form class="form" role="form" method="post" action="/signup" novalidate accept-charset="UTF-8" id="signup-form">
+                            <div class="alert" hidden></div>
+                            <fieldset id="step1">
+                                <div class="form-group row">
+                                    <label class="sr-only" for="username">Adresse email</label>
+                                    <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="username" name="username" placeholder="Addresse email" autofocus autocomplete="off">
+                                </div>
+                                <div class="form-group row">
+                                    <label class="sr-only" for="password">Mot de passe</label>
+                                    <input type="password" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="password" name="password" placeholder="Mot de passe">
+                                </div>
+								<div class="form-group row">
+                                    <label class="sr-only" for="confirm-password">Mot de passe</label>
+                                    <input type="password" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="confirm-password" name="confirm-password" placeholder="Confirmer le mot de passe">
+                                </div>
+                                <div class="form-group row">
+                                    <button class="btn btn-primary next col-md-3 offset-md-6" type="button">Suivant</button>
+                                </div>
+                            </fieldset>
+                            <fieldset id="step2">
+                                <div class="form-group row">
+                                    <label class="sr-only" for="firstname">Prénom</label>
+                                    <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="firstname" name="firstname" placeholder="Prénom" autocomplete="off">
+                                </div>
+                                <div class="form-group row">
+                                    <label class="sr-only" for="password">Nom</label>
+                                    <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="lastname" name="lastname" placeholder="Nom" autocomplete="off">
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6 offset-md-3">
+                                        <div class="form-check checkbox">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="agree" name="agree" type="checkbox">
+                                                Je reconnais avoir lu les <a href="#">conditions d'utilisations</a> de PickedIn.com
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="form-group row">
+                                    <div class="col-md-6 offset-md-3">
+										<div class="g-recaptcha" data-sitekey="6LcwZSgTAAAAAHuMY5Ptejab2CTOdMA1QA68JO8M"></div>
 									</div>
-									<div class="form-group row">
-										<label class="sr-only" for="password">Mot de passe</label>
-										<input type="password" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="password" name="password" placeholder="Mot de passe">
-									</div>	
-									<div class="form-group row">
-										<button class="btn btn-primary next col-md-3 offset-md-6" type="button">Suivant</button>
-									</div>	
-								</fieldset>	
-								<fieldset id="step2">
-									<div class="form-group row">
-										<label class="sr-only" for="firstname">Prénom</label>
-										<input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="firstname" name="firstname" placeholder="Prénom" autocomplete="off">
-									</div>
-									<div class="form-group row">
-										<label class="sr-only" for="password">Nom</label>
-										<input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="lastname" name="lastname" placeholder="Nom" autocomplete="off">
-									</div>	
-									<div class="form-group row">
-										<div class="col-md-6 offset-md-3">
-											<div class="form-check checkbox">
-												<label class="form-check-label">
-													<input class="form-check-input" id="agree" name="agree" type="checkbox">
-													Je reconnais avoir lu les <a href="#">conditions d'utilisations</a> de PickedIn.com
-												</label>
-											</div>	
-										</div>	
-									</div>										
-									<div class="form-group row">
-										<div class="col-md-3 offset-md-3">
-											<button class="btn back" type="button">Précédent</button>
-										</div>
-										<div class="col-md-3">
-											<button type="submit" class="btn btn-primary">Créer mon compte</button>
-										</div>
-									</div>	
-								</fieldset>											
-							</form>                                       
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-        <% if (typeof message !== 'undefined' && Object.keys(message).length > 0) { %>
-        <div id="auth-message" hidden data-message-type="<%= message.type _%>"><%= message.message _%></div>
-        <% } %>        
-        <div class="header-placeholder modal-hidden">
-            <header class="drop-shadow">
-                <div class="container">					
-                    <div class="row">
-                        <nav id="secondary-nav" class="col-md-2 offset-md-10">
-                            <ul class="list-unstyled">
-                                <li class="dropdown">
-								<%_ if (typeof user !== 'undefined') { _%>
-									<a id="account-toggle" href="#" class="dropdown-toggle" data-toggle="dropdown"><%= user.firstname _%></a>
-                                    <ul id="account-menu" class="dropdown-menu">
-                                        <li>
-											<a href="/profile">Profil</a>                                            
-                                        </li>
-										<li>
-											<a href="/logout">Se déconnecter</a>
-										</li>
-                                    </ul>
-								<%_ } else { _%>
-                                    <a id="login-toggle" href="#" class="dropdown-toggle" data-toggle="dropdown">Login</a>
-                                    <ul class="login-dp dropdown-menu">
-                                        <li>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    Se connecter via
-                                                    <div class="social-buttons">
-                                                        <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
-                                                        <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
-                                                    </div>
-                                                    ou
-                                                    <form class="form" role="form" method="post" action="/signin" accept-charset="UTF-8" id="signin-nav">
-														<div class="alert alert-danger" hidden></div>
-                                                        <div class="form-group">
-                                                            <label class="sr-only" for="signinEmail">Adresse email</label>
-                                                            <input type="email" class="form-control" id="signinEmail" name="username" placeholder="Adresse email" required>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="sr-only" for="signinPassword">Mot de passe</label>
-                                                            <input type="password" class="form-control" id="signinPassword" name="password" placeholder="Mot de passe" required>
-                                                            <div class="help-block text-right"><a href="">Mot de passe oublié ?</a></div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
-                                                        </div>
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox"> rester connecté
-                                                            </label>
-                                                        </div>
-                                                    </form>
+								</div>
+                                <div class="form-group row">
+                                    <div class="col-md-3 offset-md-3">
+                                        <button class="btn back" type="button">Précédent</button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary">Créer mon compte</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="forgot-modal" tabindex="-1" role="dialog" aria-labelledby="forgot-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Mot de passe oublié</h4>
+                    <small>Utilisez le champ ci-dessous pour recevoir un email qui vous permettra de réinitialiser votre mot de passe.</small>
+                </div>
+                <div class="modal-body">                    
+                    <form class="form" role="form" method="post" action="/mdp-oublie" novalidate accept-charset="UTF-8" id="forgot-form">
+                        <div class="alert" hidden></div>                        
+                        <div class="form-group row">
+                            <label class="sr-only" for="forgot-email">Adresse email</label>
+                            <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="forgot-email" name="email" placeholder="Addresse email" autocomplete="off">
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6 offset-md-3">
+                                <button type="submit" class="btn btn-primary">Réinitialiser mon mot de passe</button>
+                            </div>
+                        </div>  
+                    </form>                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <% if (typeof flashMessage !== 'undefined' && Object.keys(flashMessage).length > 0) { %>
+    <div id="flash-message" hidden data-element="<%= flashMessage.element.selector _%>" data-actionnable="<%= flashMessage.element.actionnable _%>" data-message-type="<%= flashMessage.element.type _%>" data-style="<%= flashMessage.style _%>"><%= flashMessage.message _%></div>
+    <% } %>
+    <div class="header-placeholder modal-hidden">
+        <header class="drop-shadow">
+            <div class="container">
+                <div class="row">
+                    <nav id="secondary-nav" class="col-md-2 offset-md-10">
+                        <ul class="list-unstyled">
+                            <li class="dropdown">
+                                <%_ if (typeof user !== 'undefined') { _%>
+                                <a id="account-toggle" href="#" class="dropdown-toggle" data-toggle="dropdown"><%= user.firstname _%></a>
+                                <ul id="account-menu" class="dropdown-menu">
+                                    <li>
+                                        <a href="/profile">Profil</a>
+                                    </li>
+                                    <li>
+                                        <a href="/logout">Se déconnecter</a>
+                                    </li>
+                                </ul>
+                                <%_ } else { _%>
+                                <a id="login-toggle" href="#" class="dropdown-toggle" data-toggle="dropdown">Login</a>
+                                <ul class="login-dp dropdown-menu">
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                Se connecter via
+                                                <div class="social-buttons">
+                                                    <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                                                    <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
                                                 </div>
-                                                <div class="bottom text-center">
-                                                    Pas encore de compte ? <button data-toggle="modal" data-target="#signup-modal"><b>Rejoignez-nous</b></a>
+                                                ou
+                                                <form class="form" role="form" method="post" action="/signin" accept-charset="UTF-8" id="signin-form">
+                                                    <div class="alert alert-danger" hidden></div>
+                                                    <div class="form-group">
+                                                        <label class="sr-only" for="signinEmail">Adresse email</label>
+                                                        <input type="email" class="form-control" id="signinEmail" name="username" placeholder="Adresse email" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="sr-only" for="signinPassword">Mot de passe</label>
+                                                        <input type="password" class="form-control" id="signinPassword" name="password" placeholder="Mot de passe" required>
+                                                        <div class="help-block text-right"><button data-toggle="modal" data-target="#forgot-modal" type="button">Mot de passe oublié ?</button></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="bottom text-center">
+                                                Pas encore de compte ? <button data-toggle="modal" data-target="#signup-modal" type="button"><b>Rejoignez-nous</b></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <%_ } _%>
+                            <li>
+                                <button id="search-button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="row align-items-stretched">
+                    <div id="brand" class="col-md-2">
+                        <h1><a href="/">Picked<span>I</span>n</a></h1>
+                    </div>
+                    <div class="col-md-12 flex-row justify-content-center">
+                        <nav id="primary-nav">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="/search?cat=105">Films</a>
+                                </li>
+                                <li>
+                                    <a href="/search?cat=2">Produits</a>
+                                    <ul class="primary-nav-sub level1 list-unstyled">
+                                        <li>
+                                            <a href="/search?cat=3">Mode</a>
+                                            <div class="primary-nav-sub level2 row">
+                                                <div class="col-md-3">
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=5">Vêtements Homme</a></li>
+                                                        <li><a href="/search?cat=8">Vestes</a></li>
+                                                        <li><a href="/search?cat=14">Pantalons</a></li>
+                                                        <li><a href="/search?cat=6">T-shirts</a></li>
+                                                        <li><a href="/search?cat=7">Polos</a></li>
+                                                    </ul>
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=20">Chaussures Homme</a></li>
+                                                    </ul>
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=26">Accessoires Hommes</a></li>
+                                                        <li><a href="/search?cat=31">Lunettes</a></li>
+                                                        <li><a href="/search?cat=32">Chapeaux &Aacute; casquettes</a></li>
+                                                        <li><a href="/search?cat=30">Echarpes et foulards</a></li>
+                                                        <li><a href="/search?cat=28">Montres</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=35">Vêtements Femme</a></li>
+                                                        <li><a href="/search?cat=40">Vestes et Manteaux</a></li>
+                                                        <li><a href="/search?cat=36">Robes</a></li>
+                                                        <li><a href="/search?cat=43">Pantalons et Shorts</a></li>
+                                                        <li><a href="/search?cat=38">T-shirts et Tops</a></li>
+                                                        <li><a href="/search?cat=42">Chemises et blouses</a></li>
+                                                        <li><a href="/search?cat=42">Jeans</a></li>
+                                                    </ul>
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=58">Chaussures Femme</a></li>
+                                                    </ul>
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=51">Sacs et Accessoires Femme</a></li>
+                                                        <li><a href="/search?cat=52">Sacs</a></li>
+                                                        <li><a href="/search?cat=54">Bijoux</a></li>
+                                                        <li><a href="/search?cat=55">Echarpes et foulards</a></li>
+                                                        <li><a href="/search?cat=53">Montres</a></li>
+                                                        <li><a href="/search?cat=57">Lunettes</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=66">Mode pour enfant</a></li>                                                      
+                                                    </ul>
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=67">Garçons</a></li>                                                    
+                                                        <li><a href="/search?cat=68">Vestes et manteaux</a></li>
+                                                        <li><a href="/search?cat=70">Tshirts et chemises</a></li>
+                                                        <li><a href="/search?cat=71">Shorts et bermudas</a></li>
+                                                        <li><a href="/search?cat=72">Jeans et pantalons</a></li>
+                                                        <li><a href="/search?cat=73">Sous-vêtements et pyjamas</a></li>
+                                                        <li><a href="/search?cat=74">Maillots de bain</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <ul class="list-unstyled">
+                                                        <li class="category-title"><a href="/search?cat=75">Filles</a></li>
+                                                        <li><a href="/search?cat=76">Robes</a></li>
+                                                        <li><a href="/search?cat=77">Jupes</a></li>
+                                                        <li><a href="/search?cat=80">Vestes et manteaux</a></li>
+                                                        <li><a href="/search?cat=78">Tops, blouses et chemises</a></li>
+                                                        <li><a href="/search?cat=83">Shorts et pantacourts</a></li>
+                                                        <li><a href="/search?cat=81">Jeans et pantalons</a></li>
+                                                        <li><a href="/search?cat=85">Sous-vêtements et pyjamas</a></li>
+                                                        <li><a href="/search?cat=86">Maillots de bain</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </li>
+                                        <li><a href="/search?cat=87">Décoration et High Tech</a></li>
+                                        <li><a href="/search?cat=97">Transport</a></li>
                                     </ul>
                                 </li>
-								<%_ } _%>
                                 <li>
-									<button id="search-button"><i class="fa fa-search" aria-hidden="true"></i></button>
-								</li>
+                                    <a href="/search?cat=102">Lieux</a>
+                                </li>
+                                <li>
+                                    <a href="/search?cat=103">Looks</a>
+                                </li>
+                                <li>
+                                    <a href="/search?cat=104">Décors</a>
+                                </li>
+                                <!--<li>
+                                    <a href="#">Blog</a>
+                                    <ul class="primary-nav-sub level1 list-unstyled">
+                                        <li><a href="#">Test 10</a></li>
+                                        <li><a href="#">Test 11</a></li>
+                                        <li><a href="#">Test 12</a></li>
+                                    </ul>
+                                </li>-->
                             </ul>
                         </nav>
                     </div>
-                    <div class="row align-items-stretched">
-                        <div id="brand" class="col-md-2">
-                            <h1><a href="/">Picked<span>I</span>n</a></h1>
-                        </div>
-                        <div class="col-md-12 flex-row justify-content-center">
-                            <nav id="primary-nav">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a href="/search?cat=105">Films</a>                                        
-                                    </li>
-                                    <li>
-                                        <a href="/search?cat=2">Produits</a>
-                                        <ul class="primary-nav-sub level1 list-unstyled">
-                                            <li>
-                                                <a href="/search?cat=3">Mode</a>
-                                                <div class="primary-nav-sub level2 row">
-                                                    <div class="col-md-3">
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="/search?cat=5">Vêtements Homme</a></li>
-                                                            <li><a href="/search?cat=8">Vestes</a></li>
-                                                            <li><a href="/search?cat=14">Pantalons</a></li>
-                                                            <li><a href="/search?cat=6">T-shirts</a></li>
-                                                            <li><a href="/search?cat=7">Polos</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="/search?cat=20">Chaussures Homme</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="/search?cat=26">Accessoires Hommes</a></li>
-                                                            <li><a href="/search?cat=31">Lunettes</a></li>
-                                                            <li><a href="/search?cat=32">Chapeaux &Aacute; casquettes</a></li>
-                                                            <li><a href="/search?cat=30">Echarpes et foulards</a></li>
-                                                            <li><a href="/search?cat=28">Montres</a></li>
-                                                        </ul> 
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 4</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 5</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 3</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                            <li><a href="#">Subtest3</a></li>
-                                                            <li><a href="#">Subtest4</a></li>
-                                                            <li><a href="#">Subtest5</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                        </ul>
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 2</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <ul class="list-unstyled">
-                                                            <li class="category-title"><a href="#">Catégorie 1</a></li>
-                                                            <li><a href="#">Subtest1</a></li>
-                                                            <li><a href="#">Subtest2</a></li>
-                                                            <li><a href="#">Subtest3</a></li>
-                                                            <li><a href="#">Subtest4</a></li>
-                                                            <li><a href="#">Subtest5</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li><a href="/search?cat=87">Décoration et High Tech</a></li>
-                                            <li><a href="/search?cat=97">Transport</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="/search?cat=102">Lieux</a>                                       
-                                    </li>
-                                    <li>
-                                        <a href="/search?cat=103">Looks</a>                                      
-                                    </li>
-                                    <li>
-                                        <a href="/search?cat=104">Décors</a>                                       
-                                    </li>
-                                    <!--<li>
-                                        <a href="#">Blog</a>
-                                        <ul class="primary-nav-sub level1 list-unstyled">
-                                            <li><a href="#">Test 10</a></li>
-                                            <li><a href="#">Test 11</a></li>
-                                            <li><a href="#">Test 12</a></li>
-                                        </ul>
-                                    </li>-->
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-					<div id="search-bar" class="row">
-						<div class="col-md-10">
-							<form role="form" method="get" action="/search" accept-charset="UTF-8" id="search-form">										
-								<i class="fa fa-search" aria-hidden="true"></i><input type="text" placeholder="Rechercher sur PickedIn.com" name="q" id="top-search-box" autocomplete="off" />
-							</form>										
-						</div>
-						<div class="col-md-2">
-							<button id="close-search-bar-button"><i class="fa fa-close" aria-hidden="true"></i><button>
-						</div>
-					</div>
                 </div>
-            </header>
-        </div>
-        <div class="content">
-            <%- body -%>
-        </div>
-        <footer class="modal-hidden">
-            <div class="container">
-                <nav class="row">
-                    <ul class="list-unstyled col-md-5">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="#">Contactez-nous</a></li>
-                        <li><a href="#">A propos</a></li>
-                        <li><a href="/mentions-legales">Mentions légales</a></li>
-                    </ul>
-                    <ul id="social-nav" class="list-unstyled col-md-3 offset-md-4">
-                        <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
-                    </ul>
-                </nav>
-                <div id="copyright" class="row">
-                    <div class="col-md-12 text-md-center">
-                        &copy; 2016 PickedIn
+                <div id="search-bar" class="row">
+                    <div class="col-md-10">
+                        <form role="form" method="get" action="/search" accept-charset="UTF-8" id="search-form">
+                            <i class="fa fa-search" aria-hidden="true"></i><input type="text" placeholder="Rechercher sur PickedIn.com" name="q" id="top-search-box" autocomplete="off" />
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="close-search-bar-button"><i class="fa fa-close" aria-hidden="true"></i><button>
                     </div>
                 </div>
             </div>
-        </footer>
-        <div id="tchat-box" class="modal-hidden">
-            <div id="top-bar">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span>Laissez-nous un message</span>
-                <i class="fa fa-close" aria-hidden="true"></i>
-            </div>
-            <div id="message-box">
-                <div>
-                    <i class="fa fa-at" aria-hidden="true"></i>
-                    <input placeholder="Email" />
+        </header>
+    </div>
+    <div class="content">
+        <%- body -%>
+    </div>
+    <footer class="modal-hidden">
+        <div class="container">
+            <nav class="row">
+                <ul class="list-unstyled col-md-5">
+                    <li><a href="/">Home</a></li>
+                    <li><button id="contact-us">Contactez-nous</button></li>
+                    <li><a href="#">A propos</a></li>
+                    <li><a href="/mentions-legales">Mentions légales</a></li>
+                </ul>
+                <ul id="social-nav" class="list-unstyled col-md-3 offset-md-4">
+                    <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
+                </ul>
+            </nav>
+            <div id="copyright" class="row">
+                <div class="col-md-12 text-md-center">
+                    &copy; 2016 PickedIn
                 </div>
-                <div>
-                    <i class="fa fa-question" aria-hidden="true"></i>
-                    <input placeholder="Objet" />
-                </div>
-                <div>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                    <textarea placeholder="Message"></textarea>
-                </div>
-                <button>Envoyer</button>
             </div>
         </div>
+    </footer>
+    <div id="tchat-box" class="modal-hidden">
+        <div id="top-bar">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <span>Laissez-nous un message</span>
+            <button><i class="fa fa-close" aria-hidden="true"></i></button>
+        </div>
+        <div id="message-box">
+            <div>
+                <i class="fa fa-at" aria-hidden="true"></i>
+                <input id="contact-email" placeholder="Email" />
+            </div>
+            <div>
+                <i class="fa fa-question" aria-hidden="true"></i>
+                <input id="contact-subject" placeholder="Objet" />
+            </div>
+            <div>
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                <textarea id="contact-message" placeholder="Message"></textarea>
+            </div>
+            <button id="contact-send">Envoyer</button>
+        </div>
+    </div>
 
-        <script type="text/javascript">
-            (function (d, p) {
-                var a = new XMLHttpRequest(),
-                b = d.body;
-                a.open('GET', p, true);
-                a.send();
-                a.onload = function () {
-                    var c = d.createElement('div');
-                    c.setAttribute('hidden', '');
-                    c.innerHTML = a.responseText;
-                    b.insertBefore(c, b.childNodes[0]);
-                };
-            })(document, '/images/sprite.svg');           
-        </script>
-    </body>
+    <script type="text/javascript">
+        (function (d, p) {
+            var a = new XMLHttpRequest(),
+            b = d.body;
+            a.open('GET', p, true);
+            a.send();
+            a.onload = function () {
+                var c = d.createElement('div');
+                c.setAttribute('hidden', '');
+                c.innerHTML = a.responseText;
+                b.insertBefore(c, b.childNodes[0]);
+            };
+        })(document, '/images/sprite.svg');
+    </script>
+</body>
+
 </html>

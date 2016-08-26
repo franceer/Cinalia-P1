@@ -79,8 +79,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Décors en lien</h2>
+                    <h2>Décors du moment</h2>
                     <div class="row asset-line">
+                        <%_ if(lastSets.length === 0){ _%>
+                        <div class="col-md-12">
+                            Aucun décor à afficher pour l'instant.
+                        </div>
+                        <%_ } _%>
+                        <%_
+                        for(var i = 1; i <= lastSets.length; i++){
+                        var set = lastSets[i-1]; _%>
+                        <div class="col-md-3 asset-figure">
+                            <div class="asset-img">
+                                <a href="/<%= set.sectionUrl + '/' + set.id _%>"><img src="<%= set.picture_url _%>" alt="<%= set.picture_alt _%>" title="<%= set.picture_title _%>" /></a>
+                                <button class="button-overlay red bookmark<%= set.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= set.id _%>" data-object-type="<%= set.type _%>"><%= set.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
+                            </div>
+                            <div class="asset-legend drop-shadow">
+                                <a href="/<%= set.sectionUrl + '/' + set.id _%>" class="asset-title"><%= set.name _%></a>
+                                <a href="/<%= set.sectionUrl + '/' + set.id _%>" class="asset-desc">Vu dans <%- set.videoMedia.name _%></a>
+                            </div>
+                        </div>
+                        <%_ } _%>
+                    </div>
+                    <!--<div class="row asset-line">
                         <div class="col-md-4 asset-figure">
                             <div class="asset-img">
                                 <a href="#"><img src="/images/location2.jpg" alt="Thaïlande" title="Thaïlande" /></a>
@@ -111,7 +132,7 @@
                                 <a href="#" class="asset-desc">Californie - USA</a>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

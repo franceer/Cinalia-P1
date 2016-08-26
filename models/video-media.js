@@ -4,7 +4,6 @@ let bookshelf = require('../database/database'),
     helper = require('../helpers/helper');
 
 require('./media-genre');
-require('./social-data');
 require('./worker');
 require('./set');
 require('./look');
@@ -19,10 +18,6 @@ var VideoMedia = bookshelf.Model.extend({
 
     mediaGenre: function () {
         return this.belongsTo('MediaGenre');
-    },
-
-    socialData: function(){
-        return this.belongsTo('SocialData');
     },
 
     //todo: to be removed ?
@@ -51,6 +46,9 @@ var VideoMedia = bookshelf.Model.extend({
     },
 
     virtuals: {
+        type: function(){
+            return 'video media';
+        },
         urlRewrite: function () {
             return helper.toURLFormat(this.get('name'));
         }

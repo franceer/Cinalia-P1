@@ -20,7 +20,7 @@ router.post('/', function (req, res, next) {
                         res.json({ status: 'error', message: error.message });
                     });
                 } else {
-                    res.json({ status: 'cancelled' });
+                    res.json({ status: 'already bookmarked', message: 'Element déjà sauvegardé' });
                 }
             });
 
@@ -33,7 +33,7 @@ router.post('/', function (req, res, next) {
             });
         }
     } else {
-        res.json({ status: 'not logged in' });
+        res.json({ status: 'not logged in', message: 'Vous devez être connecté pour effectuer cette action' });
     }
 	
 });

@@ -57,11 +57,6 @@ var schema = {
     //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
     //    name: { type: 'string', maxlength: 64, nullable: false, unique: true }
     //},
-    social_data: {
-        id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
-        likes: { type: 'integer', nullable: false, unsigned: true, defaultTo: 0 },
-        share_count: { type: 'integer', nullable: false, unsigned: true, defaultTo: 0 },
-    },
     user_types: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         name: { type: 'string', maxlength: 64, nullable: false, unique: true }
@@ -112,6 +107,8 @@ var schema = {
         email: { type: 'string', maxlength: 150, nullable: false, unique: true },
         firstname: { type: 'string', maxlength: 64, nullable: true },
         lastname: { type: 'string', maxlength: 64, nullable: true },
+        reset_password_token: { type: 'string', maxlength: 128, nullable: true },
+        reset_password_expires: { type: 'timestamp', nullable: true },
         user_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'user_types', defaultTo: 2 },
         is_active: { type: 'boolean', nullable: false, defaultTo: true },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },

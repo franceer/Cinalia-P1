@@ -1,21 +1,11 @@
-var express = require('express')
-  , router = express.Router();
+var express = require('express'),
+	router = express.Router(),
+	helper = require('../helpers/helper');
   
 router.get('/', function (req, res) {   
-	var tempFlash = req.flash(); 
-	var message = {};
-	
-	if(tempFlash.signinMessage){
-		message.type = 'signin';
-		message.message = tempFlash.signinMessage;
-	}
-	else if(tempFlash.signupMessage){
-		message.type = 'signup';
-		message.message = tempFlash.signupMessage;
-	}
-	
-	res.render('index2', { message: message});
+	res.render('index');
 });
+
 router.use('/api', require('./api'));
 router.use('/movies', require('./movies'));
 router.use('/products', require('./products'));
@@ -30,5 +20,8 @@ router.use('/profile', require('./profile'));
 router.use('/save-bookmark', require('./save-bookmark'));
 router.use('/like', require('./like'));
 router.use('/mentions-legales', require('./legal'));
+router.use('/mdp-oublie', require('./forgot'));
+router.use('/reset', require('./reset'));
+router.use('/contact', require('./contact'));
 
 module.exports = router

@@ -57,22 +57,22 @@ define(['jquery', 'velocity', './pickedin-player'], function (jquery, velocity, 
         };
 
         var showMediaAssets = function () {
-            var t = this;
+            var t = this;            
             var assetsVisibility = this.pickedInPlayer.forward ? ':not(.visible)' : '.visible';
             this.shifts = 0;
 
             this.$assets.filter(assetsVisibility).each(function () {
-                var $asset = jquery(this);
-                var isInTime = $asset.attr('data-time-code') <= t.pickedInPlayer.roundedCurrentTime;
+                var $asset = jquery(this);                
+                var isInTime = $asset.attr('data-time-code') <= t.pickedInPlayer.roundedCurrentTime;               
 
                 if (isInTime && t.pickedInPlayer.forward) {
-                    $asset.velocity({ 'opacity': 1 }).addClass('visible');
+                    $asset.velocity('stop').velocity({ 'opacity': 1 }).addClass('visible');
 
                     if (t.$assets.filter('.visible').length > t.assetNumber)
                         t.shifts++;
                 }
                 else if (!isInTime && !t.pickedInPlayer.forward) {
-                    $asset.velocity({ 'opacity': 0 }).removeClass('visible');
+                    $asset.velocity('stop').velocity({ 'opacity': 0 }).removeClass('visible');
 
                     if (t.$assets.filter('.visible').length >= t.assetNumber)
                         t.shifts++;
@@ -163,7 +163,7 @@ define(['jquery', 'velocity', './pickedin-player'], function (jquery, velocity, 
                         t.animateCarousel(action);
                         break;
                     case 'sync':
-                        var calc = prevAssets(jquery('[data-current]'), t.$assets, t.assetNumber - 1).css('order') - 1;
+                        var calc = prevAssets(t.$nodeElement.children('[data-current]'), t.$assets, t.assetNumber - 1).css('order') - 1;
                         t.shifts = calc < t.assetNumber ? calc : t.assetNumber;
                         t.animateCarousel(action);
                         t.unsyncAssets = false;
@@ -183,7 +183,7 @@ define(['jquery', 'velocity', './pickedin-player'], function (jquery, velocity, 
                 return;
             }
 
-            if (this.$isRefElement.attr('data-position') === 'last') {
+            if (this.$isRefElement.is(':last-child')) {
                 this.$prevButton.prop('disabled', true);
                 this.$startButton.prop('disabled', true);
             }

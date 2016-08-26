@@ -286,42 +286,50 @@
 .asset-figure{
     display: flex;
     flex-direction: column;
-    min-height: 350px;
+    min-height: 250px;   
+
+    .asset-img{
+        border: 1px solid #f1f1f1;     
+        height: 200px;   
+
+        .button-overlay{
+            height: 15%;
+
+            &:hover{
+                height: 20%;
+            }
+        }
+
+        img{
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        &.wide-img img{           
+            max-height: 100%;
+            width: auto;
+            max-width: none;
+        }
+    }
 }
 .asset-img{
     position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: column;   
     flex: 0 0 auto;
-    height: 300px;
 
-    &.taller{
-        height: 400px;
-    }
+    img{
+        position: absolute;
+        left: 50%;
+        top: 50%;       
+        transform: translate(-50%,-50%);
+    }   
 
     & > a, & > div {
         position: relative;
         flex: 1 0 auto;
         overflow: hidden;
-    }
-    
-    & img{
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        height: 100%;
-        width: auto;
-        transform: translate(-50%,-50%);
-    }
-
-    &.wide-img img{
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        height: inherit;
-        width: 100%;        
-        transform: translate(-50%,-50%);
-    }
+    }   
 }
 .asset-legend{
     flex: 1 0 auto;
@@ -329,6 +337,7 @@
     padding: 15px;
 }
 .asset-title,
+.asset-title:hover,
 .asset-title:visited,
 .asset-title:active{
     display: block;
@@ -337,13 +346,15 @@
     text-decoration: none;
     color: $dark-gray;
     text-transform: uppercase;
+
+    span{
+        font-size: .8rem;
+        text-transform: lowercase;
+    }
     
 }
-.asset-title span{
-    font-size: .8rem;
-    text-transform: lowercase;
-}
 .asset-desc,
+.asset-desc:hover,
 .asset-desc:visited,
 .asset-desc:active{
     font-size: .75rem;

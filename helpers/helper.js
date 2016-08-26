@@ -1,3 +1,5 @@
+var nodemailer = require('nodemailer');
+
 module.exports.getPaginationData = function (rowCount, pageSize, paginationLimit, currentPage) {
     var totalPages = Math.ceil(rowCount / (pageSize ? pageSize : 20));
     var pageGroups = Math.ceil(totalPages / (paginationLimit ? paginationLimit : 10));
@@ -60,3 +62,48 @@ module.exports.toURLFormat = function (string) {
     var chars = { "à": "a", "á": "a", "â": "a", "ã": "a", "ä": "a", "å": "a", "ò": "o", "ó": "o", "ô": "o", "õ": "o", "ö": "o", "ø": "o", "è": "e", "é": "e", "ê": "e", "ë": "e", "ç": "c", "ì": "i", "í": "i", "î": "i", "ï": "i", "ù": "u", "ú": "u", "û": "u", "ü": "u", "ÿ": "y", "ñ": "n", "-": "_" };
     return string.replace(/[^A-Za-z0-9]/g, function (x) { return chars[x] || x; }).replace(/\s+/g, '_').toLowerCase();
 };
+
+module.exports.setupFlashMessages = function(flashMessages){
+	var message = {};
+	
+	if(flashMessages.signinMessage){
+		message.element = {selector: '#signin-form', type: 'nav', actionnable: '#login-toggle'}
+		message.style = flashMessages.signinMessage[0];
+		message.message = flashMessages.signinMessage[1];
+	} else if(flashMessages.signupMessage){
+		message.element = {selector: '#signup-form', type: style === 'danger' ? 'modal' : 'notify', actionnable: '#signup-modal'}
+		message.style = flashMessages.signupMessage[0];
+		message.message = flashMessages.signupMessage[1];
+	}else if(flashMessages.forgotMessage){
+		var style = flashMessages.forgotMessage[0];
+		message.element = {selector: '#forgot-form', type: style === 'danger' ? 'modal' : 'notify', actionnable: '#forgot-modal'}
+		message.style = style;
+		message.message = flashMessages.forgotMessage[1];
+	}else if(flashMessages.resetMessage){
+		message.element = {selector: '#flash-message', type: style === 'danger' ? 'form' : 'notify'};
+		message.style = flashMessages.resetMessage[0];
+		message.message = flashMessages.resetMessage[1];
+	}
+	
+	return message;
+};
+
+module.exports.sendMail = function(to, from, subject, text, callback){
+    var smtpTransport = nodemailer.createTransport(
+    {
+        host: 'SSL0.OVH.NET',
+        port: 465,
+        secure: true, // use SSL
+        auth: {
+            user: 'erwinfrance@cinalia.com',
+            pass: 'JpEf2016CIN'
+        }
+    });
+    var mailOptions = {
+        to: to,
+        from: from,
+        subject: subject,
+        text: text
+    };
+    smtpTransport.sendMail(mailOptions, callback);
+}

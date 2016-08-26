@@ -38,8 +38,7 @@ var User = bookshelf.Model.extend({
         return promiseHash(model.get('password'), null, null)
         .then(function (hash) {
             model.set('password', hash);
-        }).catch(function (err) {
-            throw new Error(err);
+			return model;
         });
     },
 
@@ -59,14 +58,15 @@ var User = bookshelf.Model.extend({
 },
 { login: Promise.method(function(email, password) {
     if (!email || !password) 
-        throw new Error('Email and password are both required');
+        throw new Error('Un email et un mot de passe sont requis');
     
     return new this({ username: email.toLowerCase().trim() }).fetch({ withRelated: 'type', require: true })
         .tap(function (user) {
             let promiseCompare = Promise.promisify(bcrypt.compare);
-            return promiseCompare(password, user.get('password')).then(function (res) {
-                if (!res) throw new Error('Invalid password');
-            });
+            return promiseCompare(password, user.get('password')).then(function (match) {
+                if (!match)
+                    throw new Error('Mot de passe incorrect');
+            })		
         });        
     })
 });

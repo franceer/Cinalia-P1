@@ -4,6 +4,7 @@ let express = require('express'),
     router = express.Router(),
     VideoMedia = require('../models/video-media'),
     Product = require('../models/product'),
+    Location = require('../models/location'),
     WorkersInVideoMedia = require('../models/workers-in-video-media'),
 	Bookmark = require('../models/bookmark'),
     Like = require('../models/like'),
@@ -13,12 +14,20 @@ let express = require('express'),
 
 router.get('/:id*', function (req, res, next) {
     if (req.xhr) {
-        Product.getAllProductsByMediaID(req.params.id, res.locals.user, req.body.filter)
-        .fetchAll()
-        .then(function (allProducts) {
-            res.locals.allProducts = allProducts.toJSON();
-            res.render('partials/video-media-assets', {layout: false});
-        })
+        Promise.resolve()
+        .then(function () {
+            var filter = req.query.filter;
+                
+            if (filter === 'Lieux') {
+                return Location.getAllLocationsByMediaID(req.params.id, res.locals.user, req.query.filter).fetchAll();
+            } else {
+                return Product.getAllProductsByMediaID(req.params.id, res.locals.user, req.query.filter).fetchAll();
+            }
+        })       
+        .then(function (allassets) {
+            res.locals.allAssets = allassets.toJSON();
+            res.render('partials/video-media-assets', { layout: false });
+        })       
         .catch(function (err) {
             return next(new Error(err));
         });
@@ -93,7 +102,7 @@ router.get('/:id*', function (req, res, next) {
             .fetchAll();
         })
         .then(function (allProducts) {
-            res.locals.allProducts = allProducts.toJSON();
+            res.locals.allAssets = allProducts.toJSON();           
             res.render('movies/movie');
         })
         .catch(function (err) {

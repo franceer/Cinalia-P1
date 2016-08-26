@@ -25,6 +25,9 @@ let Set = bookshelf.Model.extend({
 
     virtuals: {
         type: function () {
+            return 'set';
+        },
+        displayType: function () {
             return 'décor';
         },
         sectionUrl: function () {
@@ -33,6 +36,15 @@ let Set = bookshelf.Model.extend({
         urlRewrite: function () {
             return helper.toURLFormat(this.get('name'));
         }
+    }
+},
+{
+    getLastSets: function (id, limit) {
+        return this.query(function (qb) {
+            qb.limit(limit ? limit : 4);
+            qb.orderBy('created_at', 'desc');
+            qb.where('id', '<>', id);
+        }).fetchAll({withRelated: ['videoMedia']});
     }
 });
 
