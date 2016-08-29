@@ -1,7 +1,7 @@
 'use strict';
 
 //Setup env
-require('dotenv').config();
+require('dotenv').config({ silent: true });
 var config = require('./knexfile.js');
 var env = process.env.NODE_ENV;
 
