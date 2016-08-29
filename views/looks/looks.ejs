@@ -1,4 +1,5 @@
-﻿<section id="look-products-section">
+﻿<%- include('../partials/main-modal') %>
+<section id="look-products-section">
     <div class="container">
         <div class="row">
             <div class="col-md-9">
@@ -101,7 +102,7 @@
                             </div>
                             <div class="asset-legend drop-shadow">
                                 <a href="/<%= look.sectionUrl + '/' + look.id _%>" class="asset-title"><%= look.name _%></a>
-                                <a href="/<%= look.sectionUrl + '/' + look.id _%>" class="asset-desc">Vu dans <%- look.videoMedia.name _%></a>
+                                <a href="/<%= look.sectionUrl + '/' + look.id _%>" class="asset-desc">Vu dans <%- look.video_media_name _%></a>
                             </div>
                         </div>
                         <%_ } _%>
@@ -143,6 +144,10 @@
         </div>
     </section>
 </div>
+<%- contentFor('pageTitle') %>
+<title>Look - <%= look.name_%></title>
+<%- contentFor('sEOMetas') %>
+<meta name="description" content="<%= look.description _%>">
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/lib/iframeResizer.min.js"></script>
 <script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>

@@ -1,7 +1,10 @@
 ﻿'use strict';
 
+//Setup env
+require('dotenv').config();
+
 //Set Modules & variables
-var express = require('express')
+let express = require('express')
     , session = require('express-session')
 	, KnexSessionStore = require('connect-session-knex')(session)
     , app = express()
@@ -12,13 +15,12 @@ var express = require('express')
     , flash = require('connect-flash')
 	, loadUser = require('./middlewares/load-user')
     , loadFlashMessages = require('./middlewares/load-flash-messages')
-    , loadPageURL = require('./middlewares/load-page-url')
-    , port = process.env.PORT || 3000;
-
+    , loadPageURL = require('./middlewares/load-page-url');
 
 var db = require('./database/database');
 
 //App configuration
+let port = process.env.SRV_PORT;
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));

@@ -43,9 +43,9 @@
                     <p class="subtitle"><%= location.city_state_country -%></p>
                     <p class="description text-justify">
                         <%- location.description -%>
-                        <button class="button-overlay dark">
+                        <!--<button class="button-overlay dark">
                             <i class="fa fa-angle-double-down" aria-hidden="true"></i>
-                        </button>
+                        </button>-->
                     </p>
                     <%_ if(location.sawIn){ _%>
                     <p class="font-weight-bold as-seen">
@@ -141,6 +141,10 @@
         </div>
     </section>
 </div>
+<%- contentFor('pageTitle') %>
+<title>Lieu - <%= location.name_%></title>
+<%- contentFor('sEOMetas') %>
+<meta name="description" content="<%= location.description _%>">
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>

@@ -4,7 +4,7 @@
             <div class="col-md-3">
                 <div class="asset-img">
                     <div><img src="<%= product.picture_url %>" alt="<%= product.picture_alt %>" title="<%= product.picture_title %>" /></div>
-                </div>               
+                </div>
             </div>
             <div class="col-md-9">
                 <div class="row">
@@ -37,67 +37,67 @@
                         </div>
                     </div>
                 </div>
-				<div class="row">
-					<div class="col-md-12">
-						<p class="subtitle"><%= product.name %> - <span class="font-weight-bold"><%= product.price %>€</span></p>					
-						<p class="description text-justify"><%= product.description %></p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-                        <span><i class="fa fa-tag" aria-hidden="true"></i></span>                        
-						<ul id="category-tags">
-						<%_product.categories.forEach(function(category){ _%>
-							<li class="tag tag-default"><%= category.name _%></li>
-						<%_ });_%>
-						</ul>
-					</div>
-				</div>              
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="subtitle"><%= product.name %> - <span class="font-weight-bold"><%= product.price %>€</span></p>
+                        <p class="description text-justify"><%= product.description %></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span><i class="fa fa-tag" aria-hidden="true"></i></span>
+                        <ul id="category-tags">
+                            <%_product.categories.forEach(function(category){ _%>
+                            <li class="tag tag-default"><%= category.name _%></li>
+                            <%_ });_%>
+                        </ul>
+                    </div>
+                </div>
                 <% if(typeof media != 'undefined'){ %>
-				<div class="row">
-					<div class="col-md-12">
-						<p class="font-weight-bold as-seen">
-							Vu dans <span class="text-important"><%= media.name _%></span>                            
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="font-weight-bold as-seen">
+                            Vu dans <span class="text-important"><%= media.name _%></span>                           
                             <span class="matching-status <%= contextualInfo.matchingStatus.id === 1 ? 'exact-match' : 'close-match' _%>">
-                                <i class="fa fa-circle" aria-hidden="true"></i><%= contextualInfo.matchingStatus.display_name  %>
-                            </span>                            
-						</p>
-						<% if(contextualInfo.appearingContext) {%>
-						<p class="description text-justify">
-							<%= contextualInfo.appearingContext %>
-						</p>
-						<%
-						}
-						_%>
-					</div>
-				</div>
-                <%_ 
-				}
+                                <%= contextualInfo.matchingStatus.display_name  %>
+                            </span>
+                        </p>
+                        <% if(contextualInfo.appearingContext) {%>
+                        <p class="description text-justify">
+                            <%= contextualInfo.appearingContext %>
+                        </p>
+                        <%
+                        }
+                        _%>
+                    </div>
+                </div>
+                <%_
+                }
                 _%>
                 <%_ if((medias.length > 0 && typeof media === 'undefined') || (medias.length > 1 && typeof media !== 'undefined')){ %>
                 <div class="row">
-					<div class="col-md-12">
-						<p>
-							A voir<%= typeof media !== 'undefined' ? ' également' : '' %> dans :
-							<ul>
-								<% for(var l = medias.length, i = 0; i < l; i++){
-								var videoMedia = medias[i];
-								if(typeof media != 'undefined' && media.id === videoMedia.id)
-								{
-									continue;
-								}
-								%>
-								<li>
-									<%= videoMedia.name %>
-								</li>
-								<% } %>
-							</ul>
-						</p>
-					</div>
-				</div>
+                    <div class="col-md-12">
+                        <p>
+                            A voir<%= typeof media !== 'undefined' ? ' également' : '' %> dans :
+                            <ul>
+                                <% for(var l = medias.length, i = 0; i < l; i++){
+                                var videoMedia = medias[i];
+                                if(typeof media != 'undefined' && media.id === videoMedia.id)
+                                {
+                                continue;
+                                }
+                                %>
+                                <li>
+                                    <%= videoMedia.name %>
+                                </li>
+                                <% } %>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
                 <% } %>
                 <div>
-                    <button class="interactive-button">Acheter</button>
+                    <a href="<%= product.commercial_url _%>" class="interactive-button" target="_blank">Acheter</a>
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
                             <button class="button-overlay red bookmark<%= productTemp.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= productTemp.id _%>" data-object-type="<%= productTemp.type _%>"><%= productTemp.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
                         </div>
                         <div class="asset-legend drop-shadow">
-                            <a href="/<%= productTemp.sectionUrl + '/' + productTemp.id _%>" class="asset-title"><%= productTemp.brand.name _%></a>
+                            <a href="/<%= productTemp.sectionUrl + '/' + productTemp.id _%>" class="asset-title"><%= productTemp.brand_name _%></a>
                             <a href="/<%= productTemp.sectionUrl + '/' + productTemp.id _%>" class="asset-desc"><%= productTemp.name _%></a>
                         </div>
                     </div>
@@ -163,6 +163,10 @@
         </div>
     </div>
 </section>
+<%- contentFor('pageTitle') %>
+<title>Produit - <%= product.brand.name + ' ' + product.name_%></title>
+<%- contentFor('sEOMetas') %>
+<meta name="description" content="<%= product.description _%>">
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>

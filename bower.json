@@ -1,0 +1,25 @@
+{
+  "name": "shopinmedia",
+  "description": "Cinalia first project",
+  "main": "app.js",
+  "authors": [
+    "Erwin France"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/franceer/Cinalia-P1",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "v4.0.0-alpha.2",
+    "jquery-validation": "^1.15.0",
+    "remarkable-bootstrap-notify": "^3.1.3",
+    "tether": "^1.3.2",
+    "velocity": "^1.2.3"
+  }
+}

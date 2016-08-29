@@ -10,15 +10,15 @@
             <%_ newRow = false; } _%>
             <div class="col-md-<%= asset.type === 'product' ? '3' : '4' %> asset-figure">
                 <div class="asset-img <%= asset.type === 'location' ? 'wide-img' : '' %>">
-                    <a href="/<%= asset.section_url + '/' + asset.id _%>"><img src="<%= asset.picture_url _%>" alt="<%= asset.picture_alt _%>" title="<%= asset.picture_title _%>" /></a>
+                    <a data-modal="true" href="/<%= asset.section_url + '/' + asset.id + '?mediaid=' + videoMediaID _%>"><img src="<%= asset.picture_url _%>" alt="<%= asset.picture_alt _%>" title="<%= asset.picture_title _%>" /></a>
                     <button class="button-overlay red bookmark<%= asset.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= asset.id _%>" data-object-type="<%= asset.type _%>"><%= asset.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
                 </div>
                 <div class="asset-legend drop-shadow">
                     <%_ if(asset.brand_name){ _%>
-                    <a href="/<%= asset.section_url + '/' + asset.id _%>" class="asset-title"><%= asset.brand_name _%></a>
-                    <a href="/<%= asset.section_url + '/' + asset.id _%>" class="asset-desc"><%- asset.name _%></a>
+                    <a data-modal="true" href="/<%= asset.section_url + '/' + asset.id + '?mediaid=' + videoMediaID _%>" class="asset-title"><%= asset.brand_name _%></a>
+                    <a data-modal="true" href="/<%= asset.section_url + '/' + asset.id + '?mediaid=' + videoMediaID _%>" class="asset-desc"><%- asset.name _%></a>
                     <%_ } else { _%>
-                    <a href="/<%= asset.section_url + '/' + asset.id _%>" class="asset-title"><%= asset.name _%></a>
+                    <a data-modal="true" href="/<%= asset.section_url + '/' + asset.id + '?mediaid=' + videoMediaID _%>" class="asset-title"><%= asset.name _%></a>
                     <%_ } _%>
                 </div>
             </div>

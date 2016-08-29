@@ -47,11 +47,15 @@ let Location = bookshelf.Model.extend({
             qb.orderByRaw('2');
         });
     },
-    getLastLocations: function (id, limit) {
+    getLastLocations: function (id, user, limit) {
         return this.query(function (qb) {
+            if (user) 
+                qb.joinRaw('LEFT JOIN user_bookmarks b ON b.bookmark_id = locations.id AND b.user_id = ' + user.id + ' AND b.bookmark_type = \'location\'');
+            
             qb.limit(limit ? limit : 4);
             qb.orderBy('created_at', 'desc');
-            qb.where('id', '<>', id);
+            qb.where('locations.id', '<>', id);
+            qb.select(bookshelf.knex.raw('locations.id, locations.name, locations.description, locations.picture_url, locations.picture_alt, locations.picture_title, \'locations\' as section_url' + (user ? ', b.id as bookmark_id' : '')));
         }).fetchAll();
     }
 });

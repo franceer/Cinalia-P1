@@ -36,3 +36,6 @@ bower_components
 
 # Sass cache
 .sass-cache
+
+#Environment files
+.env

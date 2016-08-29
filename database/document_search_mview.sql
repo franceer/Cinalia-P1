@@ -70,4 +70,6 @@ setweight(to_tsvector(unaccent(loc.name)), 'A') || setweight(to_tsvector(unaccen
 FROM locations loc
 JOIN categories_locations cloc ON loc.id = cloc.location_id
 JOIN categories c5 ON cloc.category_id = c5.id
-GROUP BY 1
+GROUP BY 1;
+
+CREATE INDEX idx_fts_search ON document_search_mview USING gin(tsv);

@@ -16,7 +16,6 @@ module.exports = [{
         mainHome: './main-home',
         mainVideoMedia: './main-video-media',
         mainLook: './main-look',
-        mainSearch: './main-search',
         mainProfile: './main-profile',
         commons: './common'
     },
@@ -28,7 +27,6 @@ module.exports = [{
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
             name: 'commons',
-            chunks: ['mainVideoMedia', 'mainLook'],
             filename: 'common.js'
         }),
         new webpack.ProvidePlugin({

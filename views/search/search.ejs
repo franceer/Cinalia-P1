@@ -2,10 +2,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-md-center m-t-2"><%_ if(typeof categoryName !== 'undefined'){ _%><%= categoryName _%><%_ }else{ _%>Résulats de la recherche pour '<%= keywords _%>'<%_ } _%></h1>
+                <h1 class="text-md-center m-t-2"><%_ if(typeof categoryName !== 'undefined'){ _%><%= categoryName _%><%_ }else{ _%>Résultats de la recherche pour '<%= keywords _%>'<%_ } _%></h1>
             </div>
         </div>
-        <% if(pagination.rowCount !== 0){ _%>
+        <% if(pagination.rowCount && pagination.rowCount !== 0){ _%>
         <div class="row">
             <div class="col-md-3 offset-md-9">
                 <p>Elements <%= (pagination.page === 1 ? 1 : ((pagination.page - 1) * pagination.pageSize) + 1) + ' '_%> à <%if(pagination.pageCount === 1){%><%= pagination.rowCount %><%_ }else{ _%><%= (pagination.page === 1 ? pagination.pageSize : (pagination.rowCount < (pagination.page * pagination.pageSize) ? pagination.rowCount : (pagination.page * pagination.pageSize))) + ' ' _%><%_ } %> sur un total de <%= pagination.rowCount _%></p>
@@ -87,7 +87,10 @@
         <%_ } _%>
     </div>
 </section>
-
+<%- contentFor('pageTitle') %>
+<title><%_ if(typeof categoryName !== 'undefined'){ _%>PickedIn.com | Elements appartenant à la catégorie <%= categoryName _%><%_ }else{ _%>PickedIn.com | Résultats de la recherche pour '<%= keywords _%>'<%_ } _%></title>
+<%- contentFor('sEOMetas') %>
+<meta name="description" content="Avec PickedIn.com, retrouvez rapidement les produits et lieux des films qui vous ont marqués.">
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/mainsearch.js"></script>

@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
     let categoryName = '';
 
     if (catID) {
-        Category.findById(catID).then(function (category) {
+        Category.findById(catID).then(function (category) {            
             res.locals.categoryName = category.get('name');
             res.locals.catID = catID;
             let categoryPath = category.get('path');
@@ -34,11 +34,13 @@ router.get('/', function (req, res) {
                 page: parseInt(currentPage)
             });            
         })
-        .then(function (results) {
+        .then(function (results) {            
             results.pagination.data = helper.getPaginationData(results.pagination.rowCount, results.pagination.pageSize, 10, results.pagination.page);
-            res.render('search/search', { results: results.toJSON(), pagination: results.pagination });
+            res.render('search/search', { results: results.toJSON(), pagination: results.pagination });            
         }).catch(function (err) {
-            throw new Error(err);
+            res.locals.categoryName = 'Catégorie introuvable';
+            res.locals.catID = catID;
+            res.render('search/search', { results: {}, pagination: {} });
         });
     } else {        
         var limit = 20

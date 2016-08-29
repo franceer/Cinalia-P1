@@ -50,7 +50,7 @@ router.get('/:id*', function (req, res, next) {
         if (likeCount && likeCount.length > 0)
             res.locals.likeCount = likeCount[0].like_count;
 
-        return Location.getLastLocations(res.locals.location.id);
+        return Location.getLastLocations(res.locals.location.id, res.locals.user);
     })
     .then(function (lastLocations) {
         res.locals.lastLocations = lastLocations.toJSON();

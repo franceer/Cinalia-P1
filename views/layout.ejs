@@ -1,7 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
     <head>
-        <title>Home</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <%- defineContent('pageTitle') %>
+        <%- defineContent('sEOMetas') %>
         <!--<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
         <script src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>-->
         <link rel="stylesheet" href="/css/bootstrap.css" />
@@ -10,10 +13,7 @@
         <!--<script src="/js/lib/bootstrap.js"></script>
         <script src="/js/lib/plyr.js"></script>-->
         <!--<script type="text/javascript" src="/js/client-scripts.js"></script>-->        
-        <%- defineContent('extraScripts') %>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <%- defineContent('sEOMetas') %>
+        <%- defineContent('extraScripts') %>       
 		<script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
 <body>

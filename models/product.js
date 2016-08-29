@@ -117,12 +117,17 @@ let Product = bookshelf.Model.extend({
             qb.orderByRaw('2');
         });
     },
-    getLastProducts: function (id, limit) {
+    getLastProducts: function (id, user, limit) {
         return this.query(function (qb) {
+            if (user) 
+                qb.joinRaw('LEFT JOIN user_bookmarks b1 ON b1.bookmark_id = products.id AND b1.user_id = ' + user.id + ' AND b1.bookmark_type = \'product\'');            
+
+            qb.join('brands as b', 'b.id', '=', 'products.brand_id');
             qb.limit(limit ? limit : 4);
             qb.orderBy('created_at', 'desc');
-            qb.where('id', '<>', id);
-        }).fetchAll({withRelated: ['brand']});
+            qb.where('products.id', '<>', id);
+            qb.select(bookshelf.knex.raw('products.id, products.name, b.name as brand_name, products.description, products.picture_url, products.picture_alt, products.picture_title, \'products\' as section_url' + (user ? ', b1.id  as bookmark_id' : '')));
+        }).fetchAll();
     }
 });
 

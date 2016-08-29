@@ -1,17 +1,4 @@
-<div class="modal fade" id="main-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <a id="iframe-go-back" href="./">Retourner à la page <span></span></a>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <iframe src="" scrolling="no"></iframe>
-                <script>iFrameResize()</script>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+<%- include('../partials/main-modal') %>
 <section id="player-section" class="container">
     <div class="row">
         <div class="col-md-12">
@@ -244,9 +231,13 @@
                 </div>               
             </div>
         </div>
-        <%- include('../partials/video-media-assets', { allAssets:  allAssets }) %>
+        <%- include('../partials/video-media-assets', { allAssets:  allAssets, videoMediaID: videoMedia.id }) %>
     </div>
 </section>
+<%- contentFor('pageTitle') %>
+<title>Film - <%= videoMedia.name _%></title>
+<%- contentFor('sEOMetas') %>
+<meta name="description" content="<%= videoMedia.description _%>">
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/lib/iframeResizer.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>

@@ -1,3 +1,4 @@
+<%- include('../partials/main-modal') %>
 <section id="set-map-section">
     <div class="container">
         <div class="row">
@@ -10,12 +11,12 @@
                     <div class="html-tooltip <%= iteratee.matchingStatus.name -%>-match" style="top: <%= iteratee.y_offset -%>px; left: <%= iteratee.x_offset -%>px;">
                         <div class="matching-icon"><%= iteratee.matchingStatus.display_name -%></div>
                         <div class="tooltip-content bottom">
-                            <span class="title"><%= iteratee.product.brand.name + ' - ' + iteratee.product.name -%></span>
-                            <img class="img-fluid" src="<%= iteratee.product.picture_url -%>" alt="<%= iteratee.product.picture_alt -%>" title="<%= iteratee.product.picture_title -%>"/>
+                            <a data-modal="true" href="/products/<%= iteratee.product.id -%>"><span class="title"><%= iteratee.product.brand.name + ' - ' + iteratee.product.name -%></span></a>
+                            <a data-modal="true" href="/products/<%= iteratee.product.id -%>"><img class="img-fluid" src="<%= iteratee.product.picture_url -%>" alt="<%= iteratee.product.picture_alt -%>" title="<%= iteratee.product.picture_title -%>" /></a>
                             <span><%= iteratee.product.price -%>€</span>
                             <div class="controls">
-                                <button class="interactive-button">Acheter</button>
-                                <a href="/products/<%= iteratee.product.id -%>" class="interactive-button">Détails</a>
+                                <a href="<%= iteratee.product.commercial_url _%>" class="interactive-button" target="_blank">Acheter</a>
+                                <a data-modal="true" href="/products/<%= iteratee.product.id -%>" class="interactive-button">Détails</a>
                             </div>
                         </div>
                     </div>
@@ -28,7 +29,7 @@
                 <div class="location-info">
                     <div class="row">
                         <div class="col-md-9">
-                            <h1>Salon de la coloc'</h1>
+                            <h1><%= set.name _%></h1>
                         </div>
                         <div id="user-actions" class="col-md-3">
                             <button class="bookmark<%= typeof bookmark !== 'undefined' ? ' bookmarked' : '' _%>" data-object-id="<%= set.id _%>" data-object-type="set">
@@ -96,7 +97,7 @@
                             </div>
                             <div class="asset-legend drop-shadow">
                                 <a href="/<%= set.sectionUrl + '/' + set.id _%>" class="asset-title"><%= set.name _%></a>
-                                <a href="/<%= set.sectionUrl + '/' + set.id _%>" class="asset-desc">Vu dans <%- set.videoMedia.name _%></a>
+                                <a href="/<%= set.sectionUrl + '/' + set.id _%>" class="asset-desc">Vu dans <%- set.video_media_name _%></a>
                             </div>
                         </div>
                         <%_ } _%>
@@ -138,6 +139,10 @@
         </div>
     </section>
 </div>
+<%- contentFor('pageTitle') %>
+<title>Décor - <%= set.name_%></title>
+<%- contentFor('sEOMetas') %>
+<meta name="description" content="<%= set.description _%>">
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/lib/iframeResizer.contentWindow.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>

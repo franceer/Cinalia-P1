@@ -44,12 +44,17 @@ let Look = bookshelf.Model.extend({
     }    
 },
 {
-    getLastLooks: function (id, limit) {
+    getLastLooks: function (id, user, limit) {
         return this.query(function (qb) {
+            if (user)
+                qb.joinRaw('LEFT JOIN user_bookmarks b ON b.bookmark_id = looks.id AND b.user_id = ' + user.id + ' AND b.bookmark_type = \'look\'');
+
+            qb.join('video_medias as vm', 'vm.id', '=', 'looks.video_media_id');
             qb.limit(limit ? limit : 4);
-            qb.orderBy('created_at', 'desc');
-            qb.where('id', '<>', id);
-        }).fetchAll({ withRelated: ['videoMedia'] });
+            qb.orderBy('looks.created_at', 'desc');
+            qb.where('looks.id', '<>', id);
+            qb.select(bookshelf.knex.raw('looks.id, looks.name, vm.name as video_media_name, looks.description, \'looks\' as section_url' + (user ? ', b.id  as bookmark_id' : '')));
+        }).fetchAll();
     }
 });
 
