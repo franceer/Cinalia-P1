@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 //Setup env
-require('dotenv').config();
+require('dotenv').config({ silent: true });
 
 //Set Modules & variables
 let express = require('express')
