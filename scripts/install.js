@@ -6,5 +6,7 @@ bookshelf.knex.migrate.latest()
 .then(function () {
     return bookshelf.knex.seed.run();
 }).then(function () {
-    process.exit();
+    return;
 });
+
+return;
