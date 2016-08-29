@@ -81,7 +81,6 @@ var schema = {
         synopsis: { type: 'text', nullable: true },
         tv_broadcaster: { type: 'string', maxlength: 64, nullable: false },
         media_genre_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_genres' },
-        social_data_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'social_data' },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },
