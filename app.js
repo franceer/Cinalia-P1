@@ -20,7 +20,7 @@ let express = require('express')
 var db = require('./database/database');
 
 //App configuration
-let port = process.env.SRV_PORT;
+let port = process.env.PORT;
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
