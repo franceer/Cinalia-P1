@@ -26,7 +26,7 @@ router.get('/:id*', function (req, res, next) {
         })       
         .then(function (allassets) {
             res.locals.allAssets = allassets.toJSON();
-            res.render('partials/video-media-assets', { layout: false });
+            res.render('partials/video-media-assets', { layout: false, videoMediaID: req.params.id });
         })       
         .catch(function (err) {
             return next(new Error(err));
