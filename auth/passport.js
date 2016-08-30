@@ -45,7 +45,7 @@ passport.use('local-signup', new LocalStrategy({
 			return done(null, false, req.flash('signupMessage', ['danger', 'Merci de sélectionner une image captcha']));
 		  }
 		  
-		var secretKey = "6LcwZSgTAAAAAPtK3pvMYIjKj9UKyComh4-tZiCv";
+		var secretKey = process.env.SECRET_CAPTCHA_KEY;
 		
 		// Hitting GET request to the URL, Google will respond with success or error scenario.
 		var requestOptions = {
