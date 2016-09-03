@@ -38,7 +38,7 @@ var schema = {
 	media_characters: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         firstname: { type: 'string', maxlength: 64, nullable: false },
-        lastname: { type: 'string', maxlength: 64, nullable: false },
+        lastname: { type: 'string', maxlength: 64, nullable: true },
         nickname: { type: 'string', maxlength: 64, nullable: true },
         character_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'character_types', defaultTo: 1 }
     },
@@ -70,7 +70,8 @@ var schema = {
         name: { type: 'string', maxlength: 64, nullable: false },
         description: { type: 'text', nullable: true },
         theater_release_date: { type: 'date', nullable: false },
-        tv_release_date: { type: 'date', nullable: false },
+        tv_release_date: { type: 'date', nullable: true },
+        release_country: { type: 'string', maxlength: 64, nullable: false },
         duration: { type: 'integer', nullable: false },
         poster_url: { type: 'string', maxlength: 400, nullable: false },
         poster_alt: { type: 'string', maxlength: 128, nullable: false },
@@ -79,7 +80,7 @@ var schema = {
         video_url: { type: 'string', maxlength: 400, nullable: false },
         video_caption: { type: 'string', maxlength: 64, nullable: true },
         synopsis: { type: 'text', nullable: true },
-        tv_broadcaster: { type: 'string', maxlength: 64, nullable: false },
+        tv_broadcaster: { type: 'string', maxlength: 64, nullable: true },
         media_genre_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_genres' },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
@@ -132,7 +133,8 @@ var schema = {
 	workers: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         firstname: { type: 'string', maxlength: 64, nullable: true },
-        lastname: { type: 'string', maxlength: 64, nullable: true },        
+        lastname: { type: 'string', maxlength: 64, nullable: true },
+        company_name: { type: 'string', maxlength: 64, nullable: true },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },

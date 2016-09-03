@@ -517,15 +517,9 @@ header {
   header #brand {
     position: absolute;
     top: 0;
-    z-index: 3; }
-    header #brand h1, header #brand h2 {
-      font-size: 35px;
-      font-family: Lobster, Oswald, Roboto;
-      line-height: inherit;
-      margin: 0;
-      padding: 0; }
-      header #brand h1::first-letter, header #brand h2::first-letter {
-        color: white; }
+    z-index: 3;
+    font-size: 35px;
+    font-family: Oswald, Roboto; }
     header #brand span {
       color: #D9534F; }
 
@@ -1076,7 +1070,8 @@ footer {
     margin: 0 0 0 -43.39286px;
     list-style: none;
     padding: 0;
-    transform: translateX(43.39286px); }
+    transform: translateX(43.39286px);
+    min-height: 43.39286px; }
     .assets .timeline-bar.is-reversing {
       transform: translateX(-43.39286px); }
     .assets .timeline-bar .carousel-seat {
@@ -1169,7 +1164,6 @@ input[type=range] {
   text-shadow: 2px 1px 1px #000;
   background-color: rgba(0, 0, 0, 0.4); }
   .video-overlay i {
-    opacity: .8;
     font-size: 10rem; }
 
 .pickedin-player {
@@ -1181,242 +1175,6 @@ input[type=range] {
   .plyr iframe {
     margin-top: -60px; }
 
-/*.plyr__video-wrapper{
-    overflow-y: hidden;
-    height: 344px;
-}
-.plyr__video-wrapper video{
-    margin-top: -59px;
-    z-index: -1;
-}
-.plyr__controls{
-    background-color: $dark-gray;    
-    z-index: 1;
-}
-.plyr__controls button{
-    color: white;
-}
-.plyr__tooltip{
-    color: $dark-gray;
-}
-.plyr__controls .plyr__time{
-    color: white;
-}*/
-/***** PLAYER CAROUSEL *****/
-/*#player-carousel{
-    position: relative;
-    padding: 0 !important;
-    margin-bottom: 30px;
-}
-#player-carousel>.controls{
-    position: absolute;
-    width: 100%;
-    top: 353px;
-}
-#player-carousel > .controls > button{
-    position: relative;
-    transition: opacity .5s ease;
-    opacity: .8;   
-}
-#player-carousel > .controls > button:hover{    
-    opacity: 1;
-}
-#player-carousel > .controls > button:first-child{
-    left: -50px;
-}
-#player-carousel > .controls > button:nth-child(2){
-    left: 50px;
-}
-#player-carousel .row{
-    margin: 0;
-}
-#poster-section{
-    display: flex;
-    flex-direction: column;
-    background-clip: content-box;    
-    width: 25%;
-}
-#date-info{
-    background-color: $dark-gray;
-    padding-bottom: 15px;   
-}
-#date-info ul{
-    font-size: .8rem;
-    padding-left: 15px;
-    line-height: 1rem;
-    margin-bottom: 0;
-}
-#date-info li:nth-child(2)
-{
-    margin-top: 5px;
-}
-#working-people p, #date-info p{    
-    font-size: 1rem;    
-    padding-left: 15px;  
-    margin-bottom: 0;
-    text-align: left;
-}
-#date-info p{
-    font-weight: 500;
-}
-#working-people {
-    flex: 1 0 auto;
-    margin-top: 15px;    
-    background-color: $clear-gray;
-    padding-bottom: 15px;
-}
-#working-people ul{
-    font-size:.8rem;
-}
-#working-people .carousel-seat > ul{
-    position: relative;
-    left: 30px;
-}
-#working-people .carousel-seat > div {
-    width: 100%;
-}
-#working-people .carousel-seat > div > button{
-    border: 0;
-    background: none;
-    outline: none;
-    font-size: 1.5rem;
-}
-#working-people .carousel-seat > div > a,
-#working-people .carousel-seat > div > a:hover,
-#working-people .carousel-seat > div >a:visited
-{
-    text-decoration: none;
-    color: $dark-gray;
-}
-#working-people p{
-    font-weight: 600;
-    display: inline-block;
-    width: 75%;
-}
-#working-people p, #working-people ul{
-    color: $dark-gray;
-}
-#date-info p, #date-info ul{
-    color: white;
-}
-#all-products{
-    background-color: $clear-red;
-    flex-grow: 3;
-    color: white;
-    padding-top: 13%;
-}
-.video-overlay{
-    position: absolute;
-    top: 0;
-    color: white;
-    font-family: Oswald;
-    font-size: 1.5rem;
-    text-align: center;
-    width: 100%;
-    height: 344px;
-    cursor: pointer;
-    display: flex;
-    overflow-y: hidden;
-    flex-direction: column;
-    justify-content: center;
-    text-shadow: 2px 1px 1px #000; 
-    background-color: rgba(0,0,0,.4);
-    
-    i{
-        opacity: .8;
-        font-size: 10rem;
-    }
-
-    div{
-        position: absolute;
-        bottom: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-.pagin {
-    display: flex;
-    background-color: $dark-gray;
-    justify-content: center;
-    margin: 0;
-
-    li{
-        flex: 1 0 10%;
-        margin: 15px;
-    }
-
-    a{
-        display: block;
-
-        &:not(.active){
-            opacity: .5;
-            transition: opacity 500ms ease;
-
-            &:hover{
-                opacity: 1;
-            }
-        }
-    }
-
-    .active{
-        border-bottom: 5px solid $clear-red;
-    }
-}
-
-#player-carousel > .row{
-    align-items: center;
-}
-#player-carousel > .row > button{
-    border: 0;
-    font-size: 3rem;
-    line-height: 9rem;
-    outline: none;    
-}
-#player-carousel > .row > button > i{
-    transition: margin 100ms ease-in;
-}
-#player-carousel > .row > button:nth-child(1):hover > i{
-    margin: 0 5px 0 0;
-}
-#player-carousel > .row > button:nth-child(3):hover > i{
-    margin: 0 0 0 5px;
-}
-.slide-out {
-    animation: slide-out 0.5s forwards;
-    -webkit-animation: slide-out 0.5s forwards;
-}
-@keyframes slide-out {
-    100% { 
-        transform: translateX(110%);
-        opacity: 0;
-    }
-}
-.slide-in {
-    animation: slide-in 0.5s forwards;
-    -webkit-animation: slide-in 0.5s forwards;
-}
-@keyframes slide-in {
-    100% { 
-        transform: translateX(0%);
-        opacity: 1;
-    }
-}
-.disappear{
-    animation: disappear 0.5s forwards;
-}
-@keyframes disappear {
-    100% {        
-        opacity: 0;
-    }
-}
-.appear{
-    animation: appear 0.5s forwards;
-}
-@keyframes appear {
-    100% {        
-        opacity: 1;
-    }
-}*/
 /***** CAROUSELS *****/
 .wrap {
   overflow: hidden; }
@@ -1740,12 +1498,13 @@ input[type=range] {
   #look-products-section #product-lines {
     display: flex;
     flex-direction: column;
-    justify-content: space-around; }
+    justify-content: flex-start; }
     #look-products-section #product-lines .product-line {
       display: flex;
       background: #eeeeee;
       border: 3px solid transparent;
-      border-radius: 50px; }
+      border-radius: 50px;
+      margin-bottom: 30px; }
       #look-products-section #product-lines .product-line:hover {
         border: 3px solid #D9534F; }
     #look-products-section #product-lines .asset-img {

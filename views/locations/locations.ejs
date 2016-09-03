@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-4 location-map">
                 <iframe width="auto" height="auto" frameborder="0" style="border:0"
-                        src="https://www.google.com/maps/embed/v1/place?q=place_id:<%= location.place_id -%>&key=AIzaSyDQSk8BfTd87Ix_thSCfhw9YOMPwOLAHNI&zoom=<%= location.zoom -%>&center=<%= location.latitude -%>,<%= location.longitude -%>" allowfullscreen></iframe>
+                        src="https://www.google.com/maps/embed/v1/place?q=place_id:<%= location.place_id -%>&key=<%= mapsPublicKey _%>&zoom=<%= location.zoom -%>&center=<%= location.latitude -%>,<%= location.longitude -%>" allowfullscreen></iframe>
             </div>
         </div>
     </div>

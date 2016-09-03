@@ -60,7 +60,7 @@
                 <% Object.keys(products).forEach(function(key){ -%>
                 <div id="<%= key %>-line" class="product-line">
                     <% products[key].forEach(function(iteratee){-%>
-                    <div id="<%= iteratee.product.name -%>" class="asset-img">
+                    <div class="asset-img">
                         <a data-modal="true" href="/products/<%= iteratee.product.id -%>">
                             <img src="<%= iteratee.product.picture_url -%>" />
                         </a>
@@ -94,15 +94,15 @@
                         <%_ } _%>
                         <%_
                         for(var i = 1; i <= lastLooks.length; i++){
-                        var look = lastLooks[i-1]; _%>
+                        var lookTemp = lastLooks[i-1]; _%>
                         <div class="col-md-3 asset-figure">
                             <div class="asset-img">
-                                <a href="/<%= look.sectionUrl + '/' + look.id _%>"><img src="<%= look.picture_url _%>" alt="<%= look.picture_alt _%>" title="<%= look.picture_title _%>" /></a>
-                                <button class="button-overlay red bookmark<%= look.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= look.id _%>" data-object-type="<%= look.type _%>"><%= look.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
+                                <a href="/<%= lookTemp.sectionUrl + '/' + lookTemp.id _%>"><img src="<%= lookTemp.picture_url _%>" alt="<%= lookTemp.picture_alt _%>" title="<%= lookTemp.picture_title _%>" /></a>
+                                <button class="button-overlay red bookmark<%= lookTemp.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= lookTemp.id _%>" data-object-type="<%= lookTemp.type _%>"><%= lookTemp.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
                             </div>
                             <div class="asset-legend drop-shadow">
-                                <a href="/<%= look.sectionUrl + '/' + look.id _%>" class="asset-title"><%= look.name _%></a>
-                                <a href="/<%= look.sectionUrl + '/' + look.id _%>" class="asset-desc">Vu dans <%- look.video_media_name _%></a>
+                                <a href="/<%= lookTemp.sectionUrl + '/' + lookTemp.id _%>" class="asset-title"><%= lookTemp.name _%></a>
+                                <a href="/<%= lookTemp.sectionUrl + '/' + lookTemp.id _%>" class="asset-desc">Vu dans <%- lookTemp.video_media_name _%></a>
                             </div>
                         </div>
                         <%_ } _%>

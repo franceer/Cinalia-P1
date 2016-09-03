@@ -32,10 +32,15 @@ webpackJsonp([2],{
 	            jquery('.matching-icon').each(function () {
 
 	                var $markerElement = jquery(this);
-	                var markerCenter = getCenterCoord($markerElement);
 	                var $lineAsset = jquery('#' + $markerElement.data('asset-line'));
-	                var lineLeftCenter = getLeftCenterCoord($lineAsset);
 
+	                if ($lineAsset.length === 0) {
+	                    $markerElement.remove();
+	                    return true;
+	                }
+
+	                var markerCenter = getCenterCoord($markerElement);                
+	                var lineLeftCenter = getLeftCenterCoord($lineAsset);
 	                drawPath(t.paper, $markerElement.data('asset-line'), markerCenter, lineLeftCenter);
 	            });
 	        };

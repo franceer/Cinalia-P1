@@ -9,7 +9,7 @@ p.picture_alt,
 p.picture_title,
 'products',
 'product',
-setweight(to_tsvector(unaccent(p.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(b.name)), 'B') || setweight(to_tsvector(unaccent(coalesce(p.description,''))), 'D')
+setweight(to_tsvector(unaccent(p.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(b.name)), 'B')
 FROM products p
 JOIN brands b ON p.brand_id = b.id
 JOIN categories_products cp ON p.id = cp.product_id
@@ -24,7 +24,7 @@ NULL,
 NULL,
 'looks',
 'look',
-setweight(to_tsvector(unaccent(l.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c2.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(coalesce(l.description,''))), 'D')
+setweight(to_tsvector(unaccent(l.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c2.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B')
 FROM looks l
 JOIN categories_looks cl ON l.id = cl.look_id
 JOIN categories c2 ON cl.category_id = c2.id
@@ -38,7 +38,7 @@ s.picture_alt,
 s.picture_title,
 'sets',
 'set',
-setweight(to_tsvector(unaccent(s.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c3.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(coalesce(s.description,''))), 'D')
+setweight(to_tsvector(unaccent(s.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c3.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B')
 FROM sets s
 JOIN categories_sets cs ON s.id = cs.set_id
 JOIN categories c3 ON cs.category_id = c3.id
@@ -66,7 +66,7 @@ loc.picture_alt,
 loc.picture_title,
 'locations',
 'location',
-setweight(to_tsvector(unaccent(loc.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c5.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B') || setweight(to_tsvector(unaccent(coalesce(loc.description,''))), 'D')
+setweight(to_tsvector(unaccent(loc.name)), 'A') || setweight(to_tsvector(unaccent(regexp_replace(string_agg(c5.path::text, ' '), '[^\w]+', ' ', 'gi'))), 'B')
 FROM locations loc
 JOIN categories_locations cloc ON loc.id = cloc.location_id
 JOIN categories c5 ON cloc.category_id = c5.id

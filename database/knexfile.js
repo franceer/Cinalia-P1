@@ -9,11 +9,7 @@ module.exports = {
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
             charset: 'utf8'
-        },
-      //pool: {
-      //    min: 2,
-      //    max: 10
-      //},
+        },     
         migrations: {
             directory: './database/migrations',
             tableName: 'knex_migrations'
@@ -31,11 +27,7 @@ module.exports = {
             password: process.env.DB_PASS,
             charset: 'utf8',
             ssl: true
-        },
-    //pool: {
-    //  min: 2,
-    //  max: 10
-    //},
+        },   
         migrations: {
             directory: './database/migrations',
             tableName: 'knex_migrations'

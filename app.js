@@ -16,7 +16,7 @@ let express = require('express')
 	, loadUser = require('./middlewares/load-user')
     , loadFlashMessages = require('./middlewares/load-flash-messages')
     , loadPageURL = require('./middlewares/load-page-url')
-    , loadCaptchaKey = require('./middlewares/load-captcha-key');
+    , loadSecretKeys = require('./middlewares/load-secret-keys');
 
 var db = require('./database/database');
 
@@ -48,7 +48,7 @@ app.use(loadPageURL);
 app.use(loadUser);
 app.use(loadUser);
 app.use(loadFlashMessages);
-app.use(loadCaptchaKey);
+app.use(loadSecretKeys);
 app.use(require('./controllers'));
 
 //Listen to port

@@ -122,13 +122,14 @@
     #product-lines{
         display: flex;
         flex-direction: column;
-        justify-content: space-around;   
+        justify-content: flex-start;   
         
         .product-line{
             display: flex;
             background: $clear-gray;
             border: 3px solid transparent;
-            border-radius: 50px;        
+            border-radius: 50px;     
+            margin-bottom: 30px;   
             
             &:hover{
                 border: 3px solid $clear-red;

@@ -42,19 +42,9 @@ header{
     #brand{
         position: absolute;
         top: 0;           
-        z-index: 3;       
-
-        h1{
-            font-size: 35px;
-            font-family: Lobster, Oswald, Roboto;
-            line-height: inherit;
-            margin: 0;    
-            padding: 0;
-
-            &::first-letter{
-                color:white;
-            }   
-        }
+        z-index: 3;     
+        font-size: 35px;
+        font-family: Oswald, Roboto;        
 
         span{
             color: $clear-red;

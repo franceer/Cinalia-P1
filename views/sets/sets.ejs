@@ -89,15 +89,15 @@
                         <%_ } _%>
                         <%_
                         for(var i = 1; i <= lastSets.length; i++){
-                        var set = lastSets[i-1]; _%>
+                        var setTemp = lastSets[i-1]; _%>
                         <div class="col-md-3 asset-figure">
                             <div class="asset-img">
-                                <a href="/<%= set.sectionUrl + '/' + set.id _%>"><img src="<%= set.picture_url _%>" alt="<%= set.picture_alt _%>" title="<%= set.picture_title _%>" /></a>
-                                <button class="button-overlay red bookmark<%= set.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= set.id _%>" data-object-type="<%= set.type _%>"><%= set.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
+                                <a href="/<%= setTemp.sectionUrl + '/' + setTemp.id _%>"><img src="<%= setTemp.picture_url _%>" alt="<%= setTemp.picture_alt _%>" title="<%= setTemp.picture_title _%>" /></a>
+                                <button class="button-overlay red bookmark<%= setTemp.bookmark_id ? ' bookmarked' : '' _%>" data-object-id="<%= setTemp.id _%>" data-object-type="<%= setTemp.type _%>"><%= setTemp.bookmark_id ? 'Sauvegardé' : 'Sauvegarder' _%></button>
                             </div>
                             <div class="asset-legend drop-shadow">
-                                <a href="/<%= set.sectionUrl + '/' + set.id _%>" class="asset-title"><%= set.name _%></a>
-                                <a href="/<%= set.sectionUrl + '/' + set.id _%>" class="asset-desc">Vu dans <%- set.video_media_name _%></a>
+                                <a href="/<%= setTemp.sectionUrl + '/' + setTemp.id _%>" class="asset-title"><%= setTemp.name _%></a>
+                                <a href="/<%= setTemp.sectionUrl + '/' + setTemp.id _%>" class="asset-desc">Vu dans <%- setTemp.video_media_name _%></a>
                             </div>
                         </div>
                         <%_ } _%>

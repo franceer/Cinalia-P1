@@ -2,7 +2,7 @@
 <section id="player-section" class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1><%= videoMedia.name %> <span class="movie-year">(<%= moment(videoMedia.theater_release_date).year() %>)</span><span class="title-legend"> - Découvrez les tenues, produits et lieux de Five</span></h1>
+            <h1><%= videoMedia.name %> <span class="movie-year">(<%= moment(videoMedia.theater_release_date).year() %>)</span><span class="title-legend"> - Découvrez les tenues, produits et lieux de <%= videoMedia.name _%></span></h1>
         </div>
     </div>
     <div class="more-info">
@@ -23,7 +23,7 @@
                     </li>
                     <li class="info-separator">|</li>
                     <li>
-                        France
+                        <%= videoMedia.release_country _%>
                     </li>
                 </ul>
             </div>
@@ -56,17 +56,11 @@
     </div>
     <div class="row">
         <div class="col-md-9">
-            <div class="pickedin-player">
-                <!--div(data-video-id="bTqVqk7FSmY",data-type="youtube")-->
-                <!--<video poster="<%= videoMedia.poster_url %>" controls>
-                    <source src="/video/tallboymediatiethenoosemp4.mp4" type="video/mp4" />-->
-                    <!--Fallback for browsers that don't support the <video> element-->
-                    <!--<a href="/video/tallboymediatiethenoosemp4.mp4">Download</a>
-                </video>-->
-                <div data-type="youtube" data-video-id="9Lij2vKRCBc"></div> 
+            <div class="pickedin-player">                
+                <div data-type="youtube" data-video-id="<%= videoMedia.video_url _%>"></div> 
                 <div class="video-overlay">
                     <i class="fa fa-play" aria-hidden="true"></i>
-                    <div><%= videoMedia.video_caption %></div>
+                    <!--<div><%= videoMedia.video_caption %></div>-->
                 </div>
             </div>
             <div class="assets-nav">
@@ -103,9 +97,9 @@
                             %>
                             <li class="carousel-seat<%= isRefString -%>" data-time-code="<%= timeCode -%>">
                                 <div class="asset-img">
-                                    <a data-modal="true" data-modal-type="<%= timedAsset.displayType -%>" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>/<%= timedAsset.urlRewrite _%>?mediaid=<%= videoMedia.id _%>"<%- ' class="' + timedAsset.type + '"' _%>><% if(timedAsset.picture_url){ %><img src="<%- timedAsset.picture_url %>" /><%_ }else{ _%><%= timedAsset.character.firstname.charAt(0) + timedAsset.character.lastname.charAt(0) _%><%_ } _%></a>
+                                    <a data-modal="true" data-modal-type="<%= timedAsset.displayType -%>" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>/<%= timedAsset.urlRewrite _%>?mediaid=<%= videoMedia.id _%>"<%- ' class="' + timedAsset.type + '"' _%>><% if(timedAsset.picture_url){ %><img src="<%- timedAsset.picture_url %>" /><%_ }else{ _%><%= timedAsset.character.firstname.charAt(0) _%><%_ } _%></a>
                                     <div class="asset-info">
-                                        <a data-modal="true" data-modal-type="<%= timedAsset.displayType -%>" class="title" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>" target="_blank"><%= (timedAsset.brand ? timedAsset.brand.name + ' ' : '') + timedAsset.name -%></a>
+                                        <a data-modal="true" data-modal-type="<%= timedAsset.displayType -%>" class="title" href="/<%= timedAsset.sectionUrl %>/<%= timedAsset.id %>" target="_blank"><%= (timedAsset.brand ? timedAsset.brand.name : timedAsset.name) -%></a>
                                         <%_ if(timedAsset.price){ _%><span class="price"><%= timedAsset.price -%>€</span><a href="#" class="interactive-button">Acheter</a><%_ } _%>                                        
                                     </div>
                                 </div>
@@ -165,10 +159,12 @@
                 <h3 class="inline">Date de sortie en salles :</h3>
                 <span><%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') %></span>
             </div>
+            <%_ if(workingTeam.tv_tv_release_date){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Date de prochaine diffusion TV :</h3>
                 <button><i class="fa fa-bell" aria-hiden="true"></i><%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') %> sur <%= videoMedia.tv_broadcaster %></button>
             </div>
+            <%_ } _%>
 			<%_ if(workingTeam.director && workingTeam.director.length > 0){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Réalisateur (s) :</h3>
@@ -177,10 +173,12 @@
                 <% }); %>
             </div>
 			<%_ } _%>
+            <%_ if(workingTeam.productor && workingTeam.productor.length > 0){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Production :</h3>
-                <a href="#">Les Films du Kiosque</a>
+                <%_ for(var l = workingTeam.productor.length, i = 0; i < l; i++){ var workerInVideoMedia = workingTeam.productor[i]; if(i !== 0){ _%><%- '<span>, </span>' _%><%_ } _%><a href="#"><%= workerInVideoMedia.worker.company_name _%></a><%_ } _%>
             </div>
+            <%_ } _%>            
 			<%_ if(workingTeam.actor && workingTeam.actor.length > 0){ _%>
             <div class="col-md-12">
                 <h3 class="inline">Casting :</h3>
