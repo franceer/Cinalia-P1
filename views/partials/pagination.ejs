@@ -1,0 +1,41 @@
+<%_ if(typeof pagination.data !== 'undefined' && pagination.data.limit < pagination.data.total){ _%>
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <ul class="pagination" data-item-count="<%= pagination.rowCount _%>" data-page-count="<%= pagination.pageCount _%>" data-current-page="<%= pagination.page _%>">
+            <%_ if (pagination.data.isFirstPage){ _%>
+            <li class="disabled">
+                <span>&laquo; Prev</span>
+            </li>
+            <%_  }else{ _%>
+            <li>
+                <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= pagination.data.prev _%>'">&laquo; Prev</a>
+            </li>
+            <%_ }
+            pagination.data.items.forEach(function(page, index){
+            if (page == '...'){ _%>
+            <li class="disabled">
+                <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= index + 1 _%>">...</a>
+            </li>
+            <%_ } else {
+            if (page == parseInt(pagination.data.currentPage)){ _%>
+            <li class="active">
+                <span><%= page _%></span>
+            </li>
+            <%_ } else { _%>
+            <li>
+                <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= page _%>"><%= page _%></a>
+            </li>
+            <%_ }}});
+            if (pagination.data.isLastPage){ _%>
+            <li class="disabled">
+                <span>Next &raquo;</span>
+            </li>
+            <%_ } else{ _%>
+            <li>
+                <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= pagination.data.next _%>">Next &raquo;</a>
+            </li>
+            <%_ } _%>
+        </ul>
+    </div>
+</div>
+<%_ } _%>

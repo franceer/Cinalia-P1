@@ -36,6 +36,9 @@ function createTable(tableName) {
             if (schema[tableName][key].type === 'text' && schema[tableName][key].hasOwnProperty('fieldtype')) {
                 column = table[schema[tableName][key].type](key, schema[tableName][key].fieldtype);
             }
+            else if (schema[tableName][key].type === 'decimal' && schema[tableName][key].hasOwnProperty('precisions')) {
+                column = table[schema[tableName][key].type](key, schema[tableName][key].precisions[0], schema[tableName][key].precisions[1]);
+            }
             else if (schema[tableName][key].type === 'string' && schema[tableName][key].hasOwnProperty('maxlength')) {
                 column = table[schema[tableName][key].type](key, schema[tableName][key].maxlength);
             }
@@ -67,6 +70,9 @@ function createTable(tableName) {
 
             if (schema[tableName][key].hasOwnProperty('references') && schema[tableName][key].hasOwnProperty('inTable')) {
                 column.references(schema[tableName][key].references).inTable(schema[tableName][key].inTable);
+
+                if (schema[tableName][key].hasOwnProperty('onDelete'))
+                    column.onDelete(schema[tableName][key].onDelete);
             }
 
             if (schema[tableName][key].hasOwnProperty('defaultTo')) {

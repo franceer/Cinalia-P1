@@ -16,7 +16,7 @@
         <%- defineContent('extraScripts') %>       
 		<script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
-<body>
+<body<%- defineContent('bodyClass') %>>
     <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="signup-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">

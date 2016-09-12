@@ -38,6 +38,10 @@ let Product = bookshelf.Model.extend({
     looks: function () {
         return this.belongsToMany('Look').through('ProductsInLook');
     },
+
+    parentProduct: function () {
+        return this.belongsTo('Product', 'parent_product_id');
+    },
 	
 	similarProducts: function(){
 		return this.hasMany('Product', 'parent_product_id');

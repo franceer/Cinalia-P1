@@ -7,6 +7,7 @@ router.get('/', function (req, res) {
 });
 
 router.use('/api', require('./api'));
+router.use('/admin', require('./admin'));
 router.use('/movies', require('./movies'));
 router.use('/products', require('./products'));
 router.use('/locations', require('./locations'));

@@ -1,4 +1,12 @@
-var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer'),
+    moment = require('moment'),
+    Promise = require('bluebird'),
+    fs = require('fs'),
+    gm = require('gm').subClass({ imageMagick: true }),
+    request = require('request'),
+    AWS = require('aws-sdk'),
+    path = require('path'),
+    crypto = require('crypto');
 
 module.exports.getPaginationData = function (rowCount, pageSize, paginationLimit, currentPage) {
     var totalPages = Math.ceil(rowCount / (pageSize ? pageSize : 20));
@@ -58,9 +66,11 @@ module.exports.getPaginationData = function (rowCount, pageSize, paginationLimit
     };     
 };
 
-module.exports.toURLFormat = function (string) {
+module.exports.toURLFormat = toURLFormat;
+
+function toURLFormat(string, separator) {
     var chars = { "à": "a", "á": "a", "â": "a", "ã": "a", "ä": "a", "å": "a", "ò": "o", "ó": "o", "ô": "o", "õ": "o", "ö": "o", "ø": "o", "è": "e", "é": "e", "ê": "e", "ë": "e", "ç": "c", "ì": "i", "í": "i", "î": "i", "ï": "i", "ù": "u", "ú": "u", "û": "u", "ü": "u", "ÿ": "y", "ñ": "n", "-": "_" };
-    return string.replace(/[^A-Za-z0-9]/g, function (x) { return chars[x] || x; }).replace(/\s+/g, '_').toLowerCase();
+    return string.replace(/[^A-Za-z0-9]/g, function (x) { return chars[x] || x; }).replace(/\s+/g, separator ? separator : '_').toLowerCase();
 };
 
 module.exports.setupFlashMessages = function(flashMessages){
@@ -107,3 +117,114 @@ module.exports.sendMail = function(to, from, subject, text, callback){
     };
     smtpTransport.sendMail(mailOptions, callback);
 }
+
+module.exports.uploadImagesToS3 = function (req, imagePropertyName, renameProperties) {
+    var imageURL = req.body[imagePropertyName];
+    var extension  = path.extname(imageURL);
+    var datePrefix = moment().format('YYYY[/]MM');
+    var key = crypto.randomBytes(10).toString('hex');
+    var fileName = '';
+
+    renameProperties.forEach(function (propertyName) {
+        var subProperties = propertyName.split('.');
+
+        if (subProperties.length > 1)
+        {
+            var tempObj;
+            subProperties.forEach(function (subPropertyName) {
+                if (tempObj)
+                    tempObj = tempObj[subPropertyName];
+                else
+                    tempObj = req.body[subPropertyName];
+            });
+
+            fileName += (fileName.length === 0 ? '' : ' ') + tempObj;
+        } else {
+            fileName += (fileName.length === 0 ? '' : ' ') + req.body[propertyName];
+        }       
+    });
+
+    fileName = toURLFormat(fileName, '-');    
+    var pathToFile = process.env.NODE_ENV + '/' + datePrefix + '/' + key + '/' + fileName;
+
+    return new Promise(function (resolve, reject) {
+        var files = [];
+
+        request({ url: imageURL, encoding: null }, function (error, response, body) {
+            if (error)
+                reject(error);
+
+            files.push({
+                key: pathToFile + '-original' + extension,
+                stream: gm(body).resize('640', '480', '>').stream()
+            });
+
+            files.push({
+                key: pathToFile + '-small' + extension,
+                stream: gm(body).resize('253', '198').stream()
+            });
+
+            files.push({
+                key: pathToFile + '-thumbnail' + extension,
+                stream: gm(body).resize('64', '64').stream()
+            });
+
+            resolve(files);
+        });       
+    })
+    .then(function (files) {
+        var s3 = new AWS.S3({ region: 'eu-central-1', signatureVersion: 'v4' });
+
+        return Promise.all(files.map(function(file) {
+            var params = {
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Key: file.key,
+                Body: file.stream,
+                ACL: 'public-read'
+            };
+        
+            return new Promise(function(resolve, reject) {
+                s3.upload(params, function(err, data) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve({ sourceURL: imageURL, data: data});
+                    }
+                }); 
+            });            
+        }));   
+    });  
+};
+
+module.exports.deleteS3Objects = function (prefix) {
+    var s3 = new AWS.S3({ region: 'eu-central-1', signatureVersion: 'v4' });
+    var params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Prefix: prefix + '/'
+    };
+    
+    return new Promise(function (resolve, reject) {
+        s3.listObjectsV2(params, function (err, data) {
+            if (err)
+                reject(err);
+
+            var params2 = {
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Delete: {
+                    Objects: []
+                }
+            }
+
+            data.Contents.forEach(function (content) {
+                params2.Delete.Objects.push({ Key: content.Key });
+            });
+
+            s3.deleteObjects(params2, function (err, data) {
+                if(err)
+                    reject(err)
+
+                resolve(data);
+            });
+        });
+    });
+};

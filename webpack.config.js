@@ -13,6 +13,7 @@ module.exports = [{
     },
     context: __dirname + '/assets/js',
     entry: {
+        mainAdmin: './main-admin',
         mainHome: './main-home',
         mainVideoMedia: './main-video-media',
         mainLook: './main-look',
@@ -49,7 +50,8 @@ module.exports = [{
 {
     resolve: {
         alias: {
-            'styles': path.join(__dirname, '/assets/sass/styles.scss')
+            'styles': path.join(__dirname, '/assets/sass/styles.scss'),
+            'select2': path.join(__dirname, '/node_modules/select2/dist/css/select2.min.css')
         }
     },
     context: __dirname + '/assets/js',
@@ -66,9 +68,13 @@ module.exports = [{
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract(
-                "style",
-                "css!sass")
-            }            
+                'style',
+                'css!sass')
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style', 'css')
+            },
         ]        
     },
     plugins: [

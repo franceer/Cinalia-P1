@@ -1,0 +1,90 @@
+<tr>
+    <td>
+        <button type="button" class="edit-button" data-target="produits"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button" data-target="produits"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <button type="button" class="save-button" data-target="produits"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+    </td>
+    <td>
+        <div>
+            <%= product.id _%><input name="id" type="hidden" value="<%= product.id _%>" />
+        </div>
+    </td>
+    <td>
+        <div class="display-field"><%= product.brand.name _%></div>
+        <div class="edit-field">
+            <select name="brand_id" data-field-name="brand">
+                <option value="0">Choisir une marque</option>
+                <%_ brands.forEach(function(brand){ _%>
+                <option value="<%= brand.id _%>"<%= product.brand.id === brand.id ? ' selected' : ''_%>><%= brand.name _%></option>
+                <%_ }); _%>
+            </select>
+            <input name="brand_name" type="hidden" />
+        </div>
+    </td>
+    <td>
+        <div class="display-field"><%= product.name _%></div>
+        <div class="edit-field"><input type="text" name="name" value="<%= product.name _%>" /></div>
+    </td>
+    <td>
+        <div class="display-field"><%- product.description.length > 200 ? product.description.substring(0, 200) + '<span>&hellip;</span>' : product.description _%></div>
+        <div class="edit-field"><textarea name="description"><%= product.description _%></textarea></div>
+    </td>
+    <td>
+        <div class="display-field">
+            <ul>
+                <%_ product.categories.forEach(function(category){ _%>
+                <li><%= category.name _%></li>
+                <%_ }); _%>
+            </ul>
+        </div>
+        <div class="edit-field">
+            <select name="categories"></select>
+        </div>
+    </td>
+    <td>
+        <div class="display-field"><img src="<%= product.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= product.picture_alt _%>" title="<%= product.picture_title _%>" /></div>
+        <div class="edit-field">
+            <input type="text" placeholder="url" name="picture_url" value="<%= product.picture_url _%>" />
+            <input type="text" placeholder="alt" name="picture_alt" value="<%= product.picture_alt _%>" />
+            <input type="text" placeholder="title" name="picture_title" value="<%= product.picture_title _%>" />
+        </div>
+    </td>
+    <td>
+        <div class="display-field break-url"><%= product.commercial_url _%></div>
+        <div class="edit-field"><input type="text" name="commercial_url" value="<%= product.commercial_url _%>" /></div>
+    </td>
+    <td>
+        <div class="display-field"><%= product.price _%></div>
+        <div class="edit-field"><input type="text" name="price" value="<%= product.price _%>" /></div>
+    </td>
+    <td>
+        <%_ if(product.parent_product_id !== null){ _%>
+        <div class="display-field"><%= product.parentProduct.brand.name + ' ' + product.parentProduct.name _%></div>
+        <%_ } _%>
+        <div class="edit-field">
+            <button type="button" class="open-parent-product-modal btn btn-default" data-toggle="modal" data-target="#parent-product-modal">Choisir un produit</button>
+            <input id="add-parent-product-id" name="parent_product_id" type="hidden" <%= product.parent_product_id !== null ? product.parent_product_id : '' _%> />
+        </div>
+    </td>
+    <td>
+        <%_ if(product.similarProducts && product.similarProducts.length > 0){ _%>
+        <ul>
+            <%_ product.similarProducts.forEach(function(similarProduct){ _%>
+            <li><%= similarProduct.brand.name + ' ' + similarProduct.name _%></li>
+            <%_ }); _%>
+        </ul>
+        <%_ } _%>
+    </td>
+
+    <td>
+        <div><%= moment(product.created_at).format('DD-MMMM-YYYY') _%></div>
+    </td>
+    <td>
+        <div><%= product.updated_at ? moment(product.updated_at).format('DD-MMMM-YYYY') : 'No updates' _%></div>
+    </td>
+    <td>
+        <button type="button" class="edit-button" data-target="produits"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button" data-target="produits"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <button type="button" class="save-button" data-target="produits"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+    </td>
+</tr>

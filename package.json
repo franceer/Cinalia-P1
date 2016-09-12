@@ -8,6 +8,7 @@
     "node": "6.3.1"
   },
   "dependencies": {
+    "aws-sdk": "^2.5.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.14.2",
     "bookshelf": "0.9.5",
@@ -23,9 +24,12 @@
     "express": "4.13.4",
     "express-ejs-layouts": "2.1.0",
     "express-session": "1.13.0",
+    "formidable": "^1.0.17",
+    "gm": "^1.23.0",
     "gravatar": "1.5.2",
     "grunt": "1.0.1",
     "iframe-resizer": "3.5.5",
+    "imagemagick": "^0.1.3",
     "jquery": "3.0.0",
     "knex": "0.11.5",
     "lodash": "4.13.1",
@@ -40,6 +44,7 @@
     "raphael": "2.2.1",
     "request": "2.74.0",
     "request-promise": "4.1.1",
+    "select2": "^4.0.3",
     "tether": "1.3.2",
     "when": "3.7.7"
   },
