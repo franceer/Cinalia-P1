@@ -1,46 +1,47 @@
-webpackJsonp([1],{
+webpackJsonp([2],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2), __webpack_require__(8), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, select2, validation) {
 
-	    var select2FR = {
-	        errorLoading:
-	            function () { return "Les résultats ne peuvent pas être chargés." },
-	        inputTooLong:
-	            function (e) { var t = e.input.length - e.maximum, n = "Supprimez " + t + " caractère"; return t !== 1 && (n += "s"), n },
-	        inputTooShort:
-	            function (e) { var t = e.minimum - e.input.length, n = "Saisissez " + t + " caractère"; return t !== 1 && (n += "s"), n },
-	        loadingMore:
-	            function () { return "Chargement de résultats supplémentaires…" },
-	        maximumSelected:
-	            function (e) { var t = "Vous pouvez seulement sélectionner " + e.maximum + " élément"; return e.maximum !== 1 && (t += "s"), t },
-	        noResults: function () { return "Aucun résultat trouvé" },
-	        searching: function () { return "Recherche en cours…" }
-	    };
-
-	    function getValidatorParent(element) {
-	        var $parent;
-	        var $element = $(element);
-
-	        if ($element.attr('type') === 'checkbox')
-	            $parent = $element.parents('.form-check, .form-group');
-	        else
-	            $parent = $element.parent();
-
-	        return $parent;
-	    }
-
 	    function ProductManager() {
+	        this.select2FR = {
+	            errorLoading:
+	                function () { return "Les résultats ne peuvent pas être chargés." },
+	            inputTooLong:
+	                function (e) { var t = e.input.length - e.maximum, n = "Supprimez " + t + " caractère"; return t !== 1 && (n += "s"), n },
+	            inputTooShort:
+	                function (e) { var t = e.minimum - e.input.length, n = "Saisissez " + t + " caractère"; return t !== 1 && (n += "s"), n },
+	            loadingMore:
+	                function () { return "Chargement de résultats supplémentaires…" },
+	            maximumSelected:
+	                function (e) { var t = "Vous pouvez seulement sélectionner " + e.maximum + " élément"; return e.maximum !== 1 && (t += "s"), t },
+	            noResults: function () { return "Aucun résultat trouvé" },
+	            searching: function () { return "Recherche en cours…" }
+	        };
 	        this.setSelect2Brands($('#brand_id'));
 	        this.setSelect2Categories($('#categories'));
 	        this.initHandlers();
 	        this.initFormValidators();
+
+	        if (this.inIframe()) {
+	            $('.modal-hidden').hide();
+	            $('.add-grouped-button').show();
+	        }
 	    }
 
 	    ProductManager.prototype = function () {
 	        var initHandlers = function () {
+	            $('.table').on('click', 'input[name=select-product]', function (e) {
+	                var $checked = $(this).closest('.table').find('input[name=select-product]:checked');
+
+	                if ($checked.length > 0)
+	                    $('.add-grouped-button, .delete-grouped-button').prop('disabled', false);                
+	                else
+	                    $('.add-grouped-button, .delete-grouped-button').prop('disabled', true);
+	            });
+
 	            $('.table').on('click', '.edit-button', function (e) {
 	                $this = $(this);
 	                $tr = $this.closest('.tr');
@@ -88,7 +89,8 @@ webpackJsonp([1],{
 	                if ($tr.data('validator').form()) {
 	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'produits' }, function (updated) {
 	                        $tr.replaceWith(updated);
-	                        $tr = $('tr.newly-added').removeClass('newly-added');
+	                        $tr = $('.tr.newly-added').removeClass('newly-added');
+	                        setSelect2Brands($tr.find('select[name=brand_id]'));
 	                        setSelect2Categories($tr.find('select[name=categories]'));
 	                    });
 	                }
@@ -98,7 +100,7 @@ webpackJsonp([1],{
 	                if (confirm('Etes-vous sûr de vouloir supprimer cet élément ?')) {
 	                    $tr = $(this).closest('.tr');
 	                    $.ajax({
-	                        url: '/admin/' + $(this).attr('data-target') + '/' + $(this).closest('.tr').find('[name=id]').val(),
+	                        url: '/admin/produits/' + $(this).closest('.tr').find('[name=id]').val(),
 	                        type: 'DELETE'
 	                    })
 	                    .done(function (data) {
@@ -110,8 +112,22 @@ webpackJsonp([1],{
 	                }
 	            });
 
+	            $('.add-grouped-button').on('click', function (e) {
+	                var $productsTable = $(parent.document).find('.open-products-modal+.table');
+	                $('input[name=select-product]:checked').each(function () {
+	                    var $tr = $(this).closest('.tr');
+
+	                    if ($productsTable.find('input[name=id][value=' + $tr.find('input[name=id]').val() + ']').length === 0) {                        
+	                        $productsTable.append(getProductRow($tr));
+	                    }
+	                }).prop('checked', false);
+	            });
+
 	            $('.add-button').on('click', function (e) {
-	                if ($(this).closest('form').data('validator').form()) {
+	                var $form = $(this).closest('form');
+	                var validator = $form.data('validator');
+
+	                if (validator.form()) {
 	                    var $container = $('#form-toggle');
 
 	                    addOrUpdateAsset($container, { method: 'POST', target: 'produits' }, function (data) {
@@ -122,7 +138,19 @@ webpackJsonp([1],{
 	                            $formElements.filter('input, textarea').val('');
 	                            $formElements.filter('select').val('');
 	                            $('.open-parent-product-modal').text('Choisir un produit');
+	                            $('.table .thead-inverse').after(data);                           
+	                            $tr = $('.tr.newly-added').removeClass('newly-added');                            
+	                            setSelect2Brands($tr.find('select[name=brand_id]'));
+	                            setSelect2Categories($tr.find('select[name=categories]'));
+
+	                            if (inIframe()) {
+	                                $tr.find('.modal-hidden').hide();
+	                                var $productsTable = $(parent.document).find('.open-products-modal+.table');
+	                                $productsTable.append(getProductRow($tr));
+	                            }
 	                        }
+
+	                        validator.resetForm();
 	                    });
 	                }
 	            });
@@ -162,7 +190,7 @@ webpackJsonp([1],{
 
 	            var selectBrands = $element.select2({
 	                placeholder: 'Choisissez une marque...',
-	                language: select2FR,
+	                language: this.select2FR,
 	                width: '100%',
 	                multiple: true,
 	                tags: true,
@@ -189,7 +217,7 @@ webpackJsonp([1],{
 	                    return undefined;
 	                },
 	                multiple: true,
-	                language: select2FR,
+	                language: this.select2FR,
 	                ajax: {
 	                    url: '/admin/categories',
 	                    dataType: 'json',
@@ -276,6 +304,14 @@ webpackJsonp([1],{
 	            });
 	        };
 
+	        var inIframe = function () {
+	            try {
+	                return window.self !== window.top;
+	            } catch (e) {
+	                return true;
+	            }
+	        };
+
 	        function addOrUpdateAsset($container, config, cb) {
 	            var data = {};
 
@@ -293,7 +329,17 @@ webpackJsonp([1],{
 	            .done(cb);
 	        }
 
-	        
+	        function getValidatorParent(element) {
+	            var $parent;
+	            var $element = $(element);
+
+	            if ($element.attr('type') === 'checkbox')
+	                $parent = $element.parents('.form-check, .form-group');
+	            else
+	                $parent = $element.parent();
+
+	            return $parent;
+	        }
 
 	        function showErrors($element, message) {
 	            $element
@@ -302,83 +348,24 @@ webpackJsonp([1],{
 					.removeAttr('hidden');
 	        }
 
+	        function getProductRow($tr) {
+	            var $clonedRow = $tr.clone();
+	            $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(13),.td:nth-of-type(14)').remove();
+	            $clonedRow.append('<div class="td"><input type="checkbox" name="matching_status_id" value="1" /></div><div class="td"><input type="text" name="appearing_context" /></div><div class="td"><input type="text" name="time_codes" /></div><div class="td"><button type="button" class="delete-product-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
+	            return $('<div class="tr"></div>').append($clonedRow.contents());
+	        }
+
 	        return {
+	            inIframe: inIframe,
 	            initHandlers: initHandlers,
 	            setSelect2Brands: setSelect2Brands,
 	            setSelect2Categories: setSelect2Categories,
 	            initFormValidators: initFormValidators
 	        };
-	    }();
-
-	    function MovieManager() {
-	        this.initFormValidators();
-	        this.setSelect2Genres($('#media_genre_id'));
-	    }
-
-	    MovieManager.prototype = function () {
-	        var setSelect2Genres = function ($element) {
-	            if (!$element)
-	                $element = $('select[name=media_genre_id]');
-
-	            var selectBrands = $element.select2({
-	                placeholder: 'Choisissez un genre...',
-	                language: select2FR,
-	                width: '100%',
-	                multiple: true,
-	                tags: true,
-	                maximumSelectionLength: 1
-	            });
-	            selectBrands.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
-
-	            $element.on('change', function () {
-	                var $form = $element.closest('form');
-	                $form.data('validator').element(this);
-	                $form.find('input[name=media_genre_name]').val($(this).children('option:selected').text());
-	            });
-	        };
-
-	        var initFormValidators = function () {
-	            $('#admin-add-movie-form').validate({
-	                rules: {
-	                    name: 'required',
-	                    theater_release_date: 'required',
-	                    release_country: 'required',
-	                    duration: 'required',
-	                    poster_url: 'required',
-	                    video_url: 'required',
-	                    media_genre_id: 'required'                    
-	                },
-	                messages: {
-	                    name: 'required',
-	                    theater_release_date: 'required',
-	                    release_country: 'required',
-	                    duration: 'required',
-	                    poster_url: 'required',
-	                    video_url: 'required',
-	                    media_genre_id: 'required'
-	                },
-	                highlight: function (element) {
-	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
-	                },
-	                unhighlight: function (element) {
-	                    getValidatorParent(element).removeClass('has-danger').addClass('has-success');
-	                },
-	                errorPlacement: function (error, element) {
-	                    error.addClass('form-control-label col-md-6 offset-md-3');
-	                    error.appendTo(element.closest('.form-group'));
-	                }
-	            });
-	        };
-
-	        return {
-	            setSelect2Genres: setSelect2Genres,
-	            initFormValidators: initFormValidators
-	        };
-	    }();
+	    }();       
 
 	    $(function () {
-	        new ProductManager();
-	        new MovieManager();
+	        new ProductManager();        
 	    });
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -387,7 +374,7 @@ webpackJsonp([1],{
 /***/ 8:
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var require;var require;/* WEBPACK VAR INJECTION */(function($) {/*!
+	var require;var require;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function($) {/*!
 	 * Select2 4.0.3
 	 * https://select2.github.io
 	 *

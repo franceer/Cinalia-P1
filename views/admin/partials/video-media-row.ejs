@@ -1,0 +1,113 @@
+<form class="tr newly-added">
+    <div class="td">
+        <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+    <div class="td">
+        <%= videoMedia.id _%><input name="id" type="hidden" value="<%= videoMedia.id _%>" />
+    </div>
+    <div class="td">
+        <div class="display-field"><%= videoMedia.name _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="name" value="<%= videoMedia.name _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%- videoMedia.description && videoMedia.description.length > 200 ? videoMedia.description.substring(0, 200) + '<span>&hellip;</span>' : videoMedia.description _%></div>
+        <div class="edit-field form-group">
+            <textarea name="description" class="form-control form-control-success form-control-danger"><%= videoMedia.description _%></textarea>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="theater_release_date" value="<%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="tv_release_date" value="<%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= videoMedia.release_country _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="release_country" value="<%= videoMedia.release_country _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= videoMedia.duration _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="duration" value="<%= videoMedia.duration _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field">
+            <img src="<%= videoMedia.poster_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= videoMedia.picture_alt _%>" title="<%= videoMedia.picture_title _%>" />
+        </div>
+        <div class="edit-field form-group">
+            <input type="text" placeholder="url" name="poster_url" value="<%= videoMedia.poster_url _%>" class="form-control form-control-success form-control-danger" />
+            <input type="text" placeholder="alt" name="poster_alt" value="<%= videoMedia.poster_alt _%>" class="form-control form-control-success form-control-danger" />
+            <input type="text" placeholder="title" name="poster_title" value="<%= videoMedia.poster_title _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= videoMedia.video_url _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="video_url" value="<%= videoMedia.video_url _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%- videoMedia.synopsis && videoMedia.synopsis.length > 200 ? videoMedia.synopsis.substring(0, 200) + '<span>&hellip;</span>' : videoMedia.synopsis _%></div>
+        <div class="edit-field form-group">
+            <textarea name="synopsis" class="form-control form-control-success form-control-danger"><%= videoMedia.synopsis _%></textarea>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= videoMedia.tv_broadcaster _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="tv_broadcaster" value="<%= videoMedia.tv_broadcaster _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= videoMedia.mediaGenre.name _%></div>
+        <div class="edit-field form-group">
+            <select name="media_genre_id" data-field-name="mediaGenre" class="form-control form-control-success form-control-danger">
+                <%_ genres.forEach(function(genre){ _%>
+                <option value="<%= genre.id _%>"<%= videoMedia.mediaGenre.id === genre.id ? ' selected' : ''_%>><%= genre.name _%></option>
+                <%_ }); _%>
+            </select>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field">
+            <ul>
+                <%_ videoMedia.categories.forEach(function(category){ _%>
+                <li><%= category.name _%></li>
+                <%_ }); _%>
+            </ul>
+        </div>
+        <div class="edit-field form-group">
+            <select name="categories" class="form-control form-control-success form-control-danger" multiple>
+                <%_ videoMedia.categories.forEach(function(category){ _%>
+                <option selected value="<%= category.id _%>"><%= category.name _%></option>
+                <%_ }); _%>
+            </select>
+        </div>
+    </div>
+    <div class="td">
+        <div><%= moment(videoMedia.created_at).format('DD-MMMM-YYYY') _%></div>
+    </div>
+    <div class="td">
+        <div><%= videoMedia.updated_at ? moment(videoMedia.updated_at).format('DD-MMMM-YYYY') : 'No updates' _%></div>
+    </div>
+    <div class="td">
+        <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+</form>

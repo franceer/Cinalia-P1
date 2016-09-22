@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"1":"mainAdmin","2":"mainHome","3":"mainLook","4":"mainProfile","5":"mainVideoMedia"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"1":"mainAdminMovies","2":"mainAdminProducts","3":"mainHome","4":"mainLook","5":"mainProfile","6":"mainVideoMedia"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};

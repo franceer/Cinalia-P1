@@ -2,8 +2,8 @@ var express = require('express'),
     router = express.Router(),
     helper = require('../../helpers/helper'),
     Promise = require('bluebird'),
-    Category = require('../../models/category'),
     Product = require('../../models/product'),
+    Products = require('../../collections/products'),
     Brand = require('../../models/brand'),
     moment = require('moment'),
     fs = require('fs'),
@@ -12,7 +12,7 @@ var express = require('express'),
 router.get('/', function (req, res) {
     let currentPage = req.query.p ? req.query.p : 1;
 
-    Promise.all([Brand.fetchAll(), Product.orderBy('updated_at').fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'] })])
+    Promise.all([Brand.fetchAll(), Product.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'] })])
     .then(function (results) {
         var brands = results[0];
         var products = results[1];       
@@ -20,26 +20,17 @@ router.get('/', function (req, res) {
         res.render('admin/products', { brands: brands.toJSON(), products: products.toJSON(), pagination: products.pagination, moment: moment });        
     });    
 })
-.get('/categories', function (req, res) {
-    Category.searchCategories(req.query.q, req.query.page)
-    .then(function (results) {
-        var jSONResults = results.toJSON();
-        var data = [];
-
-        jSONResults.forEach(function (category) {
-            data.push({ id: category.id, text: category.name + '(' + category.path + ')' });
-        });
-        res.json({items: data, total_count: results.pagination.rowCount});
-    });
-})
 .put('/:id', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
             req.body[key] = null;
+        else if (key === 'brand_id')
+            req.body[key] = req.body[key][0];
     });
 
     var categoriesIDs = req.body.categories;
-    delete req.body.categories;    
+    delete req.body.categories;
+    var product;
 
     Product.findOne({ id: req.params.id }, { require: false }).then(function (oldProduct) {
         if (oldProduct.get('picture_url') !== req.body.picture_url) {
@@ -75,29 +66,60 @@ router.get('/', function (req, res) {
         delete req.body.brand_name;
         return Product.update(req.body, { id: req.params.id });
     })
-    .then(function (product) {
+    .then(function (updatedProduct) {
+        product = updatedProduct;
+        var returned = null;
+
+        if (categoriesIDs) {
+            returned = product.categories().detach().then(function () {
+                return product.categories().attach(categoriesIDs);
+            });
+        }
+
+        return returned;
+    })
+    .then(function () {
         return Promise.all([Brand.fetchAll(), product.load(['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'])]);
     })
     .then(function (results) {
         var brands = results[0];
-        var product = results[1];
-        res.render('partials/admin-product-line', { layout: false, moment: moment, brands: brands.toJSON(), product: product.toJSON() });
+        var updatedProduct = results[1];
+        res.render('admin/partials/product-row', { layout: false, moment: moment, brands: brands.toJSON(), product: updatedProduct.toJSON() });
     })
     .catch(function (err) {
         res.send(err.message);
     });
 })
 .post('/', function (req, res) {
+    Object.keys(req.body).forEach(function (key) {
+        if (req.body[key] === '')
+            req.body[key] = null;
+        else if (key === 'brand_id')
+            req.body[key] = req.body[key][0];
+    });
+
     var categoriesIDs = req.body.categories;
     delete req.body.categories;
+    var product;
 
-    helper.uploadImagesToS3(req, 'picture_url', ['name', 'brand_name'])
+    Brand.findOne({ name: req.body.brand_name }, {require: false})
+    .then(function (brand) {
+        var returned = null;
+
+        if (!brand)
+            returned = Brand.create({ name: req.body.brand_name });
+
+        return returned;        
+    })
+    .then(function () {
+        return helper.uploadImagesToS3(req, 'picture_url', ['name', 'brand_name']);
+    })
     .then(function(files){
         var originalURL;
 
         files.forEach(function(file){
-            if(file.Location.indexOf('original') !== -1)
-                originalURL = file.Location;
+            if(file.data.Location.indexOf('original') !== -1)
+                originalURL = file.data.Location;
         });
 
         req.body.picture_url = originalURL;
@@ -111,7 +133,8 @@ router.get('/', function (req, res) {
         delete req.body.brand_name;
         return Product.create(req.body);
     })
-    .then(function (product) {
+    .then(function (addedProduct) {
+        product = addedProduct;
         var returned = null;
 
         if (categoriesIDs)
@@ -119,8 +142,13 @@ router.get('/', function (req, res) {
 
         return returned;       
     })
-    .then(function (product) {
-        res.json({ status: 'success', data: product.toJSON() });
+    .then(function () {
+        return Promise.all([Brand.fetchAll(), product.load(['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'])]);
+    })
+    .then(function (results) {
+        var brands = results[0];
+        var product = results[1];
+        res.render('admin/partials/product-row', { layout: false, moment: moment, brands: brands.toJSON(), product: product.toJSON() });
     })
     .catch(function (err) {
         res.json({ status: 'error', message: err.message });

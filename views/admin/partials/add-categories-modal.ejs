@@ -1,0 +1,29 @@
+<div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog" aria-labelledby="add-category-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Entrez un nom et un path pour la catégorie</h4>
+            </div>
+            <div class="modal-body">
+                <form id="add-category-form" class="form" role="form" novalidate accept-charset="UTF-8">
+                    <div class="form-group row">
+                        <label class="sr-only" for="category_name">Nom de la catégorie</label>
+                        <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="category_name" name="name" placeholder="Nom de la catégorie" autocomplete="off">
+                    </div>
+                    <div class="form-group row">
+                        <label class="sr-only" for="category_path">Path de la catégorie</label>
+                        <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="category_path" name="path" placeholder="Path de la catégorie" autocomplete="off">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-3">
+                            <button type="button" id="add-category" class="btn btn-primary">Ajouter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

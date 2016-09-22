@@ -142,7 +142,7 @@ var schema = {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         time_codes: { type: 'specific', specificType: 'integer[]', nullable: true },
         appearing_context: { type: 'text', nullable: true },
-        matching_status_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'matching_statuses' },
+        matching_status_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'matching_statuses', defaultTo: 2 },
         product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products', onDelete: 'CASCADE' },
         video_media_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'CASCADE' }
     },
@@ -186,7 +186,7 @@ var schema = {
     },
     looks_products: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
-        matching_status_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'matching_statuses' },
+        matching_status_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'matching_statuses', defaultTo: 2 },
         appearing_context: { type: 'text', nullable: true },
         order: { type: 'integer', nullable: true, unsigned: true },
         body_location_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'body_locations' },
@@ -213,7 +213,7 @@ var schema = {
     },
     products_sets: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
-        matching_status_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'matching_statuses' },
+        matching_status_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'matching_statuses', defaultTo: 2 },
         appearing_context: { type: 'text', nullable: true },
         x_offset: { type: 'integer', nullable: false, defaultTo: 0 },
         y_offset: { type: 'integer', nullable: false, defaultTo: 0 },

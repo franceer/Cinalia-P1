@@ -1,114 +1,254 @@
+<%- include('./partials/add-categories-modal') %>
+<div class="modal fade" id="products-modal" tabindex="-1" role="dialog" aria-labelledby="products-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Ajouter des produits</h4>
+            </div>
+            <div class="modal-body">
+                <iframe src="/admin/produits"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
 <section id="admin-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Management des films</h1>
+                <div id="alert-add" class="alert alert-dismissible fade in" hidden role="alert"></div>
+                <form id="admin-add-movie-form" class="form" role="form" novalidate accept-charset="UTF-8">
+                    <fieldset>
+                        <legend>
+                            <button id="add-product-legend" data-toggle="collapse" data-target="#form-toggle">Ajouter un film</button>
+                        </legend>
+                        <div id="form-toggle" class="collapse">
+                            <div class="form-group">
+                                <label for="name">Nom</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="name" name="name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control form-control-success form-control-danger" id="description" name="description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="theater_release_date">Sortie salles</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="theater_release_date" name="theater_release_date" />
+                            </div>
+                            <div class="form-group">
+                                <label for="tv_release_date">Sortie tv</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="tv_release_date" name="tv_release_date" />
+                            </div>
+                            <div class="form-group">
+                                <label for="release_country">Pays de production</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="release_country" name="release_country" />
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Durée</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="duration" name="duration" /> min
+                            </div>
+                            <div class="form-group">
+                                <label for="poster_url">Affiche</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" placeholder="url" id="poster_url" name="poster_url" />
+                                <input class="form-control" type="text" placeholder="alt" name="poster_alt" />
+                                <input class="form-control" type="text" placeholder="title" name="poster_title" />
+                            </div>
+                            <div class="form-group">
+                                <label for="video_url">Url vidéo</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="video_url" name="video_url" />
+                            </div>
+                            <div class="form-group">
+                                <label for="synopsis">Synopsis</label>
+                                <textarea class="form-control form-control-success form-control-danger" id="synopsis" name="synopsis"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="tv_broadcaster">Diffuseur TV</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="tv_broadcaster" name="tv_broadcaster" />
+                            </div>
+                            <div class="form-group">
+                                <label for="media_genre_id">Genre</label>
+                                <select name="media_genre_id" id="media_genre_id" class="form-control form-control-success form-control-danger" data-field-name="mediaGenre" multiple>
+                                    <%_ genres.forEach(function(genre){ _%>
+                                    <option value="<%= genre.id _%>"><%= genre.name _%></option>
+                                    <%_ }); _%>
+                                </select>
+                                <input name="media_genre_name" type="hidden" />
+                            </div>
+                            <div class="form-group">
+                                <label for="categories">Catégories</label>
+                                <button class="add-category-button" type="button" data-toggle="modal" data-target="#add-category-modal">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                                <select id="categories" class="form-control form-control-success form-control-danger" multiple name="categories"></select>
+                            </div>
+                            <div class="form-group">                               
+                                <label>Produits</label>
+                                <button class="open-products-modal btn btn-default" data-toggle="modal" data-target="#products-modal" type="button">Ajouter des produits</button>
+                                <div id="linked-products" class="table table-striped table-hover table-sm">
+                                    <div class="tr thead-inverse">
+                                        <div class="th">ID</div>
+                                        <div class="th">Marque</div>
+                                        <div class="th">Nom</div>
+                                        <div class="th">Image</div>
+                                        <div class="th">Match</div>
+                                        <div class="th">Contexte</div>
+                                        <div class="th">Time code</div>
+                                        <div class="th">Suppr.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="add-button btn btn-default" type="button">Ajouter</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">                
-                <table class="table table-striped table-hover table-sm">
-                    <thead class="thead-inverse">
-                        <tr>
-                            <th>Actions</th>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Sortie salles</th>
-                            <th>Sortie TV</th>
-                            <th>Pays de production</th>
-                            <th>Durée</th>
-                            <th>Affiche</th>
-                            <th>Vidéo URL</th>
-                            <th>Synopsis</th>
-                            <th>Diff. TV</th>
-                            <th>Genre</th>
-                            <th>Créé</th>
-                            <th>MAJ</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%_
-                        videoMedias.forEach(function(videoMedia){
-                        _%>
-                        <tr>
-                            <td>
-                                <button class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                <button class="save-button" data-target="films"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= videoMedia.id _%></div>
-                                <div class="edit-field"><input type="text" name="id" disabled value="<%= videoMedia.id _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= videoMedia.name _%></div>
-                                <div class="edit-field"><input type="text" name="name" value="<%= videoMedia.name _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%- videoMedia.description.length > 200 ? videoMedia.description.substring(0, 200) + '<span>&hellip;</span>' : videoMedia.description _%></div>
-                                <div class="edit-field"><textarea name="description"><%= videoMedia.description _%></textarea></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%></div>
-                                <div class="edit-field"><input type="text" name="theater_release_date" value="<%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%></div>
-                                <div class="edit-field"><input type="text" name="tv_release_date" value="<%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= videoMedia.release_country _%></div>
-                                <div class="edit-field"><input type="text" name="release_country" value="<%= videoMedia.release_country _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= videoMedia.duration _%></div>
-                                <div class="edit-field"><input type="text" name="duration" value="<%= videoMedia.duration _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= videoMedia.name _%></div>
-                                <div class="edit-field"><input type="text" name="name2" disabled value="<%= videoMedia.name _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= videoMedia.video_url _%></div>
-                                <div class="edit-field"><input type="text" name="video_url" value="<%= videoMedia.video_url _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%- videoMedia.synopsis.length > 200 ? videoMedia.synopsis.substring(0, 200) + '<span>&hellip;</span>' : videoMedia.synopsis _%></div>
-                                <div class="edit-field"><textarea name="synopsis"><%= videoMedia.synopsis _%></textarea></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= videoMedia.tv_broadcaster _%></div>
-                                <div class="edit-field"><input type="text" name="tv_broadcaster" value="<%= videoMedia.tv_broadcaster _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= videoMedia.mediaGenre.name _%></div>
-                                <div class="edit-field">
-                                    <select name="media_genre_id" data-field-name="mediaGenre">
-                                        <%_ genres.forEach(function(genre){ _%>
-                                        <option value="<%= genre.id _%>"<%= videoMedia.mediaGenre.id === genre.id ? ' selected' : ''_%>><%= genre.name _%></option>
-                                        <%_ }); _%>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= moment(videoMedia.created_at).format('DD-MMMM-YYYY') _%></div>
-                                <div class="edit-field"><input type="text" disabled value="<%= moment(videoMedia.created_at).format('DD-MMMM-YYYY') _%>" /></div>
-                            </td>
-                            <td>
-                                <div class="display-field"><%= moment(videoMedia.updated_at).format('DD-MMMM-YYYY') _%></div>
-                                <div class="edit-field"><input type="text" disabled value="<%= moment(videoMedia.updated_at).format('DD-MMMM-YYYY') _%>" /></div>
-                            </td>
-                            <td>
-                                <button class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                <button class="save-button" data-target="films"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                        <%_
-                        });
-                        _%>
-                    </tbody>
-                </table>                
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar"></div>
-                </div>
-                <button class="upload-button">upload</button>
-                <input type="file" id="file-upload" style="display: none;" name="file-upload" />                
+            <div class="col-md-12">
+                <div id="alert-table" class="alert alert-dismissible fade in" hidden role="alert"></div>
+                <div class="table table-striped table-hover table-sm">
+                    <div class="tr thead-inverse">
+                        <div class="th">Actions</div>
+                        <div class="th">#</div>
+                        <div class="th">Nom</div>
+                        <div class="th">Description</div>
+                        <div class="th">Sortie salles</div>
+                        <div class="th">Sortie TV</div>
+                        <div class="th">Pays de production</div>
+                        <div class="th">Durée</div>
+                        <div class="th">Affiche</div>
+                        <div class="th">Vidéo URL</div>
+                        <div class="th">Synopsis</div>
+                        <div class="th">Diff. TV</div>
+                        <div class="th">Genre</div>
+                        <div class="th">Catégories</div>
+                        <div class="th">Créé</div>
+                        <div class="th">MAJ</div>
+                        <div class="th">Actions</div>
+                    </div>
+                    <%_
+                    videoMedias.forEach(function(videoMedia){
+                    _%>
+                    <form class="tr">
+                        <div class="td">
+                            <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                            <button type="button" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="td">
+                            <%= videoMedia.id _%><input name="id" type="hidden" value="<%= videoMedia.id _%>" />
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= videoMedia.name _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="name" value="<%= videoMedia.name _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%- videoMedia.description && videoMedia.description.length > 200 ? videoMedia.description.substring(0, 200) + '<span>&hellip;</span>' : videoMedia.description _%></div>
+                            <div class="edit-field form-group">
+                                <textarea name="description" class="form-control form-control-success form-control-danger"><%= videoMedia.description _%></textarea>
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="theater_release_date" value="<%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="tv_release_date" value="<%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= videoMedia.release_country _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="release_country" value="<%= videoMedia.release_country _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= videoMedia.duration _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="duration" value="<%= videoMedia.duration _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><img src="<%= videoMedia.poster_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= videoMedia.picture_alt _%>" title="<%= videoMedia.picture_title _%>" /></div>
+                            <div class="edit-field form-group">
+                                <input type="text" placeholder="url" name="poster_url" value="<%= videoMedia.poster_url _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" placeholder="alt" name="poster_alt" value="<%= videoMedia.poster_alt _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" placeholder="title" name="poster_title" value="<%= videoMedia.poster_title _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= videoMedia.video_url _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="video_url" value="<%= videoMedia.video_url _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%- videoMedia.synopsis && videoMedia.synopsis.length > 200 ? videoMedia.synopsis.substring(0, 200) + '<span>&hellip;</span>' : videoMedia.synopsis _%></div>
+                            <div class="edit-field form-group">
+                                <textarea name="synopsis" class="form-control form-control-success form-control-danger"><%= videoMedia.synopsis _%></textarea>
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= videoMedia.tv_broadcaster _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="tv_broadcaster" value="<%= videoMedia.tv_broadcaster _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= videoMedia.mediaGenre.name _%></div>
+                            <div class="edit-field form-group">
+                                <select name="media_genre_id" data-field-name="mediaGenre" class="form-control form-control-success form-control-danger">
+                                    <%_ genres.forEach(function(genre){ _%>
+                                    <option value="<%= genre.id _%>"<%= videoMedia.mediaGenre.id === genre.id ? ' selected' : ''_%>><%= genre.name _%></option>
+                                    <%_ }); _%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field">
+                                <ul>
+                                    <%_ videoMedia.categories.forEach(function(category){ _%>
+                                    <li><%= category.name _%></li>
+                                    <%_ }); _%>
+                                </ul>
+                            </div>
+                            <div class="edit-field form-group">
+                                <select name="categories" class="form-control form-control-success form-control-danger" multiple>
+                                    <%_ videoMedia.categories.forEach(function(category){ _%>
+                                    <option selected value="<%= category.id _%>"><%= category.name _%></option>
+                                    <%_ }); _%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div><%= moment(videoMedia.created_at).format('DD-MMMM-YYYY') _%></div>
+                        </div>
+                        <div class="td">
+                            <div><%= videoMedia.updated_at ? moment(videoMedia.updated_at).format('DD-MMMM-YYYY') : 'No updates' _%></div>
+                        </div>
+                        <div class="td">
+                            <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                            <button type="button" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        </div>
+                    </form>
+                    <%_
+                    });
+                    _%>
+                </div>                
             </div>
         </div>
     </div>
@@ -117,4 +257,4 @@
 class="admin"
 <%- contentFor('extraScripts') %>
 <script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript" src="/js/mainAdmin.js"></script>
+<script type="text/javascript" src="/js/mainAdminMovies.js"></script>

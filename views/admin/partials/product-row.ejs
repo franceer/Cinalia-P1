@@ -1,0 +1,104 @@
+<form class="tr newly-added">
+    <div class="td">
+        <input type="checkbox" name="select-product" />
+    </div>
+    <div class="td modal-hidden">
+        <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+    </div>
+    <div class="td">
+        <div>
+            <%= product.id _%><input name="id" type="hidden" value="<%= product.id _%>" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= product.brand.name _%></div>
+        <div class="edit-field form-group">
+            <select name="brand_id" data-field-name="brand" class="form-control form-control-success form-control-danger">
+                <option value="0">Choisir une marque</option>
+                <%_ brands.forEach(function(brand){ _%>
+                <option value="<%= brand.id _%>"<%= product.brand.id === brand.id ? ' selected' : ''_%>><%= brand.name _%></option>
+                <%_ }); _%>
+            </select>
+            <input name="brand_name" type="hidden" value="<%= product.brand.name _%>" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= product.name _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="name" value="<%= product.name _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%- product.description && product.description.length > 200 ? product.description.substring(0, 200) + '<span>&hellip;</span>' : product.description _%></div>
+        <div class="edit-field form-group">
+            <textarea name="description" class="form-control form-control-success"><%= product.description _%></textarea>
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field">
+            <ul>
+                <%_ product.categories.forEach(function(category){ _%>
+                <li><%= category.name _%></li>
+                <%_ }); _%>
+            </ul>
+        </div>
+        <div class="edit-field form-group">
+            <select name="categories" class="form-control form-control-success form-control-danger" multiple>
+                <%_ product.categories.forEach(function(category){ _%>
+                <option selected value="<%= category.id _%>"><%= category.name _%></option>
+                <%_ }); _%>
+            </select>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><img src="<%= product.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= product.picture_alt _%>" title="<%= product.picture_title _%>" /></div>
+        <div class="edit-field form-group">
+            <input type="text" placeholder="url" name="picture_url" value="<%= product.picture_url _%>" class="form-control form-control-success form-control-danger" />
+            <input type="text" placeholder="alt" name="picture_alt" value="<%= product.picture_alt _%>" class="form-control form-control-success form-control-danger" />
+            <input type="text" placeholder="title" name="picture_title" value="<%= product.picture_title _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field break-url"><%= product.commercial_url _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="commercial_url" value="<%= product.commercial_url _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%= product.price _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="price" value="<%= product.price _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <%_ if(product.parent_product_id !== null){ _%>
+        <div class="display-field"><%= product.parentProduct.brand.name + ' ' + product.parentProduct.name _%></div>
+        <%_ } _%>
+        <div class="edit-field form-group">
+            <button type="button" class="open-parent-product-modal btn btn-default" data-toggle="modal" data-target="#parent-product-modal">Choisir un produit</button>
+            <input name="parent_product_id" type="hidden" <%= product.parent_product_id !== null ? product.parent_product_id : '' _%> />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <%_ if(product.similarProducts && product.similarProducts.length > 0){ _%>
+        <ul>
+            <%_ product.similarProducts.forEach(function(similarProduct){ _%>
+            <li><%= similarProduct.brand.name + ' ' + similarProduct.name _%></li>
+            <%_ }); _%>
+        </ul>
+        <%_ } _%>
+    </div>
+    <div class="td">
+        <div><%= moment(product.created_at).format('DD-MMMM-YYYY') _%></div>
+    </div>
+    <div class="td">
+        <div><%= product.updated_at ? moment(product.updated_at).format('DD-MMMM-YYYY') : 'No updates' _%></div>
+    </div>
+    <div class="td modal-hidden">
+        <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+    </div>
+</form>

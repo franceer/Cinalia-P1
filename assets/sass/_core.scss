@@ -84,53 +84,49 @@ button, a, input{
 /* ==========  Select Field Variables ========== */
 /* ==========  Select Field ========== */
 /* Style Select Field */
-select {
-    min-width: 150px;
-    font-family: inherit;
-    background-color: transparent;
-    width: 100%;
-    padding: 4px 0;
-    font-size: 16px;
-    color: rgba(0,0,0, 0.5);
-    border: none;
-    border-bottom: 1px solid rgba(0,0,0, 0.25);
-}
-
-/* Remove focus */
-select:focus {
-    outline: none;
-}
-
-/* Hide label */
-.selectfield label {
-    display: none;
-}
-
-/* Use custom arrow */
-.selectfield select {
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-}
-
-.selectfield {
+.selectfield{
     position: relative;
     display: inline-block;
     width: 200px;
     margin-right: 30px;
     margin-bottom: 30px;
-}
-.selectfield:after {
-    position: absolute;
-    top: 0.75em;
-    right: 0.5em;
-    /* Styling the down arrow */
-    width: 0;
-    height: 0;
-    padding: 0;
-    content: '';
-    border-left: .25em solid transparent;
-    border-right: .25em solid transparent;
-    border-top: 0.375em solid rgba(0,0,0, 0.12);
-    pointer-events: none;
+
+    &:after{
+        position: absolute;
+        top: 0.75em;
+        right: 0.5em;
+        /* Styling the down arrow */
+        width: 0;
+        height: 0;
+        padding: 0;
+        content: '';
+        border-left: .25em solid transparent;
+        border-right: .25em solid transparent;
+        border-top: 0.375em solid rgba(0,0,0, 0.12);
+        pointer-events: none;    
+    }
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        min-width: 150px;
+        font-family: inherit;
+        background-color: transparent;
+        width: 100%;
+        padding: 4px 0;
+        font-size: 16px;
+        color: rgba(0,0,0, 0.5);
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0, 0.25);
+
+        &:focus{
+            outline: none;
+        }
+    }
+
+    /* Hide label */
+     label {
+        display: none;
+    }
 }

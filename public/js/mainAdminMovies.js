@@ -4,165 +4,35 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2), __webpack_require__(8), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, select2, validation) {
-
-	    var select2FR = {
-	        errorLoading:
-	            function () { return "Les résultats ne peuvent pas être chargés." },
-	        inputTooLong:
-	            function (e) { var t = e.input.length - e.maximum, n = "Supprimez " + t + " caractère"; return t !== 1 && (n += "s"), n },
-	        inputTooShort:
-	            function (e) { var t = e.minimum - e.input.length, n = "Saisissez " + t + " caractère"; return t !== 1 && (n += "s"), n },
-	        loadingMore:
-	            function () { return "Chargement de résultats supplémentaires…" },
-	        maximumSelected:
-	            function (e) { var t = "Vous pouvez seulement sélectionner " + e.maximum + " élément"; return e.maximum !== 1 && (t += "s"), t },
-	        noResults: function () { return "Aucun résultat trouvé" },
-	        searching: function () { return "Recherche en cours…" }
-	    };
-
-	    function getValidatorParent(element) {
-	        var $parent;
-	        var $element = $(element);
-
-	        if ($element.attr('type') === 'checkbox')
-	            $parent = $element.parents('.form-check, .form-group');
-	        else
-	            $parent = $element.parent();
-
-	        return $parent;
-	    }
-
-	    function ProductManager() {
-	        this.setSelect2Brands($('#brand_id'));
-	        this.setSelect2Categories($('#categories'));
+	    function MovieManager() {
+	        this.select2FR = {
+	            errorLoading:
+	                function () { return "Les résultats ne peuvent pas être chargés." },
+	            inputTooLong:
+	                function (e) { var t = e.input.length - e.maximum, n = "Supprimez " + t + " caractère"; return t !== 1 && (n += "s"), n },
+	            inputTooShort:
+	                function (e) { var t = e.minimum - e.input.length, n = "Saisissez " + t + " caractère"; return t !== 1 && (n += "s"), n },
+	            loadingMore:
+	                function () { return "Chargement de résultats supplémentaires…" },
+	            maximumSelected:
+	                function (e) { var t = "Vous pouvez seulement sélectionner " + e.maximum + " élément"; return e.maximum !== 1 && (t += "s"), t },
+	            noResults: function () { return "Aucun résultat trouvé" },
+	            searching: function () { return "Recherche en cours…" }
+	        };
 	        this.initHandlers();
 	        this.initFormValidators();
+	        this.setSelect2Genres($('#media_genre_id'));
+	        this.setSelect2Categories($('#categories'));
 	    }
 
-	    ProductManager.prototype = function () {
-	        var initHandlers = function () {
-	            $('.table').on('click', '.edit-button', function (e) {
-	                $this = $(this);
-	                $tr = $this.closest('.tr');
-	                setSelect2Brands($tr.find('select[name=brand_id]'));
-	                setSelect2Categories($tr.find('select[name=categories]'));
-	                $tr.validate({
-	                    rules: {
-	                        brand_id: 'required',
-	                        name: 'required',
-	                        categories: 'required',
-	                        picture_url: 'required',
-	                        commercial_url: 'required',
-	                        price: 'required'
-	                    },
-	                    messages: {
-	                        brand_id: 'Merci de choisir une marque',
-	                        name: 'Merci d\'indiquer le nom du produit',
-	                        categories: 'Merci de choisir une catégorie',
-	                        picture_url: 'Merci de renseigner une image',
-	                        commercial_url: 'Merci de renseigner une url',
-	                        price: 'Merci de renseigner un prix',
-	                    },
-	                    highlight: function (element) {
-	                        getValidatorParent(element).removeClass('has-success').addClass('has-danger');
-	                    },
-	                    unhighlight: function (element) {
-	                        getValidatorParent(element).removeClass('has-danger').addClass('has-success');
-	                    },
-	                    errorPlacement: function (error, element) {
-	                        error.addClass('form-control-label');
-	                        error.appendTo(element.closest('.form-group'));
-	                    }
-	                });
-	                $tr.find('.display-field').hide();
-	                $tr.find('.edit-field').show();
-	                $tr.find('.edit-button').hide();
-	                $tr.find('.delete-button').hide();
-	                $tr.find('.save-button').show();
-	            });
-
-	            $('.table').on('click', '.save-button', function (e) {
-	                var $this = $(this);
-	                var $tr = $this.closest('.tr');
-
-	                if ($tr.data('validator').form()) {
-	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'produits' }, function (updated) {
-	                        $tr.replaceWith(updated);
-	                        $tr = $('tr.newly-added').removeClass('newly-added');
-	                        setSelect2Categories($tr.find('select[name=categories]'));
-	                    });
-	                }
-	            });
-
-	            $('.table').on('click', '.delete-button', function (e) {
-	                if (confirm('Etes-vous sûr de vouloir supprimer cet élément ?')) {
-	                    $tr = $(this).closest('.tr');
-	                    $.ajax({
-	                        url: '/admin/' + $(this).attr('data-target') + '/' + $(this).closest('.tr').find('[name=id]').val(),
-	                        type: 'DELETE'
-	                    })
-	                    .done(function (data) {
-	                        if (data.status === 'error')
-	                            showErrors($('#alert-table'), data.message);
-	                        else
-	                            $tr.remove();
-	                    });
-	                }
-	            });
-
-	            $('.add-button').on('click', function (e) {
-	                if ($(this).closest('form').data('validator').form()) {
-	                    var $container = $('#form-toggle');
-
-	                    addOrUpdateAsset($container, { method: 'POST', target: 'produits' }, function (data) {
-	                        if (data.status === 'error') {
-	                            showErrors($('.alert'), data.message);
-	                        } else {
-	                            var $formElements = $container.find('input:not([disabled]):not([type=search]), select, textarea')
-	                            $formElements.filter('input, textarea').val('');
-	                            $formElements.filter('select').val('');
-	                            $('.open-parent-product-modal').text('Choisir un produit');
-	                        }
-	                    });
-	                }
-	            });
-
-	            $('#add-category').on('click', function (e) {
-	                var $addCategoryForm = $(this).closest('form').data('validator');
-	                if ($addCategoryForm.form()) {
-	                    $.post('/admin/categories', { name: $addCategoryForm.currentElements.filter('[name=name]').val(), path: $addCategoryForm.currentElements.filter('[name=path]').val() }, function (data) {
-	                        if (data.status === 'error')
-	                            showErrors($('.alert'), data.message);
-	                        else {
-	                            $addCategoryForm.currentElements.val('').parent().removeClass('has-success');
-	                            $('select[name=categories]').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
-	                        }
-	                    });
-	                }
-	            });
-
-	            $('#parent-product-modal').on('show.bs.modal', function (e) {
-	                var $button =$(e.relatedTarget);
-	                $('#add-parent-product').data('relatedTargets', { input: $button.siblings('[name=parent_product_id]'), button: $button });
-	            });
-
-	            $('#add-parent-product').on('click', function (e) {
-	                var $parentProductIDInputModal = $('#parent-product-id');
-	                var $parentProductIDInput = $(e.target).data('relatedTargets').input;
-	                $(e.target).data('relatedTargets').button.text('ID Produit : ' + $parentProductIDInputModal.val());
-	                $parentProductIDInput.val($parentProductIDInputModal.val());
-	                $('#parent-product-modal').modal('hide');
-	                $parentProductIDInputModal.val('');
-	            });
-	        };
-
-	        var setSelect2Brands = function ($element) {
+	    MovieManager.prototype = function () {
+	        var setSelect2Genres = function ($element) {
 	            if (!$element)
-	                $element = $('select[name=brand_id]');
+	                $element = $('select[name=media_genre_id]');
 
 	            var selectBrands = $element.select2({
-	                placeholder: 'Choisissez une marque...',
-	                language: select2FR,
+	                placeholder: 'Choisissez un genre...',
+	                language: this.select2FR,
 	                width: '100%',
 	                multiple: true,
 	                tags: true,
@@ -173,7 +43,7 @@ webpackJsonp([1],{
 	            $element.on('change', function () {
 	                var $form = $element.closest('form');
 	                $form.data('validator').element(this);
-	                $form.find('input[name=brand_name]').val($(this).children('option:selected').text());
+	                $form.find('input[name=media_genre_name]').val($(this).children('option:selected').text());
 	            });
 	        };
 
@@ -189,7 +59,7 @@ webpackJsonp([1],{
 	                    return undefined;
 	                },
 	                multiple: true,
-	                language: select2FR,
+	                language: this.select2FR,
 	                ajax: {
 	                    url: '/admin/categories',
 	                    dataType: 'json',
@@ -225,119 +95,6 @@ webpackJsonp([1],{
 	        };
 
 	        var initFormValidators = function () {
-	            $('#admin-add-product-form').validate({
-	                rules: {
-	                    brand_id: 'required',
-	                    name: 'required',
-	                    categories: 'required',
-	                    picture_url: 'required',
-	                    commercial_url: 'required',
-	                    price: 'required'
-	                },
-	                messages: {
-	                    brand_id: 'Merci de choisir une marque',
-	                    name: 'Merci d\'indiquer le nom du produit',
-	                    categories: 'Merci de choisir une catégorie',
-	                    picture_url: 'Merci de renseigner une image',
-	                    commercial_url: 'Merci de renseigner une url',
-	                    price: 'Merci de renseigner un prix'
-	                },
-	                highlight: function (element) {
-	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
-	                },
-	                unhighlight: function (element) {
-	                    getValidatorParent(element).removeClass('has-danger').addClass('has-success');
-	                },
-	                errorPlacement: function (error, element) {
-	                    error.addClass('form-control-label col-md-6 offset-md-3');
-	                    error.appendTo(element.closest('.form-group'));
-	                }
-	            });
-
-	            $('#add-category-form').validate({
-	                rules: {
-	                    name: 'required',
-	                    path: 'required'
-	                },
-	                messages: {
-	                    name: 'Merci d\'indiquer le nom de la catégorie',
-	                    categories: 'Merci d\'indiquer le path de la catégorie'
-	                },
-	                highlight: function (element) {
-	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
-	                },
-	                unhighlight: function (element) {
-	                    getValidatorParent(element).removeClass('has-danger').addClass('has-success');
-	                },
-	                errorPlacement: function (error, element) {
-	                    error.addClass('form-control-label col-md-6 offset-md-3');
-	                    error.appendTo(element.closest('.form-group'));
-	                }
-	            });
-	        };
-
-	        function addOrUpdateAsset($container, config, cb) {
-	            var data = {};
-
-	            $container.find('input:not([disabled]):not([type=search]), select, textarea').each(function () {
-	                var $input = $(this);
-	                var value = $input.val();
-	                data[$input.attr('name')] = (value && value !== '' ? value : null);
-	            });
-
-	            $.ajax({
-	                url: '/admin/' + config.target + '/' + (config.id ? config.id : ''),
-	                type: config.method,
-	                data: data
-	            })
-	            .done(cb);
-	        }
-
-	        
-
-	        function showErrors($element, message) {
-	            $element
-					.attr('class', 'alert alert-danger')
-					.text(message)
-					.removeAttr('hidden');
-	        }
-
-	        return {
-	            initHandlers: initHandlers,
-	            setSelect2Brands: setSelect2Brands,
-	            setSelect2Categories: setSelect2Categories,
-	            initFormValidators: initFormValidators
-	        };
-	    }();
-
-	    function MovieManager() {
-	        this.initFormValidators();
-	        this.setSelect2Genres($('#media_genre_id'));
-	    }
-
-	    MovieManager.prototype = function () {
-	        var setSelect2Genres = function ($element) {
-	            if (!$element)
-	                $element = $('select[name=media_genre_id]');
-
-	            var selectBrands = $element.select2({
-	                placeholder: 'Choisissez un genre...',
-	                language: select2FR,
-	                width: '100%',
-	                multiple: true,
-	                tags: true,
-	                maximumSelectionLength: 1
-	            });
-	            selectBrands.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
-
-	            $element.on('change', function () {
-	                var $form = $element.closest('form');
-	                $form.data('validator').element(this);
-	                $form.find('input[name=media_genre_name]').val($(this).children('option:selected').text());
-	            });
-	        };
-
-	        var initFormValidators = function () {
 	            $('#admin-add-movie-form').validate({
 	                rules: {
 	                    name: 'required',
@@ -370,14 +127,180 @@ webpackJsonp([1],{
 	            });
 	        };
 
+	        var initHandlers = function () {
+	            $('.table:not(#linked-products)').on('click', '.edit-button', function (e) {
+	                $this = $(this);
+	                $tr = $this.closest('.tr');
+	                setSelect2Genres($tr.find('select[name=media_genre_id]'));
+	                setSelect2Categories($tr.find('select[name=categories]'));
+	                $tr.validate({
+	                    rules: {
+	                        name: 'required',
+	                        theater_release_date: 'required',
+	                        release_country: 'required',
+	                        duration: 'required',
+	                        poster_url: 'required',
+	                        video_url: 'required',
+	                        media_genre_id: 'required'
+	                    },
+	                    messages: {
+	                        name: 'required',
+	                        theater_release_date: 'required',
+	                        release_country: 'required',
+	                        duration: 'required',
+	                        poster_url: 'required',
+	                        video_url: 'required',
+	                        media_genre_id: 'required'
+	                    },
+	                    highlight: function (element) {
+	                        getValidatorParent(element).removeClass('has-success').addClass('has-danger');
+	                    },
+	                    unhighlight: function (element) {
+	                        getValidatorParent(element).removeClass('has-danger').addClass('has-success');
+	                    },
+	                    errorPlacement: function (error, element) {
+	                        error.addClass('form-control-label');
+	                        error.appendTo(element.closest('.form-group'));
+	                    }
+	                });
+	                $tr.data('htmlBackup', $tr.html());
+	                $tr.find('.edit-button').hide();
+	                $tr.find('.display-field').hide();
+	                $tr.find('.edit-field').show();                
+	                $tr.find('.delete-button').hide();
+	                $tr.find('.save-button').show();
+	                $tr.find('.close-button').show();
+	            });
+
+	            $('.table:not(#linked-products)').on('click', '.save-button', function (e) {
+	                var $this = $(this);
+	                var $tr = $this.closest('.tr');
+
+	                if ($tr.data('validator').form()) {
+	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'films' }, function (updated) {
+	                        $tr.replaceWith(updated);
+	                        $tr = $('tr.newly-added').removeClass('newly-added');
+	                        setSelect2Categories($tr.find('select[name=categories]'));
+	                    });
+	                }
+	            });
+
+	            $('.table:not(#linked-products)').on('click', '.delete-button', function (e) {
+	                if (confirm('Etes-vous sûr de vouloir supprimer cet élément ?')) {
+	                    $tr = $(this).closest('.tr');
+	                    $.ajax({
+	                        url: '/admin/films/' + $(this).closest('.tr').find('[name=id]').val(),
+	                        type: 'DELETE'
+	                    })
+	                    .done(function (data) {
+	                        if (data.status === 'error')
+	                            showMessages($('#alert-table'), data.message, 'alert-danger');
+	                        else {
+	                            $tr.remove();
+	                            showMessages($('#alert-table'), 'Element supprimé avec succès.', 'alert-success');
+	                        }
+	                    });
+	                }
+	            });
+
+	            $('.table:not(#linked-products)').on('click', '.close-button', function (e) {
+	                if (confirm('Souhaitez-vous arrêter la modification de cet élement (vos modifications seront perdues) ?')) {
+	                    $tr = $(this).closest('.tr');                   
+	                    $tr.html($tr.data('htmlBackup'));
+	                    $tr.find('select[name=media_genre_id]+.select2-container').remove();
+	                    $tr.find('select[name=categories]+.select2-container').remove();
+	                }
+	            });
+
+	            $('#linked-products').on('click', '.delete-product-button', function (e) {
+	                $(e.target).closest('.tr').remove();
+	            });
+
+	            $('.add-button').on('click', function (e) {
+	                if ($(this).closest('form').data('validator').form()) {
+	                    var $container = $('#form-toggle');
+
+	                    addOrUpdateAsset($container, { method: 'POST', target: 'films' }, function (data) {
+	                        if (data.status === 'error') {
+	                            showMessages($('#alert-add'), data.message, 'alert-danger');
+	                        } else {
+	                            var $formElements = $container.find('input:not([disabled]):not([type=search]), select, textarea')
+	                            $formElements.filter('input, textarea').val('');
+	                            $formElements.filter('select').val('');
+	                            showMessages($('#alert-add'), data.videoMedia.name + ' ajouté avec succès', 'alert-success');
+	                        }
+	                    });
+	                }
+	            });
+
+	            $('#add-category').on('click', function (e) {
+	                var $addCategoryForm = $(this).closest('form').data('validator');
+	                if ($addCategoryForm.form()) {
+	                    $.post('/admin/categories', { name: $addCategoryForm.currentElements.filter('[name=name]').val(), path: $addCategoryForm.currentElements.filter('[name=path]').val() }, function (data) {
+	                        if (data.status === 'error')
+	                            showMessages($('.alert'), data.message, 'alert-danger');
+	                        else {
+	                            $addCategoryForm.currentElements.val('').parent().removeClass('has-success');
+	                            $('select[name=categories]').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
+	                        }
+	                    });
+	                }
+	            });          
+	        };
+
+	        function addOrUpdateAsset($container, config, cb) {
+	            var data = { products: [] };
+	            $container.find('input:not([disabled]):not([type=search]):not(#linked-products input), select:not(#linked-products select), textarea:not(#linked-products textarea)').each(function () {
+	                var $input = $(this);
+	                var value = $input.val();
+	                data[$input.attr('name')] = (value && value !== '' ? value : null);
+	            });
+
+	            $container.find('#linked-products .tr:not(.thead-inverse)').each(function () {
+	                var $tr = $(this);
+	                var id = $tr.find('[name=id]').val();
+	                var matchingStatusID = $tr.find('[name=matching_status_id]').is(':checked') ? 1 : 2;
+	                var appearingContext = $tr.find('[name=appearing_context]').val();
+	                var timeCodes = $tr.find('[name=time_codes]').val();
+	                data.products.push({ product_id: id, matching_status_id: matchingStatusID, appearing_context: appearingContext, time_codes: timeCodes });
+	            });
+
+	            $.ajax({
+	                url: '/admin/' + config.target + '/' + (config.id ? config.id : ''),
+	                type: config.method,
+	                data: data
+	            })
+	            .done(cb);
+	        }
+
+	        function getValidatorParent(element) {
+	            var $parent;
+	            var $element = $(element);
+
+	            if ($element.attr('type') === 'checkbox')
+	                $parent = $element.parents('.form-check, .form-group');
+	            else
+	                $parent = $element.parent();
+
+	            return $parent;
+	        }
+
+	        function showMessages($element, message, style) {
+	            $element
+					.attr('class', 'alert '+ style)
+					.text(message)
+					.removeAttr('hidden');
+	        }
+
 	        return {
 	            setSelect2Genres: setSelect2Genres,
-	            initFormValidators: initFormValidators
+	            setSelect2Categories: setSelect2Categories,
+	            initFormValidators: initFormValidators,
+	            initHandlers: initHandlers
 	        };
 	    }();
 
 	    $(function () {
-	        new ProductManager();
 	        new MovieManager();
 	    });
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));

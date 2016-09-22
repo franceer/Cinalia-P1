@@ -27,13 +27,62 @@ body.admin {
         -moz-hyphens: auto;
         hyphens: auto;
     }
+
+    button:not(.btn){
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
 }
-.edit-field, .save-button{
+.add-grouped-button{
     display: none;
 }
-.save-button, .edit-button, .delete-button, legend button{
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
+.edit-field, .save-button, .close-button{
+    display: none;
+}
+#form-toggle .select2-container .select2-search__field:not([placeholder='']) {
+  width: 100% !important;
+  margin-right: 100000px;
+}
+.has-danger .select2-container--default .select2-selection--multiple {
+    border-color: #d9534f;
+}
+.has-success .select2-container--default .select2-selection--multiple{
+    border-color: #5cb85c;
+}
+.table 
+{
+    display:table;
+
+    &.table-hover form.tr:hover {
+        background-color: rgba(0, 0, 0, 0.075);
+    }
+
+    textarea{
+        resize: both;
+    }
+
+    input:not([type=checkbox]), textarea{
+        min-width: 150px;
+    }
+}
+.tr
+{
+    display:table-row;
+}
+.td, .th
+{
+    display:table-cell;
+    padding: 0 .5rem;
+    vertical-align: middle;
+}
+.table-striped form.tr:nth-of-type(odd){
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.thead-inverse .th {
+    color: #fff;
+    background-color: $dark-gray;
+    padding: .5rem;
+    font-size: 1.2rem;
 }
