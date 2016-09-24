@@ -207,8 +207,29 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 }
             });
 
-            $('#linked-products').on('click', '.delete-product-button', function (e) {
+            $('#linked-products, #modify-products-modal').on('click', '.delete-product-button', function (e) {
                 $(e.target).closest('.tr').remove();
+            });
+
+            $('#modify-products-modal')
+            .on('show.bs.modal', function (e) {
+                var $button = $(e.relatedTarget);
+                var $clonedProducts = $button.parent().siblings('.linked-products').clone().show();                
+                var $modalBody = $('#modify-products-modal').find('.modal-body').append($clonedProducts);
+
+                if ($button.hasClass('modify-products-button')){
+                    $(e.target).addClass('edit');
+                    $modalBody.find('.linked-products').data('relatedTarget', $button);
+                }
+            })
+            .on('hide.bs.modal', function (e) {                     
+                var $modal = $('#modify-products-modal');
+                var $productsTable = $('#modify-products-modal').find('.linked-products');
+
+                if ($productsTable.data('relatedTarget'))                     
+                    $productsTable.data('relatedTarget').parent().siblings('.linked-products').replaceWith($productsTable.hide());               
+
+                $modal.find('.linked-products').remove();
             });
 
             $('.add-button').on('click', function (e) {
@@ -228,6 +249,17 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 }
             });
 
+            $('#add-products-button').on('click', function (e) {
+                var $button = $(e.target);
+                $button.hide().prev().show();
+                $button.next().attr('src', '/admin/produits').show().attr('data-related-target', 'true').next().hide();
+            });
+
+            $('#back-to-products-button').on('click', function (e) {
+                var $button = $(e.target);
+                $button.hide().next().show().next().removeAttr('data-related-target').hide().next().show();
+            });
+
             $('#add-category').on('click', function (e) {
                 var $addCategoryForm = $(this).closest('form').data('validator');
                 if ($addCategoryForm.form()) {
@@ -245,18 +277,18 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
 
         function addOrUpdateAsset($container, config, cb) {
             var data = { products: [] };
-            $container.find('input:not([disabled]):not([type=search]):not(#linked-products input), select:not(#linked-products select), textarea:not(#linked-products textarea)').each(function () {
+            $container.find('input:not([disabled],[type=search],#linked-products input,.linked-products input), select:not(#linked-products select,.linked-products input), textarea:not(#linked-products textarea,.linked-products input)').each(function () {
                 var $input = $(this);
                 var value = $input.val();
                 data[$input.attr('name')] = (value && value !== '' ? value : null);
             });
 
-            $container.find('#linked-products .tr:not(.thead-inverse)').each(function () {
+            $container.find('#linked-products .tr:not(.thead-inverse), .linked-products .tr:not(.thead-inverse)').each(function () {
                 var $tr = $(this);
                 var id = $tr.find('[name=id]').val();
                 var matchingStatusID = $tr.find('[name=matching_status_id]').is(':checked') ? 1 : 2;
                 var appearingContext = $tr.find('[name=appearing_context]').val();
-                var timeCodes = $tr.find('[name=time_codes]').val();
+                var timeCodes = [$tr.find('[name=time_codes]').val()];
                 data.products.push({ product_id: id, matching_status_id: matchingStatusID, appearing_context: appearingContext, time_codes: timeCodes });
             });
 

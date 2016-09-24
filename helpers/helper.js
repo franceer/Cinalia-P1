@@ -118,7 +118,7 @@ module.exports.sendMail = function(to, from, subject, text, callback){
     smtpTransport.sendMail(mailOptions, callback);
 }
 
-module.exports.uploadImagesToS3 = function (req, imagePropertyName, renameProperties) {
+module.exports.uploadImagesToS3 = function (req, imagePropertyName, renameProperties, assetType) {
     var imageURL = req.body[imagePropertyName];
     var extension  = path.extname(imageURL);
     var datePrefix = moment().format('YYYY[/]MM');
@@ -145,7 +145,7 @@ module.exports.uploadImagesToS3 = function (req, imagePropertyName, renameProper
     });
 
     fileName = toURLFormat(fileName, '-');    
-    var pathToFile = process.env.NODE_ENV + '/' + datePrefix + '/' + key + '/' + fileName;
+    var pathToFile = process.env.NODE_ENV +'/' + assetType + '/' + datePrefix + '/' + key + '/' + fileName;
 
     return new Promise(function (resolve, reject) {
         var files = [];

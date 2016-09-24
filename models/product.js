@@ -24,7 +24,7 @@ let Product = bookshelf.Model.extend({
     },
 
     matchingStatuses: function () {
-        return this.belongsToMany('MatchingStatus').through('ProductsInVideoMedia');
+        return this.belongsToMany('MatchingStatus');
     },
 
     videoMedias : function(){
@@ -32,11 +32,11 @@ let Product = bookshelf.Model.extend({
     },
 	
     sets: function () {
-        return this.belongsToMany('Set').through('ProductsInSet');
+        return this.belongsToMany('Set');
     },
 
     looks: function () {
-        return this.belongsToMany('Look').through('ProductsInLook');
+        return this.belongsToMany('Look');
     },
 
     parentProduct: function () {

@@ -1,20 +1,37 @@
-<%- include('./partials/add-categories-modal') %>
-<div class="modal fade" id="products-modal" tabindex="-1" role="dialog" aria-labelledby="products-modal-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Ajouter des produits</h4>
-            </div>
-            <div class="modal-body">
-                <iframe src="/admin/produits"></iframe>
+<section id="admin-section">
+    <%- include('./partials/add-categories-modal') %>
+    <div class="modal fade" id="products-modal" tabindex="-1" role="dialog" aria-labelledby="products-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Ajouter des produits</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe src="/admin/produits"></iframe>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<section id="admin-section">
+    <div class="modal fade" id="modify-products-modal" tabindex="-1" role="dialog" aria-labelledby="modify-products-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Produits</h4>
+                </div>
+                <div class="modal-body">
+                    <button id="back-to-products-button" class="btn btn-default">Revenir aux produits du film</button>
+                    <button id="add-products-button" class="edit-field btn btn-default" type="button">Ajouter des produits</button>
+                    <iframe></iframe>                    
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -127,6 +144,7 @@
                         <div class="th">Diff. TV</div>
                         <div class="th">Genre</div>
                         <div class="th">Catégories</div>
+                        <div class="th">Produits</div>
                         <div class="th">Créé</div>
                         <div class="th">MAJ</div>
                         <div class="th">Actions</div>
@@ -159,13 +177,13 @@
                         <div class="td">
                             <div class="display-field"><%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%></div>
                             <div class="edit-field form-group">
-                                <input type="text" name="theater_release_date" value="<%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" name="theater_release_date" value="<%= moment(videoMedia.theater_release_date).isValid() ? moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
                             </div>
                         </div>
                         <div class="td">
                             <div class="display-field"><%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%></div>
                             <div class="edit-field form-group">
-                                <input type="text" name="tv_release_date" value="<%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" name="tv_release_date" value="<%= moment(videoMedia.tv_release_date).isValid() ? moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
                             </div>
                         </div>
                         <div class="td">
@@ -214,6 +232,7 @@
                                     <option value="<%= genre.id _%>"<%= videoMedia.mediaGenre.id === genre.id ? ' selected' : ''_%>><%= genre.name _%></option>
                                     <%_ }); _%>
                                 </select>
+                                <input name="media_genre_name" type="hidden" value="<%= videoMedia.mediaGenre.name _%>" />
                             </div>
                         </div>
                         <div class="td">
@@ -230,6 +249,69 @@
                                     <option selected value="<%= category.id _%>"><%= category.name _%></option>
                                     <%_ }); _%>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field">
+                                <button class="see-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Voir les produits</button>                                
+                            </div>
+                            <div class="edit-field">
+                                <button class="modify-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Modifier les produits</button>
+                            </div>
+                            <div class="linked-products table table-striped table-hover table-sm">
+                                <div class="tr thead-inverse">
+                                    <div class="th">ID</div>
+                                    <div class="th">Marque</div>
+                                    <div class="th">Nom</div>
+                                    <div class="th">Image</div>
+                                    <div class="th">Match</div>
+                                    <div class="th">Contexte</div>
+                                    <div class="th">Time code</div>
+                                    <div class="th edit-field">Suppr.</div>
+                                </div>
+                                <%_ videoMedia.products.forEach(function(product){ _%>
+                                <div class="tr">
+                                    <div class="td">
+                                        <div>
+                                            <%= product.id _%><input name="id" type="hidden" value="<%= product.id _%>" />
+                                        </div>
+                                    </div>
+                                    <div class="td">
+                                        <div><%= product.brand.name _%></div>
+                                    </div>
+                                    <div class="td">
+                                        <div><%= product.name _%></div>
+                                    </div>
+                                    <div class="td">
+                                        <div>
+                                            <img src="<%= product.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= product.picture_alt _%>" title="<%= product.picture_title _%>" />
+                                        </div>
+                                    </div>
+                                    <div class="td">
+                                        <div class="display-field"><%= product._pivot_matching_status_id _%></div>
+                                        <div class="edit-field">
+                                            <input type="checkbox" name="matching_status_id" value="1" <%= product._pivot_matching_status_id === 1 ? 'checked' : '' _%> />
+                                        </div>
+                                    </div>
+                                    <div class="td">
+                                        <div class="display-field"><%= product._pivot_appearing_context _%></div>
+                                        <div class="edit-field">
+                                            <input type="text" name="appearing_context" value="<%= product._pivot_appearing_context _%>" />
+                                        </div>
+                                    </div>
+                                    <div class="td">
+                                        <div class="display-field"><%= product._pivot_time_codes _%></div>
+                                        <div class="edit-field">
+                                            <input type="text" name="time_codes" value="<%= product._pivot_time_codes _%>" />
+                                        </div>
+                                    </div>
+                                    <div class="td">
+                                        <div class="edit-field">
+                                            <button type="button" class="delete-product-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%_ }); _%>
                             </div>
                         </div>
                         <div class="td">

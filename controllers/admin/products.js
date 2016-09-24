@@ -39,7 +39,7 @@ router.get('/', function (req, res) {
 
             return helper.deleteS3Objects(oldProduct.get('picture_url').substring(index1, index2))
             .then(function (deleted) {
-                return helper.uploadImagesToS3(req, 'picture_url', ['name', 'brand_name']);
+                return helper.uploadImagesToS3(req, 'picture_url', ['name', 'brand_name'], 'products');
             });
         } else {
             return null;
@@ -112,7 +112,7 @@ router.get('/', function (req, res) {
         return returned;        
     })
     .then(function () {
-        return helper.uploadImagesToS3(req, 'picture_url', ['name', 'brand_name']);
+        return helper.uploadImagesToS3(req, 'picture_url', ['name', 'brand_name'], 'products');
     })
     .then(function(files){
         var originalURL;
@@ -154,8 +154,18 @@ router.get('/', function (req, res) {
         res.json({ status: 'error', message: err.message });
     });    
 })
-.delete('/:id', function(req, res){
-    Product.destroy({ id: req.params.id })
+.delete('/:id', function (req, res) {
+    Product.findOne({ id: req.params.id })
+    .then(function (product) {
+        var index1 = product.get('picture_url').indexOf(process.env.NODE_ENV);
+        var index2 = product.get('picture_url').lastIndexOf('/');
+
+        return helper.deleteS3Objects(product.get('picture_url').substring(index1, index2))
+        .catch(function (err) { /*Do nothing in case the images doesn't exist anymore*/ })
+        .then(function () {
+            return Product.destroy({ id: req.params.id });
+        });
+    })
     .then(function () {
         res.json({ status: 'success' });
     })

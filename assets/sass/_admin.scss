@@ -35,11 +35,11 @@ body.admin {
         margin: 0;
     }
 }
-.add-grouped-button{
+.edit-field,.th.edit-field, .edit .display-field, .save-button, .close-button, .add-grouped-button, #back-to-products-button, .td .linked-products, iframe{
     display: none;
 }
-.edit-field, .save-button, .close-button{
-    display: none;
+.edit .edit-field{
+    display: block;
 }
 #form-toggle .select2-container .select2-search__field:not([placeholder='']) {
   width: 100% !important;

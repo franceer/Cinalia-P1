@@ -113,7 +113,14 @@ webpackJsonp([2],{
 	            });
 
 	            $('.add-grouped-button').on('click', function (e) {
-	                var $productsTable = $(parent.document).find('.open-products-modal+.table');
+	                var $parentDocument = $(parent.document);
+	                var $productsTable;
+
+	                if ($parentDocument.find('iframe[data-related-target]').length > 0)
+	                    $productsTable = $parentDocument.find('iframe[data-related-target]+.linked-products');
+	                else
+	                    $productsTable = $parentDocument.find('#linked-products');
+
 	                $('input[name=select-product]:checked').each(function () {
 	                    var $tr = $(this).closest('.tr');
 
@@ -351,6 +358,7 @@ webpackJsonp([2],{
 	        function getProductRow($tr) {
 	            var $clonedRow = $tr.clone();
 	            $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(13),.td:nth-of-type(14)').remove();
+	            $clonedRow.find('.edit-field').remove();
 	            $clonedRow.append('<div class="td"><input type="checkbox" name="matching_status_id" value="1" /></div><div class="td"><input type="text" name="appearing_context" /></div><div class="td"><input type="text" name="time_codes" /></div><div class="td"><button type="button" class="delete-product-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
 	            return $('<div class="tr"></div>').append($clonedRow.contents());
 	        }

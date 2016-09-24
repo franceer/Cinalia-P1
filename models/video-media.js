@@ -34,7 +34,7 @@ var VideoMedia = bookshelf.Model.extend({
     },
 
     products: function () {
-        return this.belongsToMany('Product').through('ProductsInVideoMedia').withPivot(['time_codes', 'appearing_context']);
+        return this.belongsToMany('Product')/*.through('ProductsInVideoMedia')*/.withPivot(['time_codes', 'appearing_context', 'matching_status_id']);
     },
 
     locations: function () {
