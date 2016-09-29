@@ -1,0 +1,94 @@
+<form class="tr newly-added">
+    <div class="td">
+        <input type="checkbox" name="select-location" />
+    </div>
+    <div class="td modal-hidden">
+        <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+    <div class="td">
+        <div>
+            <%= location.id _%><input name="id" type="hidden" value="<%= location.id _%>" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= location.name _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="name" value="<%= location.name _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%- location.description && location.description.length > 200 ? location.description.substring(0, 200) + '<span>&hellip;</span>' : location.description _%></div>
+        <div class="edit-field form-group">
+            <textarea name="description" class="form-control form-control-success"><%= location.description _%></textarea>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= location.city_state_country _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="city_state_country" value="<%= location.city_state_country _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field">
+            <ul>
+                <%_ location.categories.forEach(function(category){ _%>
+                <li><%= category.name _%></li>
+                <%_ }); _%>
+            </ul>
+        </div>
+        <div class="edit-field form-group">
+            <select name="categories" class="form-control form-control-success form-control-danger" multiple>
+                <%_ location.categories.forEach(function(category){ _%>
+                <option selected value="<%= category.id _%>"><%= category.name _%></option>
+                <%_ }); _%>
+            </select>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><img src="<%= location.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= location.picture_alt _%>" title="<%= location.picture_title _%>" /></div>
+        <div class="edit-field form-group">
+            <input type="text" placeholder="url" name="picture_url" value="<%= location.picture_url _%>" class="form-control form-control-success form-control-danger" />
+            <input type="text" placeholder="alt" name="picture_alt" value="<%= location.picture_alt _%>" class="form-control form-control-success form-control-danger" />
+            <input type="text" placeholder="title" name="picture_title" value="<%= location.picture_title _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%= location.place_id _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="place_id" value="<%= location.place_id _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%= location.latitude _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="latitude" value="<%= location.latitude _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%= location.longitude _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="longitude" value="<%= location.longitude _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%= location.zoom _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="zoom" value="<%= location.zoom _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td">
+        <div><%= moment(location.created_at).format('DD-MMMM-YYYY') _%></div>
+    </div>
+    <div class="td">
+        <div><%= location.updated_at ? moment(location.updated_at).format('DD-MMMM-YYYY') : 'Pas de MAJ' _%></div>
+    </div>
+    <div class="td modal-hidden">
+        <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+</form>

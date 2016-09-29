@@ -3,9 +3,10 @@
         <input type="checkbox" name="select-product" />
     </div>
     <div class="td modal-hidden">
-        <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
     </div>
     <div class="td">
         <div>
@@ -94,11 +95,12 @@
         <div><%= moment(product.created_at).format('DD-MMMM-YYYY') _%></div>
     </div>
     <div class="td">
-        <div><%= product.updated_at ? moment(product.updated_at).format('DD-MMMM-YYYY') : 'No updates' _%></div>
+        <div><%= product.updated_at ? moment(product.updated_at).format('DD-MMMM-YYYY') : 'Pas de MAJ' _%></div>
     </div>
     <div class="td modal-hidden">
-        <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
     </div>
 </form>

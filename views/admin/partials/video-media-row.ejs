@@ -1,9 +1,12 @@
 <form class="tr newly-added">
+    <!--<div class="td">
+        <input type="checkbox" name="select-product" />
+    </div>-->
     <div class="td">
-        <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-        <button type="button" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
     </div>
     <div class="td">
         <%= videoMedia.id _%><input name="id" type="hidden" value="<%= videoMedia.id _%>" />
@@ -21,15 +24,15 @@
         </div>
     </div>
     <div class="td">
-        <div class="display-field"><%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%></div>
+        <div class="display-field"><%= moment(new Date(videoMedia.theater_release_date)).format('DD/MM/YYYY') _%></div>
         <div class="edit-field form-group">
-            <input type="text" name="theater_release_date" value="<%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%>" class="form-control form-control-success form-control-danger" />
+            <input type="text" name="theater_release_date" value="<%= moment(new Date(videoMedia.theater_release_date)).isValid() ? moment(new Date(videoMedia.theater_release_date)).format('DD/MM/YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
         </div>
     </div>
     <div class="td">
-        <div class="display-field"><%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%></div>
+        <div class="display-field"><%= moment(new Date(videoMedia.tv_release_date)).format('DD/MM/YYYY') _%></div>
         <div class="edit-field form-group">
-            <input type="text" name="tv_release_date" value="<%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%>" class="form-control form-control-success form-control-danger" />
+            <input type="text" name="tv_release_date" value="<%= moment(new Date(videoMedia.tv_release_date)).isValid() ? moment(new Date(videoMedia.tv_release_date)).format('DD/MM/YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
         </div>
     </div>
     <div class="td">
@@ -45,9 +48,7 @@
         </div>
     </div>
     <div class="td">
-        <div class="display-field">
-            <img src="<%= videoMedia.poster_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= videoMedia.picture_alt _%>" title="<%= videoMedia.picture_title _%>" />
-        </div>
+        <div class="display-field"><img src="<%= videoMedia.poster_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= videoMedia.picture_alt _%>" title="<%= videoMedia.picture_title _%>" /></div>
         <div class="edit-field form-group">
             <input type="text" placeholder="url" name="poster_url" value="<%= videoMedia.poster_url _%>" class="form-control form-control-success form-control-danger" />
             <input type="text" placeholder="alt" name="poster_alt" value="<%= videoMedia.poster_alt _%>" class="form-control form-control-success form-control-danger" />
@@ -80,6 +81,7 @@
                 <option value="<%= genre.id _%>"<%= videoMedia.mediaGenre.id === genre.id ? ' selected' : ''_%>><%= genre.name _%></option>
                 <%_ }); _%>
             </select>
+            <input name="media_genre_name" type="hidden" value="<%= videoMedia.mediaGenre.name _%>" />
         </div>
     </div>
     <div class="td">
@@ -99,15 +101,136 @@
         </div>
     </div>
     <div class="td">
+        <div class="display-field">
+            <button class="see-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Voir les produits</button>
+        </div>
+        <div class="edit-field">
+            <button class="modify-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Modifier les produits</button>
+        </div>
+        <div class="linked-products table table-striped table-hover table-sm">
+            <div class="tr thead-inverse">
+                <div class="th">ID</div>
+                <div class="th">Marque</div>
+                <div class="th">Nom</div>
+                <div class="th">Image</div>
+                <div class="th">Match</div>
+                <div class="th">Contexte</div>
+                <div class="th">Time code</div>
+                <div class="th edit-field">Suppr.</div>
+            </div>
+            <%_ videoMedia.products.forEach(function(product){ _%>
+            <div class="tr">
+                <div class="td">
+                    <div>
+                        <%= product.id _%><input name="id" type="hidden" value="<%= product.id _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div><%= product.brand.name _%></div>
+                </div>
+                <div class="td">
+                    <div><%= product.name _%></div>
+                </div>
+                <div class="td">
+                    <div>
+                        <img src="<%= product.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= product.picture_alt _%>" title="<%= product.picture_title _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="display-field">
+                        <div class="matching-status <%= product._pivot_matching_status_id === 1 ? 'exact-match' : 'close-match' _%>"></div>
+                    </div>
+                    <div class="edit-field form-group">
+                        <input type="checkbox" name="matching_status_id" value="1" <%= product._pivot_matching_status_id === 1 ? 'checked' : '' %> class="form-control" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="display-field"><%= product._pivot_appearing_context _%></div>
+                    <div class="edit-field form-group">
+                        <input type="text" name="appearing_context" value="<%= product._pivot_appearing_context _%>" class="form-control" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="display-field"><%= product._pivot_time_codes _%></div>
+                    <div class="edit-field form-group">
+                        <input type="text" name="time_codes" value="<%= product._pivot_time_codes _%>" class="form-control" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="edit-field">
+                        <button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <%_ }); _%>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field">
+            <button class="see-locations-button btn btn-default" data-toggle="modal" data-target="#modify-locations-modal" type="button">Voir les lieux</button>
+        </div>
+        <div class="edit-field">
+            <button class="modify-locations-button btn btn-default" data-toggle="modal" data-target="#modify-locations-modal" type="button">Modifier les lieux</button>
+        </div>
+        <div class="linked-locations table table-striped table-hover table-sm">
+            <div class="tr thead-inverse">
+                <div class="th">ID</div>
+                <div class="th">Nom</div>
+                <div class="th">V.E.P.</div>
+                <div class="th">Image</div>
+                <div class="th">Contexte</div>
+                <div class="th">Time code</div>
+                <div class="th edit-field">Suppr.</div>
+            </div>
+            <%_ videoMedia.locations.forEach(function(location){ _%>
+            <div class="tr">
+                <div class="td">
+                    <div>
+                        <%= location.id _%><input name="id" type="hidden" value="<%= location.id _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div><%= location.name _%></div>
+                </div>
+                <div class="td">
+                    <div><%= location.city_state_country _%></div>
+                </div>
+                <div class="td">
+                    <div>
+                        <img src="<%= location.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= location.picture_alt _%>" title="<%= location.picture_title _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="display-field"><%= location._pivot_appearing_context _%></div>
+                    <div class="edit-field form-group">
+                        <input type="text" name="appearing_context" value="<%= location._pivot_appearing_context _%>" class="form-control" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="display-field"><%= location._pivot_time_codes _%></div>
+                    <div class="edit-field form-group">
+                        <input type="text" name="time_codes" value="<%= location._pivot_time_codes _%>" class="form-control" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="edit-field">
+                        <button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <%_ }); _%>
+        </div>
+    </div>
+    <div class="td">
         <div><%= moment(videoMedia.created_at).format('DD-MMMM-YYYY') _%></div>
     </div>
     <div class="td">
-        <div><%= videoMedia.updated_at ? moment(videoMedia.updated_at).format('DD-MMMM-YYYY') : 'No updates' _%></div>
+        <div><%= videoMedia.updated_at ? moment(videoMedia.updated_at).format('DD-MMMM-YYYY') : 'Pas de MAJ' _%></div>
     </div>
     <div class="td">
-        <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-        <button type="button" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
     </div>
 </form>

@@ -30,6 +30,7 @@
 }
 .location-map{
     display: flex; 
+    min-height: 300px;
 
     iframe{
         flex: 1 0 auto;

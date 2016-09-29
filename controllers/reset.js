@@ -1,7 +1,7 @@
 var express = require('express'),
     router = express.Router(),
 	Promise = require('bluebird'),
-	nodemailer = require('nodemailer'),
+	helper = require('../helpers/helper'),
 	User = require('../models/user');
 
 router.get('/:token', function (req, res, next) {
@@ -33,32 +33,16 @@ router.get('/:token', function (req, res, next) {
         return user.save();  
 	})
 	.then(function(user){
-		req.logIn(user, function(err) {
-            var smtpTransport = nodemailer.createTransport(
-			{
-				host: 'SSL0.OVH.NET',
-				port: 465,
-				secure: true, // use SSL
-				auth: {
-					user: 'erwinfrance@cinalia.com',
-					pass: 'JpEf2016CIN'
-				}
-			});
-			var mailOptions = {
-				to: user.get('email'),
-				from: 'nepasrepondre@cinalia.com',
-				subject: 'Votre mot de passe a été réinitialisé',
-				text: 'Bonjour,\n\n' +
-				  'Nous vous confirmons que le mot de passe de votre compte ' + user.get('email') + ' a été réinitialisé avec succès.\n\n'+
-				  'L\'équipe PickedIn.com.'
-			};
-			smtpTransport.sendMail(mailOptions, function (err) {
+	    req.logIn(user, function (err) {
+	        helper.sendMail(user.get('email'), 'nepasrepondre@cinalia.com', 'Votre mot de passe a été réinitialisé', 'Bonjour,\n\n' +
+			    'Nous vous confirmons que le mot de passe de votre compte ' + user.get('email') + ' a été réinitialisé avec succès.\n\n' +
+			    'L\'équipe PickedIn.com.', function (err) {
 				if (err) return next(err);
 
 				req.flash('resetMessage', ['success', 'Félicitations ! Votre mot de passe a été réinitialisé avec succès.']);
 				req.session.save(function (err) {
 				    res.redirect('/');
-				});				
+				});          			
 			});
 		});
 	})

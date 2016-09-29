@@ -179,7 +179,7 @@ var schema = {
         name: { type: 'string', maxlength: 64, nullable: false },
         description: { type: 'text', nullable: true },
         time_codes: { type: 'specific', specificType: 'integer[]', nullable: true },
-        video_media_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'video_medias' },
+        video_media_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'SET NULL' },
 		media_character_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_characters' },        
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
@@ -207,7 +207,7 @@ var schema = {
         picture_title: { type: 'string', maxlength: 128, nullable: false },
         place: { type: 'string', maxlength: 128, nullable: true },
         time_codes: { type: 'specific', specificType: 'integer[]', nullable: true },
-        video_media_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'video_medias' },
+        video_media_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'SET NULL' },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },

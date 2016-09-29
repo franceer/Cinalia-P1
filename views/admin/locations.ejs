@@ -1,0 +1,198 @@
+<%- include('./partials/add-categories-modal') %>
+<section id="admin-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Management des lieux</h1>
+                <div id="alert-add" class="alert" hidden></div>
+                <form id="admin-add-location-form" class="form" role="form" novalidate accept-charset="UTF-8">
+                    <fieldset>
+                        <legend>
+                            <button id="add-location-legend" data-toggle="collapse" data-target="#form-toggle">Ajouter un lieu</button>
+                        </legend>
+                        <div id="form-toggle" class="collapse">                            
+                            <div class="form-group">
+                                <label for="name">Nom</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="name" name="name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control form-control-success form-control-danger" id="description" name="description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Ville / Etat / Pays</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="city_state_country" name="city_state_country" />
+                            </div>
+                            <div class="form-group">
+                                <label for="categories">Catégories</label>
+                                <button class="add-category-button" type="button" data-toggle="modal" data-target="#add-category-modal">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                                <select id="categories" class="form-control form-control-success form-control-danger" multiple name="categories"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="picture_url">Image</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" placeholder="url" id="picture_url" name="picture_url" />
+                                <input class="form-control" type="text" placeholder="alt" name="picture_alt" />
+                                <input class="form-control" type="text" placeholder="title" name="picture_title" />
+                            </div>
+                            <div class="form-group">
+                                <label for="place_id">Google ID</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="place_id" name="place_id" />
+                            </div>
+                            <div class="form-group">
+                                <label for="latitude">Latitude</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="latitude" name="latitude" />
+                            </div>
+                            <div class="form-group">
+                                <label for="longitude">Longitude</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="longitude" name="longitude" />
+                            </div>
+                            <div class="form-group">
+                                <label for="longitude">Niveau de zoom</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="zoom" name="zoom" />
+                            </div>                           
+                            <button class="add-button btn btn-default" type="button">Ajouter</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="grouped-actions">
+        <button type="button" class="modal-hidden delete-grouped-button btn btn-default" disabled>Supprimer les éléments</button>
+        <button type="button" class="add-grouped-button btn btn-default" disabled>Ajouter les éléments</button>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="alert-table" class="alert" hidden></div>
+                <div class="table table-striped table-hover table-sm">
+                    <div class="tr thead-inverse">
+                        <div class="th"></div>
+                        <div class="th modal-hidden">Actions</div>
+                        <div class="th">#</div>
+                        <div class="th">Nom</div>
+                        <div class="th modal-hidden">Description</div>
+                        <div class="th">V.E.P.</div>
+                        <div class="th modal-hidden">Catégories</div>
+                        <div class="th">Image</div>
+                        <div class="th modal-hidden">Google ID</div>
+                        <div class="th modal-hidden">Latitude</div>
+                        <div class="th modal-hidden">Longitude</div>
+                        <div class="th modal-hidden">Zoom</div>
+                        <div class="th">Créé</div>
+                        <div class="th">MAJ</div>
+                        <div class="th modal-hidden">Actions</div>
+                    </div>
+                    <%_
+                    locations.forEach(function(location){
+                    _%>
+                    <form class="tr">
+                        <div class="td">
+                            <input type="checkbox" name="select-location" />
+                        </div>
+                        <div class="td modal-hidden">
+                            <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                            <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="td">
+                            <div>
+                                <%= location.id _%><input name="id" type="hidden" value="<%= location.id _%>" />
+                            </div>
+                        </div>                       
+                        <div class="td">
+                            <div class="display-field"><%= location.name _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="name" value="<%= location.name _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td modal-hidden">
+                            <div class="display-field"><%- location.description && location.description.length > 200 ? location.description.substring(0, 200) + '<span>&hellip;</span>' : location.description _%></div>
+                            <div class="edit-field form-group">
+                                <textarea name="description" class="form-control form-control-success"><%= location.description _%></textarea>
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><%= location.city_state_country _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="city_state_country" value="<%= location.city_state_country _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td modal-hidden">
+                            <div class="display-field">
+                                <ul>
+                                    <%_ location.categories.forEach(function(category){ _%>
+                                    <li><%= category.name _%></li>
+                                    <%_ }); _%>
+                                </ul>
+                            </div>
+                            <div class="edit-field form-group">
+                                <select name="categories" class="form-control form-control-success form-control-danger" multiple>
+                                    <%_ location.categories.forEach(function(category){ _%>
+                                    <option selected value="<%= category.id _%>"><%= category.name _%></option>
+                                    <%_ }); _%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field"><img src="<%= location.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= location.picture_alt _%>" title="<%= location.picture_title _%>" /></div>
+                            <div class="edit-field form-group">
+                                <input type="text" placeholder="url" name="picture_url" value="<%= location.picture_url _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" placeholder="alt" name="picture_alt" value="<%= location.picture_alt _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" placeholder="title" name="picture_title" value="<%= location.picture_title _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td modal-hidden">
+                            <div class="display-field"><%= location.place_id _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="place_id" value="<%= location.place_id _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td modal-hidden">
+                            <div class="display-field"><%= location.latitude _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="latitude" value="<%= location.latitude _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td modal-hidden">
+                            <div class="display-field"><%= location.longitude _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="longitude" value="<%= location.longitude _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>
+                        <div class="td modal-hidden">
+                            <div class="display-field"><%= location.zoom _%></div>
+                            <div class="edit-field form-group">
+                                <input type="text" name="zoom" value="<%= location.zoom _%>" class="form-control form-control-success form-control-danger" />
+                            </div>
+                        </div>                       
+                        <div class="td">
+                            <div><%= moment(location.created_at).format('DD-MMMM-YYYY') _%></div>
+                        </div>
+                        <div class="td">
+                            <div><%= location.updated_at ? moment(location.updated_at).format('DD-MMMM-YYYY') : 'Pas de MAJ' _%></div>
+                        </div>
+                        <div class="td modal-hidden">
+                            <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                            <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        </div>
+                    </form>
+                    <%_
+                    });
+                    _%>
+                </div>
+            </div>
+        </div>
+        <%- include('../partials/pagination', { pagination:  pagination }) %>
+    </div>
+</section>
+<%- contentFor('bodyClass') %>
+class="admin"
+<%- contentFor('extraScripts') %>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/mainAdminLocations.js"></script>

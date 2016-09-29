@@ -15,6 +15,9 @@ module.exports = [{
     entry: {
         mainAdminProducts: './main-admin-products',
         mainAdminMovies: './main-admin-movies',
+        mainAdminLocations: './main-admin-locations',
+        mainAdminLooks: './main-admin-looks',
+        mainAdminSets: './main-admin-sets',
         mainHome: './main-home',
         mainVideoMedia: './main-video-media',
         mainLook: './main-look',

@@ -15,6 +15,21 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="locations-modal" tabindex="-1" role="dialog" aria-labelledby="locations-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Ajouter des lieux</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe src="/admin/lieux"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="modify-products-modal" tabindex="-1" role="dialog" aria-labelledby="modify-products-modal-label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -27,7 +42,30 @@
                 <div class="modal-body">
                     <button id="back-to-products-button" class="btn btn-default">Revenir aux produits du film</button>
                     <button id="add-products-button" class="edit-field btn btn-default" type="button">Ajouter des produits</button>
-                    <iframe></iframe>                    
+                    <iframe></iframe>
+                    <div class="no-associated-products" style="display: none;">
+                        Aucun produit associé pour le moment.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modify-locations-modal" tabindex="-1" role="dialog" aria-labelledby="modify-locations-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Lieux</h4>
+                </div>
+                <div class="modal-body">
+                    <button id="back-to-locations-button" class="btn btn-default">Revenir aux lieux du film</button>
+                    <button id="add-locations-button" class="edit-field btn btn-default" type="button">Ajouter des lieux</button>
+                    <iframe></iframe>
+                    <div class="no-associated-locations" style="display: none;">
+                        Aucun lieu associé pour le moment.
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,8 +139,7 @@
                                 </button>
                                 <select id="categories" class="form-control form-control-success form-control-danger" multiple name="categories"></select>
                             </div>
-                            <div class="form-group">                               
-                                <label>Produits</label>
+                            <div class="form-group">
                                 <button class="open-products-modal btn btn-default" data-toggle="modal" data-target="#products-modal" type="button">Ajouter des produits</button>
                                 <div id="linked-products" class="table table-striped table-hover table-sm">
                                     <div class="tr thead-inverse">
@@ -114,7 +151,27 @@
                                         <div class="th">Contexte</div>
                                         <div class="th">Time code</div>
                                         <div class="th">Suppr.</div>
+                                    </div>                                    
+                                </div>
+                                <div class="no-associated-products">
+                                    Aucun produit associé pour le moment.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="open-locations-modal btn btn-default" data-toggle="modal" data-target="#locations-modal" type="button">Ajouter des lieux</button>
+                                <div id="linked-locations" class="table table-striped table-hover table-sm">
+                                    <div class="tr thead-inverse">
+                                        <div class="th">ID</div>
+                                        <div class="th">Nom</div>
+                                        <div class="th">V.E.P.</div>
+                                        <div class="th">Image</div>
+                                        <div class="th">Contexte</div>
+                                        <div class="th">Time code</div>
+                                        <div class="th">Suppr.</div>
                                     </div>
+                                </div>
+                                <div class="no-associated-products">
+                                    Aucun produit associé pour le moment.
                                 </div>
                             </div>
                             <button class="add-button btn btn-default" type="button">Ajouter</button>
@@ -130,6 +187,7 @@
                 <div id="alert-table" class="alert alert-dismissible fade in" hidden role="alert"></div>
                 <div class="table table-striped table-hover table-sm">
                     <div class="tr thead-inverse">
+                        <!--<div class="th"></div>-->
                         <div class="th">Actions</div>
                         <div class="th">#</div>
                         <div class="th">Nom</div>
@@ -145,6 +203,7 @@
                         <div class="th">Genre</div>
                         <div class="th">Catégories</div>
                         <div class="th">Produits</div>
+                        <div class="th">Lieux</div>
                         <div class="th">Créé</div>
                         <div class="th">MAJ</div>
                         <div class="th">Actions</div>
@@ -153,11 +212,14 @@
                     videoMedias.forEach(function(videoMedia){
                     _%>
                     <form class="tr">
+                        <!--<div class="td">
+                            <input type="checkbox" name="select-product" />
+                        </div>-->
                         <div class="td">
-                            <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                            <button type="button" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                            <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
                         </div>
                         <div class="td">
                             <%= videoMedia.id _%><input name="id" type="hidden" value="<%= videoMedia.id _%>" />
@@ -175,15 +237,15 @@
                             </div>
                         </div>
                         <div class="td">
-                            <div class="display-field"><%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') _%></div>
+                            <div class="display-field"><%= moment(new Date(videoMedia.theater_release_date)).format('DD/MM/YYYY') _%></div>
                             <div class="edit-field form-group">
-                                <input type="text" name="theater_release_date" value="<%= moment(videoMedia.theater_release_date).isValid() ? moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" name="theater_release_date" value="<%= moment(new Date(videoMedia.theater_release_date)).isValid() ? moment(new Date(videoMedia.theater_release_date)).format('DD/MM/YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
                             </div>
                         </div>
                         <div class="td">
-                            <div class="display-field"><%= moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') _%></div>
+                            <div class="display-field"><%= moment(new Date(videoMedia.tv_release_date)).format('DD/MM/YYYY') _%></div>
                             <div class="edit-field form-group">
-                                <input type="text" name="tv_release_date" value="<%= moment(videoMedia.tv_release_date).isValid() ? moment(videoMedia.tv_release_date).format('DD-MMMM-YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" name="tv_release_date" value="<%= moment(new Date(videoMedia.tv_release_date)).isValid() ? moment(new Date(videoMedia.tv_release_date)).format('DD/MM/YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
                             </div>
                         </div>
                         <div class="td">
@@ -253,7 +315,7 @@
                         </div>
                         <div class="td">
                             <div class="display-field">
-                                <button class="see-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Voir les produits</button>                                
+                                <button class="see-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Voir les produits</button>
                             </div>
                             <div class="edit-field">
                                 <button class="modify-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Modifier les produits</button>
@@ -288,26 +350,84 @@
                                         </div>
                                     </div>
                                     <div class="td">
-                                        <div class="display-field"><%= product._pivot_matching_status_id _%></div>
-                                        <div class="edit-field">
-                                            <input type="checkbox" name="matching_status_id" value="1" <%= product._pivot_matching_status_id === 1 ? 'checked' : '' _%> />
+                                        <div class="display-field">
+                                            <div class="matching-status <%= product._pivot_matching_status_id === 1 ? 'exact-match' : 'close-match' _%>"></div>
+                                        </div>
+                                        <div class="edit-field form-group">
+                                            <input type="checkbox" name="matching_status_id" value="1" <%= product._pivot_matching_status_id === 1 ? 'checked' : '' %> class="form-control" />
                                         </div>
                                     </div>
                                     <div class="td">
                                         <div class="display-field"><%= product._pivot_appearing_context _%></div>
-                                        <div class="edit-field">
-                                            <input type="text" name="appearing_context" value="<%= product._pivot_appearing_context _%>" />
+                                        <div class="edit-field form-group">
+                                            <input type="text" name="appearing_context" value="<%= product._pivot_appearing_context _%>" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="td">
                                         <div class="display-field"><%= product._pivot_time_codes _%></div>
-                                        <div class="edit-field">
-                                            <input type="text" name="time_codes" value="<%= product._pivot_time_codes _%>" />
+                                        <div class="edit-field form-group">
+                                            <input type="text" name="time_codes" value="<%= product._pivot_time_codes _%>" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="td">
                                         <div class="edit-field">
-                                            <button type="button" class="delete-product-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                            <button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%_ }); _%>
+                            </div>
+                        </div>
+                        <div class="td">
+                            <div class="display-field">
+                                <button class="see-locations-button btn btn-default" data-toggle="modal" data-target="#modify-locations-modal" type="button">Voir les lieux</button>
+                            </div>
+                            <div class="edit-field">
+                                <button class="modify-locations-button btn btn-default" data-toggle="modal" data-target="#modify-locations-modal" type="button">Modifier les lieux</button>
+                            </div>
+                            <div class="linked-locations table table-striped table-hover table-sm">
+                                <div class="tr thead-inverse">
+                                    <div class="th">ID</div>
+                                    <div class="th">Nom</div>
+                                    <div class="th">V.E.P.</div>
+                                    <div class="th">Image</div>
+                                    <div class="th">Contexte</div>
+                                    <div class="th">Time code</div>
+                                    <div class="th edit-field">Suppr.</div>
+                                </div>
+                                <%_ videoMedia.locations.forEach(function(location){ _%>
+                                <div class="tr">
+                                    <div class="td">
+                                        <div>
+                                            <%= location.id _%><input name="id" type="hidden" value="<%= location.id _%>" />
+                                        </div>
+                                    </div>                                   
+                                    <div class="td">
+                                        <div><%= location.name _%></div>
+                                    </div>
+                                    <div class="td">
+                                        <div><%= location.city_state_country _%></div>
+                                    </div>
+                                    <div class="td">
+                                        <div>
+                                            <img src="<%= location.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= location.picture_alt _%>" title="<%= location.picture_title _%>" />
+                                        </div>
+                                    </div>                                    
+                                    <div class="td">
+                                        <div class="display-field"><%= location._pivot_appearing_context _%></div>
+                                        <div class="edit-field form-group">
+                                            <input type="text" name="appearing_context" value="<%= location._pivot_appearing_context _%>" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="td">
+                                        <div class="display-field"><%= location._pivot_time_codes _%></div>
+                                        <div class="edit-field form-group">
+                                            <input type="text" name="time_codes" value="<%= location._pivot_time_codes _%>" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="td">
+                                        <div class="edit-field">
+                                            <button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -318,19 +438,19 @@
                             <div><%= moment(videoMedia.created_at).format('DD-MMMM-YYYY') _%></div>
                         </div>
                         <div class="td">
-                            <div><%= videoMedia.updated_at ? moment(videoMedia.updated_at).format('DD-MMMM-YYYY') : 'No updates' _%></div>
+                            <div><%= videoMedia.updated_at ? moment(videoMedia.updated_at).format('DD-MMMM-YYYY') : 'Pas de MAJ' _%></div>
                         </div>
                         <div class="td">
-                            <button type="button" class="edit-button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button type="button" class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            <button type="button" class="save-button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                            <button type="button" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                            <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
                         </div>
                     </form>
                     <%_
                     });
                     _%>
-                </div>                
+                </div>
             </div>
         </div>
     </div>

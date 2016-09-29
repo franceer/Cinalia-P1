@@ -34,8 +34,14 @@ body.admin {
         padding: 0;
         margin: 0;
     }
+
+    .form-control{
+        font-size: .8rem;
+    }
 }
-.edit-field,.th.edit-field, .edit .display-field, .save-button, .close-button, .add-grouped-button, #back-to-products-button, .td .linked-products, iframe{
+.edit-field,.th.edit-field, .edit .display-field, .save-button,
+.close-button, .add-grouped-button, #back-to-products-button, #back-to-locations-button,
+.td .linked-products, .td .linked-locations, #modify-products-modal iframe,  #modify-locations-modal iframe{
     display: none;
 }
 .edit .edit-field{
@@ -54,6 +60,12 @@ body.admin {
 .table 
 {
     display:table;
+    margin: 30px 0;
+
+    .actions{
+        font-size: 1.2rem;
+        padding: 5px !important;
+    }
 
     &.table-hover form.tr:hover {
         background-color: rgba(0, 0, 0, 0.075);
@@ -65,6 +77,21 @@ body.admin {
 
     input:not([type=checkbox]), textarea{
         min-width: 150px;
+    }
+
+    .matching-status{
+        
+        border-radius: 15px;
+        height: 25px;
+        width: 25px;
+
+        &.exact-match{
+            background-color: #77aa49;
+        }
+
+        &.close-match{
+            background-color: #f0ad4e;
+        }
     }
 }
 .tr
@@ -84,5 +111,5 @@ body.admin {
     color: #fff;
     background-color: $dark-gray;
     padding: .5rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }

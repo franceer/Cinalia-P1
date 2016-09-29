@@ -101,12 +101,12 @@ module.exports.setupFlashMessages = function(flashMessages){
 module.exports.sendMail = function(to, from, subject, text, callback){
     var smtpTransport = nodemailer.createTransport(
     {
-        host: 'SSL0.OVH.NET',
+        host: process.env.MAIL_SRV,
         port: 465,
         secure: true, // use SSL
         auth: {
-            user: 'erwinfrance@cinalia.com',
-            pass: 'JpEf2016CIN'
+            user: process.env.MAIL_BOX,
+            pass: process.env.MAIL_BOX_PASS
         }
     });
     var mailOptions = {
@@ -156,6 +156,11 @@ module.exports.uploadImagesToS3 = function (req, imagePropertyName, renameProper
 
             files.push({
                 key: pathToFile + '-original' + extension,
+                stream: gm(body).resize('1200', '900', '>').stream()
+            });
+
+            files.push({
+                key: pathToFile + '-big' + extension,
                 stream: gm(body).resize('640', '480', '>').stream()
             });
 

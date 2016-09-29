@@ -10,7 +10,7 @@ var express = require('express'),
     moment = require('moment');
 
 router.get('/', function (req, res) {
-    Promise.all([MediaGenre.fetchAll(),VideoMedia.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 50, page: 1, withRelated: ['mediaGenre', 'categories', 'products', 'products.brand'] })])
+    Promise.all([MediaGenre.fetchAll(),VideoMedia.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 50, page: 1, withRelated: ['mediaGenre', 'categories', 'products', 'products.brand', 'locations'] })])
     .then(function (results) {
         var genres = results[0];
         var videoMedias = results[1];
@@ -22,13 +22,16 @@ router.get('/', function (req, res) {
         if (req.body[key] === '')
             req.body[key] = null;
         else if (key === 'media_genre_id')
-            req.body[key] = req.body[key][0];
+            req.body[key] = req.body[key][0];       
     });
 
+    //nullifyProperties(req.body);
     var categoriesIDs = req.body.categories;
     var products = req.body.products;
+    var locations = req.body.locations;
     delete req.body.categories;
     delete req.body.products;
+    delete req.body.locations;
     var videoMedia;
 
     MediaGenre.findOne({ name: req.body.media_genre_name }, { require: false })
@@ -40,7 +43,10 @@ router.get('/', function (req, res) {
 
         return returned;
     })
-    .then(function () {
+    .then(function (genre) {
+        if (genre)
+            req.body.media_genre_id = genre.get('id');
+
         return VideoMedia.findOne({ id: req.params.id }, { require: false });
     })    
     .then(function (oldVideoMedia) {
@@ -97,12 +103,23 @@ router.get('/', function (req, res) {
             promises.push(videoMedia.products().detach().then(function () {
                 return videoMedia.products().attach(products);
             }));
-        }        
+        }
+
+        if (locations) {
+            locations.forEach(function (location) {
+                if (location.appearing_context === '')
+                    location.appearing_context = null;
+            });
+
+            promises.push(videoMedia.locations().detach().then(function () {
+                return videoMedia.locations().attach(locations);
+            }));
+        }
 
         return promises.length > 0 ? Promise.all(promises) : null;
     })
     .then(function () {
-        return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand'])]);
+        return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand', 'locations'])]);
     })
     .then(function (results) {
         var genres = results[0];
@@ -123,8 +140,10 @@ router.get('/', function (req, res) {
 
     var categoriesIDs = req.body.categories;
     var products = req.body.products;
+    var products = req.body.locations;
     delete req.body.categories;
     delete req.body.products;
+    delete req.body.locations;
     var videoMedia;
 
     MediaGenre.findOne({ name: req.body.media_genre_name }, { require: false })
@@ -136,7 +155,10 @@ router.get('/', function (req, res) {
 
         return returned;
     })
-    .then(function () {
+    .then(function (genre) {
+        if (genre)
+            req.body.media_genre_id = genre.get('id');
+
         return helper.uploadImagesToS3(req, 'poster_url', ['name'], 'media');
     })
     .then(function (files) {
@@ -174,11 +196,25 @@ router.get('/', function (req, res) {
             promises.push(videoMedia.products().attach(products));
         }
 
+        if (locations) {
+            locations.forEach(function (location) {
+                if (location.appearing_context === '')
+                    location.appearing_context = null;
+            });
+
+            promises.push(videoMedia.locations().attach(locations));
+        }
+
         return promises.length > 0 ? Promise.all(promises) : null;
     })
     .then(function () {
-        res.json({ status: 'success', videoMedia: videoMedia.toJSON() });
-    })
+            return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand', 'locations'])]);
+        })
+    .then(function (results) {
+        var genres = results[0];
+        var videoMedia = results[1];
+        res.render('admin/partials/video-media-row', { layout: false, moment: moment, genres: genres.toJSON(), videoMedia: videoMedia.toJSON() });
+    })    
     .catch(function (err) {
         res.json({ status: 'error', message: err.message });
     });
@@ -202,5 +238,23 @@ router.get('/', function (req, res) {
         res.json({ status: 'error', message: err.message });
     });
 });
+
+function nullifyProperties(object) {
+    Object.keys(object).forEach(function (key) {
+        if (object[key] === '')
+            object[key] = null;
+        else if (Array.isArray(object[key])) {
+            if (object[key].length === 0)
+                object[key] = null;
+            else if (object[key].length === 1)
+                object[key] = object[key][0] === '' ? null : (key !== 'time_codes' ? object[key][0] : object[key]);
+            else {
+                object[key].forEach(function (objInArray) {
+                    nullifyProperties(objInArray);
+                });               
+            }
+        }
+    });
+}
 
 module.exports = router;
