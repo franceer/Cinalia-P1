@@ -5,7 +5,7 @@ webpackJsonp([2],{
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2), __webpack_require__(8), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, select2, validation) {
 
-	    function ProductManager() {
+	    function LookManager() {
 	        this.select2FR = {
 	            errorLoading:
 	                function () { return "Les résultats ne peuvent pas être chargés." },
@@ -20,7 +20,6 @@ webpackJsonp([2],{
 	            noResults: function () { return "Aucun résultat trouvé" },
 	            searching: function () { return "Recherche en cours…" }
 	        };
-	        this.setSelect2Brands($('#brand_id'));
 	        this.setSelect2Categories($('#categories'));
 	        this.initHandlers();
 	        this.initFormValidators();
@@ -31,10 +30,10 @@ webpackJsonp([2],{
 	        }
 	    }
 
-	    ProductManager.prototype = function () {
+	    LookManager.prototype = function () {
 	        var initHandlers = function () {
-	            $('.table').on('click', 'input[name=select-product]', function (e) {
-	                var $checked = $(this).closest('.table').find('input[name=select-product]:checked');
+	            $('.table').on('click', 'input[name=select-look]', function (e) {
+	                var $checked = $(this).closest('.table').find('input[name=select-look]:checked');
 
 	                if ($checked.length > 0)
 	                    $('.add-grouped-button, .delete-grouped-button').prop('disabled', false);                
@@ -45,24 +44,17 @@ webpackJsonp([2],{
 	            $('.table').on('click', '.edit-button', function (e) {
 	                $button = $(this);
 	                $tr = $button.closest('.tr');
-	                setSelect2Brands($tr.find('select[name=brand_id]'));
 	                setSelect2Categories($tr.find('select[name=categories]'));
 	                $tr.validate({
 	                    rules: {
-	                        brand_id: 'required',
 	                        name: 'required',
 	                        categories: 'required',
-	                        picture_url: 'required',
-	                        commercial_url: 'required',
-	                        price: { required: true, number: true }
+	                        time_code: { required: true, number: true }
 	                    },
 	                    messages: {
-	                        brand_id: 'Merci de choisir une marque',
-	                        name: 'Merci d\'indiquer le nom du produit',
+	                        name: 'Merci d\'indiquer le nom du look',
 	                        categories: 'Merci de choisir une catégorie',
-	                        picture_url: 'Merci de définir une image',
-	                        commercial_url: 'Merci d\'indiquer une url commerciale',
-	                        price: { required: 'Merci d\'indiquer un prix', number: 'Merci d\'indiquer un prix valide' },
+	                        time_code: 'Merci d\'indiquer un time code'
 	                    },
 	                    highlight: function (element) {
 	                        getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -95,10 +87,9 @@ webpackJsonp([2],{
 	                if ($tr.data('validator').form()) {
 	                    $button.hide().next().hide().after('<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>');
 
-	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'produits' }, function (updated) {
+	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'looks' }, function (updated) {
 	                        $tr.replaceWith(updated);
 	                        $tr = $('.tr.newly-added').removeClass('newly-added');
-	                        setSelect2Brands($tr.find('select[name=brand_id]'));
 	                        setSelect2Categories($tr.find('select[name=categories]'));
 	                        $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
 	                    });
@@ -109,7 +100,7 @@ webpackJsonp([2],{
 	                if (confirm('Etes-vous sûr de vouloir supprimer cet élément ?')) {
 	                    $tr = $(this).closest('.tr');
 	                    $.ajax({
-	                        url: '/admin/produits/' + $(this).closest('.tr').find('[name=id]').val(),
+	                        url: '/admin/looks/' + $(this).closest('.tr').find('[name=id]').val(),
 	                        type: 'DELETE'
 	                    })
 	                    .done(function (data) {
@@ -127,30 +118,29 @@ webpackJsonp([2],{
 	                if (confirm('Souhaitez-vous arrêter la modification de cet élement (vos modifications seront perdues) ?')) {
 	                    $tr = $(this).closest('.tr');
 	                    $tr.html($tr.data('htmlBackup'));
-	                    $tr.find('select[name=brand_id]+.select2-container').remove();
 	                    $tr.find('select[name=categories]+.select2-container').remove();
 	                }
 	            });
 
 	            $('.add-grouped-button').on('click', function (e) {
 	                var $parentDocument = $(parent.document);
-	                var $productsTable;
+	                var $looksTable;
 
 	                if ($parentDocument.find('iframe[data-related-target]').length > 0)
-	                    $productsTable = $parentDocument.find('iframe[data-related-target]+.linked-products');
+	                    $looksTable = $parentDocument.find('iframe[data-related-target]+.linked-looks');
 	                else
-	                    $productsTable = $parentDocument.find('#linked-products');
+	                    $looksTable = $parentDocument.find('#linked-looks');
 
-	                $('input[name=select-product]:checked').each(function () {
+	                $('input[name=select-look]:checked').each(function () {
 	                    var $tr = $(this).closest('.tr');
 
-	                    if ($productsTable.find('input[name=id][value=' + $tr.find('input[name=id]').val() + ']').length === 0) {                        
-	                        $productsTable.append(getProductRow($tr));
+	                    if ($looksTable.find('input[name=id][value=' + $tr.find('input[name=id]').val() + ']').length === 0) {                        
+	                        $looksTable.append(getlookRow($tr));
 	                    }
 	                }).prop('checked', false);
 
-	                if ($productsTable.children('.tr:not(.thead-inverse)').length > 0)
-	                    $productsTable.next().hide();
+	                if ($looksTable.children('.tr:not(.thead-inverse)').length > 0)
+	                    $looksTable.next().hide();
 	            });          
 
 	            $('.add-button').on('click', function (e) {
@@ -161,17 +151,15 @@ webpackJsonp([2],{
 	                if (validator.form()) {
 	                    $button.hide().after('<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>');
 
-	                    addOrUpdateAsset($form, { method: 'POST', target: 'produits' }, function (data) {
+	                    addOrUpdateAsset($form, { method: 'POST', target: 'looks' }, function (data) {
 	                        if (data.status === 'error') {
 	                            showMessages($('.alert'), data.message, 'alert-danger');
 	                        } else {                            
 	                            $form.find('select').val('').trigger('change');
 	                            validator.resetForm();
-	                            $form.trigger('reset').find('.form-group.has-success').removeClass('has-success');
-	                            $('.open-parent-product-modal').text('Choisir un produit');
+	                            $form.trigger('reset').find('.form-group.has-success').removeClass('has-success');                           
 	                            $('.table .thead-inverse').after(data);                           
-	                            $tr = $('.tr.newly-added').removeClass('newly-added');                            
-	                            setSelect2Brands($tr.find('select[name=brand_id]'));
+	                            $tr = $('.tr.newly-added').removeClass('newly-added');
 	                            setSelect2Categories($tr.find('select[name=categories]'));
 
 	                            showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
@@ -180,11 +168,11 @@ webpackJsonp([2],{
 
 	                            if (inIframe()) {
 	                                $tr.find('.modal-hidden').hide();
-	                                var $productsTable = $(parent.document).find('.open-products-modal+.table');
-	                                $productsTable.append(getProductRow($tr));
+	                                var $looksTable = $(parent.document).find('.open-looks-modal+.table');
+	                                $looksTable.append(getlookRow($tr));
 
-	                                if ($productsTable.children('.tr:not(.thead-inverse)').length > 0)
-	                                    $productsTable.next().hide();
+	                                if ($looksTable.children('.tr:not(.thead-inverse)').length > 0)
+	                                    $looksTable.next().hide();
 	                            }
 	                        }                        
 	                    });
@@ -204,42 +192,7 @@ webpackJsonp([2],{
 	                    });
 	                }
 	            });
-
-	            $('#parent-product-modal').on('show.bs.modal', function (e) {
-	                var $button =$(e.relatedTarget);
-	                $('#add-parent-product').data('relatedTargets', { input: $button.siblings('[name=parent_product_id]'), button: $button });
-	            });
-
-	            $('#add-parent-product').on('click', function (e) {
-	                var $parentProductIDInputModal = $('#parent-product-id');
-	                var $parentProductIDInput = $(e.target).data('relatedTargets').input;
-	                $(e.target).data('relatedTargets').button.text('ID Produit : ' + $parentProductIDInputModal.val());
-	                $parentProductIDInput.val($parentProductIDInputModal.val());
-	                $('#parent-product-modal').modal('hide');
-	                $parentProductIDInputModal.val('');
-	            });
-	        };
-
-	        var setSelect2Brands = function ($element) {
-	            if (!$element)
-	                $element = $('select[name=brand_id]');
-
-	            var selectBrands = $element.select2({
-	                placeholder: 'Choisissez une marque...',
-	                language: this.select2FR,
-	                width: '100%',
-	                multiple: true,
-	                tags: true,
-	                maximumSelectionLength: 1
-	            });
-	            selectBrands.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
-
-	            $element.on('change', function () {
-	                var $form = $element.closest('form');
-	                $form.data('validator').element(this);
-	                $form.find('input[name=brand_name]').val($(this).children('option:selected').text());
-	            });
-	        };
+	        };       
 
 	        var setSelect2Categories = function ($element) {
 	            if (!$element)
@@ -289,22 +242,16 @@ webpackJsonp([2],{
 	        };
 
 	        var initFormValidators = function () {
-	            $('#admin-add-product-form').validate({
+	            $('#admin-add-look-form').validate({
 	                rules: {
-	                    brand_id: 'required',
 	                    name: 'required',
 	                    categories: 'required',
-	                    picture_url: 'required',
-	                    commercial_url: 'required',
-	                    price: 'required'
+	                    time_code: { required: true, number: true }
 	                },
 	                messages: {
-	                    brand_id: 'Merci de choisir une marque',
-	                    name: 'Merci d\'indiquer le nom du produit',
+	                    name: 'Merci d\'indiquer le nom du look',
 	                    categories: 'Merci de choisir une catégorie',
-	                    picture_url: 'Merci de renseigner une image',
-	                    commercial_url: 'Merci de renseigner une url',
-	                    price: 'Merci de renseigner un prix'
+	                    time_code: 'Merci d\'indiquer un time code'
 	                },
 	                highlight: function (element) {
 	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -354,7 +301,7 @@ webpackJsonp([2],{
 	            $container.find('input:not([disabled], [type=search], [type=checkbox]), select, textarea').each(function () {
 	                var $input = $(this);
 	                var value = $input.val();
-	                data[$input.attr('name')] = (value && value !== '' ? value : null);
+	                data[$input.attr('name')] = $input.attr('name') === 'time_codes' ? [value] : value;
 	            });
 
 	            $.ajax({
@@ -384,26 +331,25 @@ webpackJsonp([2],{
 					.removeAttr('hidden');
 	        }
 
-	        function getProductRow($tr) {
+	        function getlookRow($tr) {
 	            var $clonedRow = $tr.clone();
 	            $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(13),.td:nth-of-type(14)').remove();
 	            $clonedRow.find('.edit-field').remove();
 	            $clonedRow.find('.display-field').removeClass('display-field');
-	            $clonedRow.append('<div class="td"><div class="form-group"><input type="checkbox" name="matching_status_id" value="1" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="appearing_context" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="time_codes" class="form-control" /></div></div><div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
+	            $clonedRow.append('<div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
 	            return $('<div class="tr"></div>').append($clonedRow.contents());
 	        }
 
 	        return {
 	            inIframe: inIframe,
 	            initHandlers: initHandlers,
-	            setSelect2Brands: setSelect2Brands,
 	            setSelect2Categories: setSelect2Categories,
 	            initFormValidators: initFormValidators
 	        };
 	    }();       
 
 	    $(function () {
-	        new ProductManager();        
+	        new LookManager();        
 	    });
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 

@@ -16,6 +16,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
             searching: function () { return "Recherche en cours…" }
         };
         this.setSelect2Categories($('#categories'));
+		this.setSelect2Categories($('#characters'));
         this.initHandlers();
         this.initFormValidators();
 
@@ -86,6 +87,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                         $tr.replaceWith(updated);
                         $tr = $('.tr.newly-added').removeClass('newly-added');
                         setSelect2Categories($tr.find('select[name=categories]'));
+						setSelect2Characters($tr.find('select[name=characters]'));
                         $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
                     });
                 }
@@ -114,6 +116,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                     $tr = $(this).closest('.tr');
                     $tr.html($tr.data('htmlBackup'));
                     $tr.find('select[name=categories]+.select2-container').remove();
+					$tr.find('select[name=characters]+.select2-container').remove();
                 }
             });
 
@@ -156,6 +159,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                             $('.table .thead-inverse').after(data);                           
                             $tr = $('.tr.newly-added').removeClass('newly-added');
                             setSelect2Categories($tr.find('select[name=categories]'));
+							setSelect2Categories($tr.find('select[name=characters]'));
 
                             showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
                             $button.show().siblings('.fa-spinner, .sr-only').remove();
@@ -187,9 +191,24 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                     });
                 }
             });
+			
+			$('#add-character').on('click', function (e) {
+                var $addCharacterForm = $(this).closest('form').data('validator');
+                if ($addCharacterForm.form()) {
+                    $.post('/admin/characters', { name: $addCharacterForm.currentElements.filter('[name=name]').val(), path: $addCharacterForm.currentElements.filter('[name=path]').val() }, function (data) {
+                        if (data.status === 'error')
+                            showMessages($('.alert'), data.message, 'alert-danger');
+                        else {
+                            $addCharacterForm.currentElements.val('').parent().removeClass('has-success');
+                            $('select[name=categories]').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
+                        }
+                    });
+                }
+            });
         };       
 
         var setSelect2Categories = function ($element) {
+			
             if (!$element)
                 $element = $('select[name=categories]');
 
@@ -234,6 +253,54 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
             });
 
             return selectCategories;
+        };
+		
+		var setSelect2Characters = function ($element) {			
+            if (!$element)
+                $element = $('select[name=characters]');
+
+            var selectCharacters = $element.select2({
+                width: '100%',
+                placeholder: 'Choisissez un personnage...',
+                tags: true,
+                createTag: function (params) {
+                    return undefined;
+                },
+                multiple: true,
+                language: this.select2FR,
+                ajax: {
+                    url: '/admin/characters',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 30) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 1,
+				maximumSelectionLength: 1
+            });
+
+            selectCharacters.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
+
+            $element.on('change', function () {
+                $element.closest('form').data('validator').element(this);
+            });
+
+            return selectCharacters;
         };
 
         var initFormValidators = function () {
@@ -296,7 +363,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
             $container.find('input:not([disabled], [type=search], [type=checkbox]), select, textarea').each(function () {
                 var $input = $(this);
                 var value = $input.val();
-                data[$input.attr('name')] = (value && value !== '' ? value : null);
+                data[$input.attr('name')] = $input.attr('name') === 'time_codes' ? [value] : value;
             });
 
             $.ajax({
@@ -331,7 +398,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
             $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(13),.td:nth-of-type(14)').remove();
             $clonedRow.find('.edit-field').remove();
             $clonedRow.find('.display-field').removeClass('display-field');
-            $clonedRow.append('<div class="td"><div class="form-group"><input type="checkbox" name="matching_status_id" value="1" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="appearing_context" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="time_codes" class="form-control" /></div></div><div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
+            $clonedRow.append('<div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
             return $('<div class="tr"></div>').append($clonedRow.contents());
         }
 
@@ -344,6 +411,6 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
     }();       
 
     $(function () {
-        new lookManager();        
+        new LookManager();        
     });
 });

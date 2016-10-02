@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
     delete req.body.categories;
     var look;
     
-    look.update(req.body, { id: req.params.id })
+    Look.update(req.body, { id: req.params.id })
     .then(function (updatedlook) {
         look = updatedlook;
         var returned = null;
@@ -60,7 +60,7 @@ router.get('/', function (req, res) {
     delete req.body.categories;
     var look;
 
-    look.create(req.body)
+    Look.create(req.body)
     .then(function (addedlook) {
         look = addedlook;
         var returned = null;
@@ -81,7 +81,7 @@ router.get('/', function (req, res) {
     });    
 })
 .delete('/:id', function (req, res) {    
-    look.destroy({ id: req.params.id })
+    Look.destroy({ id: req.params.id })
     .then(function () {
         res.json({ status: 'success' });
     })

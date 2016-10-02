@@ -27,13 +27,9 @@
                                 <select id="categories" class="form-control form-control-success form-control-danger" multiple name="categories"></select>
                             </div>
                             <div class="form-group">
-                                <label for="time_code">Time code</label>
-                                <input class="form-control form-control-success form-control-danger" type="text" id="time_code" name="time_code" />
-                            </div>
-                            <div class="form-group">
-                                <label for="appearing_context">Contexte</label>
-                                <input class="form-control form-control-success form-control-danger" type="text" id="appearing_context" name="appearing_context" />
-                            </div>
+                                <label for="time_codes">Time code</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="time_codes" name="time_codes" />
+                            </div>                            
                             <div class="form-group">
                                 <label for="categories">Personnages</label>
                                 <button class="add-character-button" type="button" data-toggle="modal" data-target="#add-character-modal">
@@ -84,7 +80,6 @@
                         <div class="th modal-hidden">Description</div>
                         <div class="th modal-hidden">Catégories</div>
                         <div class="th modal-hidden">Time Code</div>
-                        <div class="th modal-hidden">Contexte</div>
                         <div class="th modal-hidden">Personnages</div>
                         <div class="th modal-hidden">Produits</div>
                         <div class="th">Créé</div>
@@ -138,17 +133,11 @@
                             </div>
                         </div>                        
                         <div class="td modal-hidden">
-                            <div class="display-field"><%= look.time_code _%></div>
+                            <div class="display-field"><%= look.time_codes _%></div>
                             <div class="edit-field form-group">
-                                <input type="text" name="commercial_url" value="<%= look.time_code _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" name="time_codes" value="<%= look.time_codes _%>" class="form-control form-control-success form-control-danger" />
                             </div>
-                        </div>
-                        <div class="td modal-hidden">
-                            <div class="display-field"><%= look.appearing_context _%></div>
-                            <div class="edit-field form-group">
-                                <input type="text" name="appearing_context" value="<%= look.appearing_context _%>" class="form-control form-control-success form-control-danger" />
-                            </div>
-                        </div>                        
+                        </div>                                             
                         <div class="td">
                             <div><%= look.name _%></div>
                         </div>
