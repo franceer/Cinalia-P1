@@ -21,6 +21,7 @@ webpackJsonp([2],{
 	            searching: function () { return "Recherche en cours…" }
 	        };
 	        this.setSelect2Categories($('#categories'));
+	        this.setSelect2Characters($('#media_character_id'));
 	        this.initHandlers();
 	        this.initFormValidators();
 
@@ -32,6 +33,8 @@ webpackJsonp([2],{
 
 	    LookManager.prototype = function () {
 	        var initHandlers = function () {
+	            var t = this;
+
 	            $('.table').on('click', 'input[name=select-look]', function (e) {
 	                var $checked = $(this).closest('.table').find('input[name=select-look]:checked');
 
@@ -44,17 +47,20 @@ webpackJsonp([2],{
 	            $('.table').on('click', '.edit-button', function (e) {
 	                $button = $(this);
 	                $tr = $button.closest('.tr');
-	                setSelect2Categories($tr.find('select[name=categories]'));
+	                t.setSelect2Categories($tr.find('select[name=categories]'));
+	                t.setSelect2Characters($tr.find('select[name=media_character_id]'));
 	                $tr.validate({
 	                    rules: {
 	                        name: 'required',
 	                        categories: 'required',
-	                        time_code: { required: true, number: true }
+	                        media_character_id: 'required',
+	                        time_codes: { required: true, number: true }
 	                    },
 	                    messages: {
 	                        name: 'Merci d\'indiquer le nom du look',
 	                        categories: 'Merci de choisir une catégorie',
-	                        time_code: 'Merci d\'indiquer un time code'
+	                        media_character_id: 'Merci de choisir un personnage',
+	                        time_codes: 'Merci d\'indiquer un time code'
 	                    },
 	                    highlight: function (element) {
 	                        getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -91,6 +97,7 @@ webpackJsonp([2],{
 	                        $tr.replaceWith(updated);
 	                        $tr = $('.tr.newly-added').removeClass('newly-added');
 	                        setSelect2Categories($tr.find('select[name=categories]'));
+	                        setSelect2Characters($tr.find('select[name=media_character_id]'));
 	                        $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
 	                    });
 	                }
@@ -119,7 +126,44 @@ webpackJsonp([2],{
 	                    $tr = $(this).closest('.tr');
 	                    $tr.html($tr.data('htmlBackup'));
 	                    $tr.find('select[name=categories]+.select2-container').remove();
+	                    $tr.find('select[name=media_character_id]+.select2-container').remove();
 	                }
+	            });
+
+	            $('#linked-products, #modify-products-modal').on('click', '.delete-linked-button', function (e) {
+	                var $table = $(e.target).closest('.table');
+	                $(e.target).closest('.tr').remove();
+
+	                if ($table.children('.tr:not(.thead-inverse)').length === 0)
+	                    $table.next().show();
+	            });
+
+	            $('#modify-products-modal')
+	            .on('show.bs.modal', function (e) {
+	                var $button = $(e.relatedTarget);
+	                var $clonedProducts = $button.parent().siblings('.linked-products').clone().show();
+	                var $modalBody = $('#modify-products-modal').find('.modal-body');
+	                $modalBody.children('iframe').after($clonedProducts);
+	                var $table = $modalBody.find('.linked-products');
+
+	                if ($table.children('.tr:not(.thead-inverse)').length === 0)
+	                    $table.next().show();
+	                else
+	                    $table.next().hide();
+
+	                if ($button.hasClass('modify-products-button')) {
+	                    $(e.target).addClass('edit');
+	                    $table.data('relatedTarget', $button);
+	                }
+	            })
+	            .on('hide.bs.modal', function (e) {
+	                var $modal = $(e.target);
+	                var $productsTable = $('#modify-products-modal').find('.linked-products');
+
+	                if ($productsTable.data('relatedTarget'))
+	                    $productsTable.data('relatedTarget').parent().siblings('.linked-products').replaceWith($productsTable.hide());
+
+	                $modal.removeClass('edit').find('.linked-products').remove();
 	            });
 
 	            $('.add-grouped-button').on('click', function (e) {
@@ -135,7 +179,7 @@ webpackJsonp([2],{
 	                    var $tr = $(this).closest('.tr');
 
 	                    if ($looksTable.find('input[name=id][value=' + $tr.find('input[name=id]').val() + ']').length === 0) {                        
-	                        $looksTable.append(getlookRow($tr));
+	                        $looksTable.append(getLookRow($tr));
 	                    }
 	                }).prop('checked', false);
 
@@ -157,10 +201,14 @@ webpackJsonp([2],{
 	                        } else {                            
 	                            $form.find('select').val('').trigger('change');
 	                            validator.resetForm();
-	                            $form.trigger('reset').find('.form-group.has-success').removeClass('has-success');                           
-	                            $('.table .thead-inverse').after(data);                           
+	                            $form.trigger('reset').find('.form-group.has-success').removeClass('has-success');
+	                            $form.find('#linked-products .tr:not(.thead-inverse)').remove();
+	                            $form.find('.no-associated-products').show();
+
+	                            $('.table:not(#linked-products) > .thead-inverse').after(data);
 	                            $tr = $('.tr.newly-added').removeClass('newly-added');
 	                            setSelect2Categories($tr.find('select[name=categories]'));
+								setSelect2Characters($tr.find('select[name=media_character_id]'));
 
 	                            showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
 	                            $button.show().siblings('.fa-spinner, .sr-only').remove();
@@ -169,7 +217,7 @@ webpackJsonp([2],{
 	                            if (inIframe()) {
 	                                $tr.find('.modal-hidden').hide();
 	                                var $looksTable = $(parent.document).find('.open-looks-modal+.table');
-	                                $looksTable.append(getlookRow($tr));
+	                                $looksTable.append(getLookRow($tr));
 
 	                                if ($looksTable.children('.tr:not(.thead-inverse)').length > 0)
 	                                    $looksTable.next().hide();
@@ -177,6 +225,17 @@ webpackJsonp([2],{
 	                        }                        
 	                    });
 	                }
+	            });
+
+	            $('#add-products-button').on('click', function (e) {
+	                var $button = $(e.target);
+	                $button.hide().prev().show();
+	                $button.next().attr('src', '/admin/produits').show().attr('data-related-target', 'true').next().hide();
+	            });
+
+	            $('#back-to-products-button').on('click', function (e) {
+	                var $button = $(e.target);
+	                $button.hide().next().show().next().removeAttr('data-related-target').hide().next().show();
 	            });
 
 	            $('#add-category').on('click', function (e) {
@@ -192,9 +251,31 @@ webpackJsonp([2],{
 	                    });
 	                }
 	            });
+				
+				$('#add-character').on('click', function (e) {
+	                var $addCharacterForm = $(this).closest('form').data('validator');
+	                if ($addCharacterForm.form()) {
+	                    var body = {}
+	                    $($addCharacterForm.currentForm.elements).not('button').each(function () {
+	                        body[$(this).attr('name')] = $(this).val();
+	                    });
+
+	                    $.post('/admin/personnages', body, function (data) {
+	                        if (data.status === 'error')
+	                            showMessages($('.alert'), data.message, 'alert-danger');
+	                        else {
+	                            $addCharacterForm.resetForm();
+	                            $($addCharacterForm.currentForm).trigger('reset').find('.form-group.has-success').removeClass('has-success');;
+	                            $('#media_character_id').empty().append('<option value="' + data.object.id + '" selected>' + data.object.firstname + (data.object.lastname ? ' ' + data.object.lastname : '') + '</option>').trigger('change');
+	                        }
+	                    });
+	                }
+	            });
 	        };       
 
 	        var setSelect2Categories = function ($element) {
+	            var t = this;
+
 	            if (!$element)
 	                $element = $('select[name=categories]');
 
@@ -206,7 +287,7 @@ webpackJsonp([2],{
 	                    return undefined;
 	                },
 	                multiple: true,
-	                language: this.select2FR,
+	                language: t.select2FR,
 	                ajax: {
 	                    url: '/admin/categories',
 	                    dataType: 'json',
@@ -240,18 +321,70 @@ webpackJsonp([2],{
 
 	            return selectCategories;
 	        };
+			
+	        var setSelect2Characters = function ($element) {
+	            var t = this;
+
+	            if (!$element)
+	                $element = $('select[name=media_character_id]');
+
+	            var selectCharacters = $element.select2({
+	                width: '100%',
+	                placeholder: 'Choisissez un personnage...',
+	                tags: true,
+	                createTag: function (params) {
+	                    return undefined;
+	                },
+	                multiple: true,
+	                language: t.select2FR,
+	                ajax: {
+	                    url: '/admin/personnages',
+	                    dataType: 'json',
+	                    delay: 250,
+	                    data: function (params) {
+	                        return {
+	                            q: params.term, // search term
+	                            page: params.page
+	                        };
+	                    },
+	                    processResults: function (data, params) {
+	                        params.page = params.page || 1;
+
+	                        return {
+	                            results: data.items,
+	                            pagination: {
+	                                more: (params.page * 30) < data.total_count
+	                            }
+	                        };
+	                    },
+	                    cache: true
+	                },
+	                minimumInputLength: 1,
+					maximumSelectionLength: 1
+	            });
+
+	            selectCharacters.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
+
+	            $element.on('change', function () {
+	                $element.closest('form').data('validator').element(this);
+	            });
+
+	            return selectCharacters;
+	        };
 
 	        var initFormValidators = function () {
 	            $('#admin-add-look-form').validate({
 	                rules: {
 	                    name: 'required',
 	                    categories: 'required',
-	                    time_code: { required: true, number: true }
+	                    media_character_id: 'required',
+	                    time_codes: { required: true, number: true }
 	                },
 	                messages: {
 	                    name: 'Merci d\'indiquer le nom du look',
 	                    categories: 'Merci de choisir une catégorie',
-	                    time_code: 'Merci d\'indiquer un time code'
+	                    media_character_id: 'Merci de choisir un personnage',
+	                    time_codes: 'Merci d\'indiquer un time code'
 	                },
 	                highlight: function (element) {
 	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -260,7 +393,7 @@ webpackJsonp([2],{
 	                    getValidatorParent(element).removeClass('has-danger').addClass('has-success');
 	                },
 	                errorPlacement: function (error, element) {
-	                    error.addClass('form-control-label col-md-6 offset-md-3');
+	                    error.addClass('form-control-label');
 	                    error.appendTo(element.closest('.form-group'));
 	                }
 	            });
@@ -285,6 +418,25 @@ webpackJsonp([2],{
 	                    error.appendTo(element.closest('.form-group'));
 	                }
 	            });
+
+	            $('#add-character-form').validate({
+	                rules: {
+	                    firstname: 'required'
+	                },
+	                messages: {
+	                    firstname: 'Merci d\'indiquer au minimum le prénom'
+	                },
+	                highlight: function (element) {
+	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
+	                },
+	                unhighlight: function (element) {
+	                    getValidatorParent(element).removeClass('has-danger').addClass('has-success');
+	                },
+	                errorPlacement: function (error, element) {
+	                    error.addClass('form-control-label col-md-6 offset-md-3');
+	                    error.appendTo(element.closest('.form-group'));
+	                }
+	            });
 	        };
 
 	        var inIframe = function () {
@@ -296,12 +448,32 @@ webpackJsonp([2],{
 	        };
 
 	        function addOrUpdateAsset($container, config, cb) {
-	            var data = {};
+	            var data = { products: []};
 
-	            $container.find('input:not([disabled], [type=search], [type=checkbox]), select, textarea').each(function () {
+	            $container.find('input:not([disabled],[type=search],[name*="select-"],#linked-products input,.linked-products input), select:not(#linked-products select,.linked-products select), textarea').each(function () {
 	                var $input = $(this);
-	                var value = $input.val();
-	                data[$input.attr('name')] = $input.attr('name') === 'time_codes' ? [value] : value;
+	                var type = $input.attr('type');
+	                var attrName = $input.attr('name');
+	                var value;
+
+	                if (type && type === 'checkbox')
+	                    value = $input.is(':checked');
+	                else if(attrName === 'time_codes')
+	                    value = [$input.val()];
+	                else
+	                    value = $input.val();              
+
+	                data[$input.attr('name')] = (typeof value !== 'undefined' && value !== '' ? value : null);
+	            });
+
+	            $container.find('#linked-products .tr:not(.thead-inverse), .linked-products .tr:not(.thead-inverse)').each(function () {
+	                var $tr = $(this);
+	                var id = $tr.find('[name=id]').val();
+	                var matchingStatusID = $tr.find('[name=matching_status_id]').is(':checked') ? 1 : 2;
+	                var bodyLocationID = $tr.find('[name=body_location_id]').val();
+	                var appearingContext = $tr.find('[name=appearing_context]').val();
+	                var order = $tr.find('[name=order]').val();
+	                data.products.push({ product_id: id, matching_status_id: matchingStatusID, body_location_id: bodyLocationID, appearing_context: appearingContext, order: order });
 	            });
 
 	            $.ajax({
@@ -331,9 +503,9 @@ webpackJsonp([2],{
 					.removeAttr('hidden');
 	        }
 
-	        function getlookRow($tr) {
+	        function getLookRow($tr) {
 	            var $clonedRow = $tr.clone();
-	            $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(13),.td:nth-of-type(14)').remove();
+	            $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(9), .td:nth-of-type(10),.td:nth-of-type(11)').remove();
 	            $clonedRow.find('.edit-field').remove();
 	            $clonedRow.find('.display-field').removeClass('display-field');
 	            $clonedRow.append('<div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
@@ -344,6 +516,7 @@ webpackJsonp([2],{
 	            inIframe: inIframe,
 	            initHandlers: initHandlers,
 	            setSelect2Categories: setSelect2Categories,
+	            setSelect2Characters: setSelect2Characters,
 	            initFormValidators: initFormValidators
 	        };
 	    }();       

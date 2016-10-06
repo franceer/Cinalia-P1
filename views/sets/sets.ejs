@@ -5,23 +5,23 @@
             <div class="col-md-12">
                 <div class="wide-img">
                     <img src="<%= set.picture_url -%>" alt="<%= set.picture_alt -%>" title="<%= set.picture_title -%>" />
-                </div>
-                <div id="mapped-tooltips">
-                    <% products.forEach(function(iteratee){ -%>
-                    <div class="html-tooltip <%= iteratee.matchingStatus.name -%>-match" style="top: <%= iteratee.y_offset -%>px; left: <%= iteratee.x_offset -%>px;">
-                        <div class="matching-icon"><%= iteratee.matchingStatus.display_name -%></div>
-                        <div class="tooltip-content bottom">
-                            <a data-modal="true" href="/products/<%= iteratee.product.id -%>"><span class="title"><%= iteratee.product.brand.name + ' - ' + iteratee.product.name -%></span></a>
-                            <a data-modal="true" href="/products/<%= iteratee.product.id -%>"><img class="img-fluid" src="<%= iteratee.product.picture_url -%>" alt="<%= iteratee.product.picture_alt -%>" title="<%= iteratee.product.picture_title -%>" /></a>
-                            <span><%= iteratee.product.price -%>€</span>
-                            <div class="controls">
-                                <a href="<%= iteratee.product.commercial_url _%>" class="interactive-button" target="_blank">Acheter</a>
-                                <a data-modal="true" href="/products/<%= iteratee.product.id -%>" class="interactive-button">Détails</a>
+                    <div id="mapped-tooltips">
+                        <% products.forEach(function(iteratee){ -%>
+                        <div class="html-tooltip <%= iteratee.matchingStatus.name -%>-match" style="top: <%= iteratee.y_offset -%>%; left: <%= iteratee.x_offset -%>%;">
+                            <div class="matching-icon"><%= iteratee.matchingStatus.display_name -%></div>
+                            <div class="tooltip-content bottom">
+                                <a data-modal="true" href="/products/<%= iteratee.product.id -%>"><span class="title"><%= iteratee.product.brand.name + ' - ' + iteratee.product.name -%></span></a>
+                                <a data-modal="true" href="/products/<%= iteratee.product.id -%>"><img class="img-fluid" src="<%= iteratee.product.picture_url -%>" alt="<%= iteratee.product.picture_alt -%>" title="<%= iteratee.product.picture_title -%>" /></a>
+                                <span><%= iteratee.product.price -%>€</span>
+                                <div class="controls">
+                                    <a href="<%= iteratee.product.commercial_url _%>" class="interactive-button" target="_blank">Acheter</a>
+                                    <a data-modal="true" href="/products/<%= iteratee.product.id -%>" class="interactive-button">Détails</a>
+                                </div>
                             </div>
                         </div>
+                        <% }); -%>
                     </div>
-                    <% }); -%>                   
-                </div>
+                </div>                
             </div>
         </div>
         <div class="row">

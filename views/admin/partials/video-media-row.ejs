@@ -107,7 +107,7 @@
         <div class="edit-field">
             <button class="modify-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Modifier les produits</button>
         </div>
-        <div class="linked-products table table-striped table-hover table-sm">
+        <div class="linked-products table table-striped table-hover table-sm" data-type="movie">
             <div class="tr thead-inverse">
                 <div class="th">ID</div>
                 <div class="th">Marque</div>
@@ -211,6 +211,80 @@
                     <div class="edit-field form-group">
                         <input type="text" name="time_codes" value="<%= location._pivot_time_codes _%>" class="form-control" />
                     </div>
+                </div>
+                <div class="td">
+                    <div class="edit-field">
+                        <button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <%_ }); _%>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field">
+            <button class="see-looks-button btn btn-default" data-toggle="modal" data-target="#modify-looks-modal" type="button">Voir les looks</button>
+        </div>
+        <div class="edit-field">
+            <button class="modify-looks-button btn btn-default" data-toggle="modal" data-target="#modify-looks-modal" type="button">Modifier les looks</button>
+        </div>
+        <div class="linked-looks table table-striped table-hover table-sm">
+            <div class="tr thead-inverse">
+                <div class="th">ID</div>
+                <div class="th">Nom</div>
+                <div class="th edit-field">Suppr.</div>
+            </div>
+            <%_ videoMedia.looks.forEach(function(look){ _%>
+            <div class="tr">
+                <div class="td">
+                    <div>
+                        <%= look.id _%><input name="id" type="hidden" value="<%= look.id _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div><%= look.name _%></div>
+                </div>
+                <div class="td">
+                    <div class="edit-field">
+                        <button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <%_ }); _%>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field">
+            <button class="see-sets-button btn btn-default" data-toggle="modal" data-target="#modify-sets-modal" type="button">Voir les décors</button>
+        </div>
+        <div class="edit-field">
+            <button class="modify-sets-button btn btn-default" data-toggle="modal" data-target="#modify-sets-modal" type="button">Modifier les décors</button>
+        </div>
+        <div class="linked-sets table table-striped table-hover table-sm">
+            <div class="tr thead-inverse">
+                <div class="th">ID</div>
+                <div class="th">Nom</div>
+                <div class="th">Image</div>
+                <div class="th">Loc.</div>
+                <div class="th edit-field">Suppr.</div>
+            </div>
+            <%_ videoMedia.sets.forEach(function(set){ _%>
+            <div class="tr">
+                <div class="td">
+                    <div>
+                        <%= set.id _%><input name="id" type="hidden" value="<%= set.id _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div><%= set.name _%></div>
+                </div>
+                <div class="td">
+                    <div>
+                        <img src="<%= set.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= set.picture_alt _%>" title="<%= set.picture_title _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div><%= set.place _%></div>
                 </div>
                 <div class="td">
                     <div class="edit-field">

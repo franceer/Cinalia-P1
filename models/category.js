@@ -96,7 +96,7 @@ var Category = bookshelf.Model.extend({
             }
         };
     },
-    searchCategories(term, page) {
+    searchCategories: function(term, page) {
         var terms = term.replace(/\s\s+/g, ' ').trim().split(' ');
         var termsQuery = '';
         for (var i = 0; i < terms.length; i++) {

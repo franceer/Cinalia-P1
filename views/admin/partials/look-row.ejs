@@ -1,0 +1,157 @@
+<form class="tr newly-added">
+    <div class="td">
+        <input type="checkbox" name="select-look" />
+    </div>
+    <div class="td modal-hidden">
+        <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+    <div class="td">
+        <div>
+            <%= look.id _%><input name="id" type="hidden" value="<%= look.id _%>" />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= look.is_published _%></div>
+        <div class="edit-field form-group">
+            <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= look.is_published ? 'checked' : '' %> />
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field"><%= look.name _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="name" value="<%= look.name _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%- look.description && look.description.length > 200 ? look.description.substring(0, 200) + '<span>&hellip;</span>' : look.description _%></div>
+        <div class="edit-field form-group">
+            <textarea name="description" class="form-control form-control-success"><%= look.description _%></textarea>
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field">
+            <ul>
+                <%_ look.categories.forEach(function(category){ _%>
+                <li><%= category.name _%></li>
+                <%_ }); _%>
+            </ul>
+        </div>
+        <div class="edit-field form-group">
+            <select name="categories" class="form-control form-control-success form-control-danger" multiple>
+                <%_ look.categories.forEach(function(category){ _%>
+                <option selected value="<%= category.id _%>"><%= category.name _%></option>
+                <%_ }); _%>
+            </select>
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field"><%= look.time_codes _%></div>
+        <div class="edit-field form-group">
+            <input type="text" name="time_codes" value="<%= look.time_codes _%>" class="form-control form-control-success form-control-danger" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field">
+            <%= look.character.firstname + (look.character.lastname ? ' ' + look.character.lastname : '') _%>
+        </div>
+        <div class="edit-field form-group">
+            <select class="form-control form-control-success form-control-danger" multiple name="media_character_id">
+                <option selected value="<%= look.character.id _%>"><%= look.character.firstname + (look.character.lastname ? ' ' + look.character.lastname : '') _%></option>
+            </select>
+        </div>
+    </div>
+    <div class="td">
+        <div class="display-field">
+            <button class="see-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Voir les produits</button>
+        </div>
+        <div class="edit-field">
+            <button class="modify-products-button btn btn-default" data-toggle="modal" data-target="#modify-products-modal" type="button">Modifier les produits</button>
+        </div>
+        <div class="linked-products table table-striped table-hover table-sm" data-type="look">
+            <div class="tr thead-inverse">
+                <div class="th">ID</div>
+                <div class="th">Marque</div>
+                <div class="th">Nom</div>
+                <div class="th">Image</div>
+                <div class="th">Match</div>
+                <div class="th">Emplacement</div>
+                <div class="th">Contexte</div>
+                <div class="th">Ordre</div>
+                <div class="th edit-field">Suppr.</div>
+            </div>
+            <%_ look.products.forEach(function(product){ _%>
+            <div class="tr">
+                <div class="td">
+                    <div>
+                        <%= product.id _%><input name="id" type="hidden" value="<%= product.id _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div><%= product.brand.name _%></div>
+                </div>
+                <div class="td">
+                    <div><%= product.name _%></div>
+                </div>
+                <div class="td">
+                    <div>
+                        <img src="<%= product.picture_url.replace(/-original/g, '-thumbnail') _%>" alt="<%= product.picture_alt _%>" title="<%= product.picture_title _%>" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="display-field">
+                        <div class="matching-status <%= product._pivot_matching_status_id === 1 ? 'exact-match' : 'close-match' _%>"></div>
+                    </div>
+                    <div class="edit-field form-group">
+                        <input type="checkbox" name="matching_status_id" value="1" <%= product._pivot_matching_status_id === 1 ? 'checked' : '' %> class="form-control" />
+                    </div>
+                </div>
+                <div class="td">
+                    <%_
+                    var bodyLocations = ['Tête', 'Torse', 'Mains', 'Jambes', 'Pieds'];
+                    _%>
+                    <div class="display-field"><%= bodyLocations[product._pivot_body_location_id - 1] _%></div>
+                    <div class="edit-field form-group">
+                        <select name="body_location_id" class="form-control">
+                            <%_ bodyLocations.forEach(function(bodyLocation, index){ _%>
+                            <option value="<%= index + 1_%>" <%= product._pivot_body_location_id == (index + 1) ? 'selected ' : '' %>><%= bodyLocation _%></option>
+                            <%_ }); _%>
+                        </select>
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="display-field"><%= product._pivot_appearing_context _%></div>
+                    <div class="edit-field form-group">
+                        <input type="text" name="appearing_context" value="<%= product._pivot_appearing_context _%>" class="form-control" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="display-field"><%= product._pivot_order _%></div>
+                    <div class="edit-field form-group">
+                        <input type="text" name="order" value="<%= product._pivot_order _%>" class="form-control" />
+                    </div>
+                </div>
+                <div class="td">
+                    <div class="edit-field">
+                        <button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+            <%_ }); _%>
+        </div>
+    </div>
+    <div class="td">
+        <div><%= moment(look.created_at).format('DD-MMMM-YYYY') _%></div>
+    </div>
+    <div class="td">
+        <div><%= look.updated_at ? moment(look.updated_at).format('DD-MMMM-YYYY') : 'Pas de MAJ' _%></div>
+    </div>
+    <div class="td modal-hidden">
+        <button type="button" class="edit-button actions"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" class="delete-button actions"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="save-button actions"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+        <button type="button" class="close-button actions"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+</form>

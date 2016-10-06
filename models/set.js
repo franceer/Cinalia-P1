@@ -16,7 +16,7 @@ let Set = bookshelf.Model.extend({
     },
 
     products: function () {
-        return this.belongsToMany('Product').through('ProductsInSet');
+        return this.belongsToMany('Product').withPivot(['appearing_context', 'matching_status_id', 'x_offset', 'y_offset']);
     },
 
     categories: function () {

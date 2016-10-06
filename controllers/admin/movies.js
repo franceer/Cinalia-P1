@@ -2,6 +2,10 @@ var express = require('express'),
     router = express.Router(),
     VideoMedia = require('../../models/video-media'),
     MediaGenre = require('../../models/media-genre'),
+    Looks = require('../../collections/looks'),
+    Look = require('../../models/look'),
+    Sets = require('../../collections/sets'),
+    Set = require('../../models/set'),
     Promise = require('bluebird'),
     helper = require('../../helpers/helper'),
     path = require('path'),
@@ -10,7 +14,7 @@ var express = require('express'),
     moment = require('moment');
 
 router.get('/', function (req, res) {
-    Promise.all([MediaGenre.fetchAll(),VideoMedia.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 50, page: 1, withRelated: ['mediaGenre', 'categories', 'products', 'products.brand', 'locations'] })])
+    Promise.all([MediaGenre.fetchAll(),VideoMedia.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 50, page: 1, withRelated: ['mediaGenre', 'categories', 'products', 'products.brand', 'locations', 'looks', 'sets'] })])
     .then(function (results) {
         var genres = results[0];
         var videoMedias = results[1];
@@ -25,13 +29,16 @@ router.get('/', function (req, res) {
             req.body[key] = req.body[key][0];       
     });
 
-    //nullifyProperties(req.body);
     var categoriesIDs = req.body.categories;
     var products = req.body.products;
     var locations = req.body.locations;
+    var looks = req.body.looks;
+    var sets = req.body.sets;
     delete req.body.categories;
     delete req.body.products;
     delete req.body.locations;
+    delete req.body.looks;
+    delete req.body.sets;
     var videoMedia;
 
     MediaGenre.findOne({ name: req.body.media_genre_name }, { require: false })
@@ -76,10 +83,10 @@ router.get('/', function (req, res) {
         }
 
         if (!req.body.poster_alt || req.body.poster_alt.length === 0)
-            delete req.body.poster_alt;
+            req.body.poster_alt = req.body.media_genre_name + ' ' + req.body.name;
 
         if (!req.body.poster_title || req.body.poster_title.length === 0)
-            delete req.body.poster_title;
+            req.body.poster_title = req.body.poster_alt;
 
         delete req.body.media_genre_name;
         return VideoMedia.update(req.body, { id: req.params.id });
@@ -88,38 +95,89 @@ router.get('/', function (req, res) {
         videoMedia = updatedVideoMedia;
         var promises = [];
 
-        if (categoriesIDs) {
-            promises.push(videoMedia.categories().detach().then(function () {
+        promises.push(videoMedia.categories().detach().then(function () {
+            if (categoriesIDs)
                 return videoMedia.categories().attach(categoriesIDs);
-            }));
-        }
+        }));
 
-        if (products) {
-            products.forEach(function (product) {
-                if (product.appearing_context === '')
-                    product.appearing_context = null;
-            });
+        promises.push(videoMedia.products().detach().then(function () {
+            if (products) {
+                products.forEach(function (product) {
+                    if (product.appearing_context === '')
+                        product.appearing_context = null;
+                });
 
-            promises.push(videoMedia.products().detach().then(function () {
                 return videoMedia.products().attach(products);
-            }));
-        }
+            }
+        }));
 
-        if (locations) {
-            locations.forEach(function (location) {
-                if (location.appearing_context === '')
-                    location.appearing_context = null;
-            });
+        promises.push(videoMedia.locations().detach().then(function () {
+            if (locations) {
+                locations.forEach(function (location) {
+                    if (location.appearing_context === '')
+                        location.appearing_context = null;
+                });
 
-            promises.push(videoMedia.locations().detach().then(function () {
                 return videoMedia.locations().attach(locations);
-            }));
-        }
+            }
+        }));
+
+        promises.push(Look.where({ video_media_id: videoMedia.id }).fetchAll()
+        .then(function (oldLooks) {
+            if (oldLooks.length > 0) {
+                oldLooks.forEach(function (look) {
+                    look.set('video_media_id', null);
+                });
+
+                return oldLooks.invokeThen('save');
+            } else
+                return null;
+        })
+        .then(function () {
+            if (looks) {
+                looks.forEach(function (look) {
+                    look.video_media_id = videoMedia.id;
+                });
+
+                return Looks.forge(looks).invokeThen('save');
+            }
+        }));
+
+        promises.push(Set.where({ video_media_id: videoMedia.id }).fetchAll()
+        .then(function (oldSets) {
+            if (oldSets.length > 0) {
+                oldSets.forEach(function (iset) {
+                    iset.set('video_media_id', null);
+                });
+
+                return oldSets.invokeThen('save');
+            } else
+                return null;
+        })
+        .then(function () {
+            if (sets) {
+                sets.forEach(function (set) {
+                    set.video_media_id = videoMedia.id;
+                });
+
+                return Sets.forge(sets).invokeThen('save');
+            }
+        }));
+
+        //looks.forEach(function (look) {
+        //    look.video_media_id = videoMedia.id;
+        //});
+        //sets.forEach(function (set) {
+        //    set.video_media_id = videoMedia.id;
+        //});
+
+        //promises.push(Looks.forge(looks).invokeThen('save'));
+        //promises.push(Sets.forge(sets).invokeThen('save'));
 
         return promises.length > 0 ? Promise.all(promises) : null;
     })
     .then(function () {
-        return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand', 'locations'])]);
+        return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand', 'locations', 'looks', 'sets'])]);
     })
     .then(function (results) {
         var genres = results[0];
@@ -140,10 +198,14 @@ router.get('/', function (req, res) {
 
     var categoriesIDs = req.body.categories;
     var products = req.body.products;
-    var products = req.body.locations;
+    var locations = req.body.locations;
+    var looks = req.body.looks;
+    var sets = req.body.sets;
     delete req.body.categories;
     delete req.body.products;
     delete req.body.locations;
+    delete req.body.looks;
+    delete req.body.sets;
     var videoMedia;
 
     MediaGenre.findOne({ name: req.body.media_genre_name }, { require: false })
@@ -190,26 +252,42 @@ router.get('/', function (req, res) {
         if (products) {
             products.forEach(function (product) {
                 if (product.appearing_context === '')
-                    product.appearing_context = null;
+                    product.appearing_context = null;                    
             });
 
             promises.push(videoMedia.products().attach(products));
         }
-
+       
         if (locations) {
             locations.forEach(function (location) {
                 if (location.appearing_context === '')
-                    location.appearing_context = null;
+                    location.appearing_context = null;                    
             });
 
             promises.push(videoMedia.locations().attach(locations));
         }
+    
+        if(looks){
+            looks.forEach(function (look) {
+                look.video_media_id = videoMedia.id;
+            });            
 
-        return promises.length > 0 ? Promise.all(promises) : null;
+            promises.push(Looks.forge(looks).invokeThen('save'));
+        }
+
+        if (sets) {
+            sets.forEach(function (set) {
+                set.video_media_id = videoMedia.id;
+            });
+
+            promises.push(Sets.forge(sets).invokeThen('save'));
+        }
+
+        return Promise.all(promises);
     })
     .then(function () {
-            return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand', 'locations'])]);
-        })
+        return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand', 'locations', 'looks', 'sets'])]);
+    })
     .then(function (results) {
         var genres = results[0];
         var videoMedia = results[1];

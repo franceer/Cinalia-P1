@@ -25,7 +25,7 @@ let Look = bookshelf.Model.extend({
     },
 
     products: function () {
-        return this.belongsToMany('Product').through('ProductsInLook');
+        return this.belongsToMany('Product').withPivot(['appearing_context', 'order', 'body_location_id', 'matching_status_id']);
     },
 
     virtuals: {

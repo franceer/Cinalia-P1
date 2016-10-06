@@ -2,9 +2,8 @@ var express = require('express'),
     router = express.Router(),
     helper = require('../../helpers/helper'),
     Promise = require('bluebird'),
+    Set = require('../../models/set'),
     Product = require('../../models/product'),
-    Products = require('../../collections/products'),
-    Brand = require('../../models/brand'),
     moment = require('moment'),
     fs = require('fs'),
     _ = require('lodash');
@@ -12,40 +11,40 @@ var express = require('express'),
 router.get('/', function (req, res) {
     let currentPage = req.query.p ? req.query.p : 1;
 
-    Promise.all([Brand.fetchAll(), Product.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'] })])
-    .then(function (results) {
-        var brands = results[0];
-        var products = results[1];       
-        products.pagination.data = helper.getPaginationData(products.pagination.rowCount, products.pagination.pageSize, 10, products.pagination.page);
-        res.render('admin/products', { brands: brands.toJSON(), products: products.toJSON(), pagination: products.pagination, moment: moment });        
+    Set.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['categories', 'products', 'products.brand'] })
+    .then(function (sets) {          
+        sets.pagination.data = helper.getPaginationData(sets.pagination.rowCount, sets.pagination.pageSize, 10, sets.pagination.page);
+        res.render('admin/sets', { sets: sets.toJSON(), pagination: sets.pagination, moment: moment });
     });    
 })
 .put('/:id', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
             req.body[key] = null;
-        else if (key === 'brand_id')
+        else if (key === 'media_character_id')
             req.body[key] = req.body[key][0];
     });
 
     var categoriesIDs = req.body.categories;
+    var products = req.body.products;
     delete req.body.categories;
-    var product;
+    delete req.body.products;
+    var set;
 
-    Product.findOne({ id: req.params.id }, { require: false }).then(function (oldProduct) {
-        if (oldProduct.get('picture_url') !== req.body.picture_url) {
-            var index1 = oldProduct.get('picture_url').indexOf(process.env.NODE_ENV);
-            var index2 = oldProduct.get('picture_url').lastIndexOf('/');
+    Set.findOne({ id: req.params.id }, { require: false }).then(function (oldSet) {
+        if (oldSet.get('picture_url') !== req.body.picture_url) {
+            var index1 = oldSet.get('picture_url').indexOf(process.env.NODE_ENV);
+            var index2 = oldSet.get('picture_url').lastIndexOf('/');
 
-            return helper.deleteS3Objects(oldProduct.get('picture_url').substring(index1, index2))
+            return helper.deleteS3Objects(oldSet.get('picture_url').substring(index1, index2))
             .then(function (deleted) {
-                return helper.uploadImagesToS3(req, 'picture_url', ['name', 'brand_name'], 'products');
+                return helper.uploadImagesToS3(req, 'picture_url', ['name'], 'sets');
             });
         } else {
             return null;
         }        
     })
-    .then(function (files) {
+   .then(function (files) {
         if (files !== null) {
             var originalURL;
 
@@ -58,33 +57,40 @@ router.get('/', function (req, res) {
         }
 
         if (!req.body.picture_alt || req.body.picture_alt.length === 0)
-            delete req.body.picture_alt;
+            req.body.picture_alt = req.body.name;
 
         if (!req.body.picture_title || req.body.picture_title.length === 0)
-            delete req.body.picture_title;
-
-        delete req.body.brand_name;
-        return Product.update(req.body, { id: req.params.id });
+            req.body.picture_title = req.body.picture_alt;
+    
+        return Set.update(req.body, { id: req.params.id });
     })
-    .then(function (updatedProduct) {
-        product = updatedProduct;
-        var returned = null;
+    .then(function (updatedSet) {
+        set = updatedSet;
+        var promises = [];
+        
+        promises.push(set.categories().detach().then(function () {
+            if (categoriesIDs)
+                return set.categories().attach(categoriesIDs);            
+        }));
 
-        if (categoriesIDs) {
-            returned = product.categories().detach().then(function () {
-                return product.categories().attach(categoriesIDs);
-            });
-        }
+        promises.push(set.products().detach().then(function () {
+            if (products) {
+                products.forEach(function (product) {
+                    if (product.appearing_context === '')
+                        product.appearing_context = null;                    
+                });
 
-        return returned;
+                return set.products().attach(products);
+            }                
+        }));        
+
+        return Promise.all(promises);
     })
     .then(function () {
-        return Promise.all([Brand.fetchAll(), product.load(['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'])]);
+        return set.load(['categories', 'products', 'products.brand']);
     })
-    .then(function (results) {
-        var brands = results[0];
-        var updatedProduct = results[1];
-        res.render('admin/partials/product-row', { layout: false, moment: moment, brands: brands.toJSON(), product: updatedProduct.toJSON() });
+    .then(function (updatedSet) {
+        res.render('admin/partials/set-row', { layout: false, moment: moment, set: updatedSet.toJSON() });
     })
     .catch(function (err) {
         res.send(err.message);
@@ -94,26 +100,17 @@ router.get('/', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
             req.body[key] = null;
-        else if (key === 'brand_id')
+        else if (key === 'media_character_id')
             req.body[key] = req.body[key][0];
     });
 
     var categoriesIDs = req.body.categories;
+    var products = req.body.products;
     delete req.body.categories;
-    var product;
+    delete req.body.products;
+    var set;
 
-    Brand.findOne({ name: req.body.brand_name }, {require: false})
-    .then(function (brand) {
-        var returned = null;
-
-        if (!brand)
-            returned = Brand.create({ name: req.body.brand_name });
-
-        return returned;        
-    })
-    .then(function () {
-        return helper.uploadImagesToS3(req, 'picture_url', ['name', 'brand_name'], 'products');
-    })
+    helper.uploadImagesToS3(req, 'picture_url', ['name'], 'sets')
     .then(function(files){
         var originalURL;
 
@@ -125,47 +122,44 @@ router.get('/', function (req, res) {
         req.body.picture_url = originalURL;
 
         if (!req.body.picture_alt || req.body.picture_alt.length === 0)
-            req.body.picture_alt = req.body.brand_name + ' ' + req.body.name;
+            req.body.picture_alt = req.body.name;
 
         if (!req.body.picture_title || req.body.picture_title.length === 0)
             req.body.picture_title = req.body.picture_alt;
 
-        delete req.body.brand_name;
-        return Product.create(req.body);
-    })
-    .then(function (addedProduct) {
-        product = addedProduct;
-        var returned = null;
+        return Set.create(req.body);
+    })    
+    .then(function (addedSet) {
+        set = addedSet;
+        var promises = [];
 
-        if (categoriesIDs)
-            returned = product.categories().attach(categoriesIDs);
+        if (categoriesIDs) {
+            promises.push(set.categories().attach(categoriesIDs));
+        }
 
-        return returned;       
+        if (products) {
+            products.forEach(function (product) {
+                if (product.appearing_context === '')
+                    product.appearing_context = null;
+            });
+
+            promises.push(set.products().attach(products));
+        }
+
+        return Promise.all(promises);
     })
     .then(function () {
-        return Promise.all([Brand.fetchAll(), product.load(['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'])]);
+        return set.load(['categories', 'products', 'products.brand']);
     })
-    .then(function (results) {
-        var brands = results[0];
-        var product = results[1];
-        res.render('admin/partials/product-row', { layout: false, moment: moment, brands: brands.toJSON(), product: product.toJSON() });
+    .then(function (createdSet) {       
+        res.render('admin/partials/set-row', { layout: false, moment: moment, set: createdSet.toJSON() });
     })
     .catch(function (err) {
         res.json({ status: 'error', message: err.message });
     });    
 })
-.delete('/:id', function (req, res) {
-    Product.findOne({ id: req.params.id })
-    .then(function (product) {
-        var index1 = product.get('picture_url').indexOf(process.env.NODE_ENV);
-        var index2 = product.get('picture_url').lastIndexOf('/');
-
-        return helper.deleteS3Objects(product.get('picture_url').substring(index1, index2))
-        .catch(function (err) { /*Do nothing in case the images doesn't exist anymore*/ })
-        .then(function () {
-            return Product.destroy({ id: req.params.id });
-        });
-    })
+.delete('/:id', function (req, res) {    
+    Set.destroy({ id: req.params.id })
     .then(function () {
         res.json({ status: 'success' });
     })

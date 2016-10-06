@@ -38,10 +38,35 @@ body.admin {
     .form-control{
         font-size: .8rem;
     }
+
+    .fa-check{
+        display: none;
+        color: #5cb85c;
+    }
+
+    .matching-markers{ 
+        .matching-icon{
+            position: absolute;
+            background: #f0ad4e;
+            height: 20px;
+            width: 20px;
+            border-radius: 30px;
+            transform: translate(-50%, -50%);
+
+            &.exact-match{
+                background: #5cb85c;
+            }
+        }
+    }
+
+    [name=is_published]{
+        width: auto;
+    }
 }
 .edit-field,.th.edit-field, .edit .display-field, .save-button,
-.close-button, .add-grouped-button, #back-to-products-button, #back-to-locations-button,
-.td .linked-products, .td .linked-locations, #modify-products-modal iframe,  #modify-locations-modal iframe{
+.close-button, .add-grouped-button, #back-to-products-button, #back-to-locations-button, #back-to-looks-button, #back-to-sets-button,
+.td .linked-products, .td .linked-locations, .td .linked-looks, .td .linked-sets, #modify-products-modal iframe,
+ #modify-locations-modal iframe,  #modify-looks-modal iframe,  #modify-sets-modal iframe{
     display: none;
 }
 .edit .edit-field{

@@ -137,7 +137,7 @@ webpackJsonp([4],{
 	                var $productsTable;
 
 	                if ($parentDocument.find('iframe[data-related-target]').length > 0)
-	                    $productsTable = $parentDocument.find('iframe[data-related-target]+.linked-products');
+	                    $productsTable = $parentDocument.find('iframe[data-related-target]~.linked-products');
 	                else
 	                    $productsTable = $parentDocument.find('#linked-products');
 
@@ -145,10 +145,11 @@ webpackJsonp([4],{
 	                    var $tr = $(this).closest('.tr');
 
 	                    if ($productsTable.find('input[name=id][value=' + $tr.find('input[name=id]').val() + ']').length === 0) {                        
-	                        $productsTable.append(getProductRow($tr));
+	                        $productsTable.append(getProductRow($tr, $productsTable.attr('data-type')));
 	                    }
 	                }).prop('checked', false);
 
+	                //Hide empty products sentence
 	                if ($productsTable.children('.tr:not(.thead-inverse)').length > 0)
 	                    $productsTable.next().hide();
 	            });          
@@ -180,8 +181,14 @@ webpackJsonp([4],{
 
 	                            if (inIframe()) {
 	                                $tr.find('.modal-hidden').hide();
-	                                var $productsTable = $(parent.document).find('.open-products-modal+.table');
-	                                $productsTable.append(getProductRow($tr));
+	                                var $productsTable;
+
+	                                if ($parentDocument.find('iframe[data-related-target]').length > 0)
+	                                    $productsTable = $parentDocument.find('iframe[data-related-target]+.linked-products');
+	                                else
+	                                    $productsTable = $parentDocument.find('#linked-products');
+
+	                                $productsTable.append(getProductRow($tr, $productsTable.attr('data-type')));
 
 	                                if ($productsTable.children('.tr:not(.thead-inverse)').length > 0)
 	                                    $productsTable.next().hide();
@@ -325,7 +332,7 @@ webpackJsonp([4],{
 	                },
 	                messages: {
 	                    name: 'Merci d\'indiquer le nom de la catégorie',
-	                    categories: 'Merci d\'indiquer le path de la catégorie'
+	                    path: 'Merci d\'indiquer le path de la catégorie'
 	                },
 	                highlight: function (element) {
 	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -351,10 +358,17 @@ webpackJsonp([4],{
 	        function addOrUpdateAsset($container, config, cb) {
 	            var data = {};
 
-	            $container.find('input:not([disabled], [type=search], [type=checkbox]), select, textarea').each(function () {
+	            $container.find('input:not([disabled], [type=search],[name*="select-"]), select, textarea').each(function () {
 	                var $input = $(this);
-	                var value = $input.val();
-	                data[$input.attr('name')] = (value && value !== '' ? value : null);
+	                var type = $input.attr('type');
+	                var value;
+
+	                if (type && type === 'checkbox')
+	                    value = $input.is(':checked');
+	                else
+	                    value = $input.val();
+
+	                data[$input.attr('name')] = (typeof value !== 'undefined' && value !== '' ? value : null);
 	            });
 
 	            $.ajax({
@@ -384,12 +398,18 @@ webpackJsonp([4],{
 					.removeAttr('hidden');
 	        }
 
-	        function getProductRow($tr) {
+	        function getProductRow($tr, rowType) {
+	            var rawHTML = {
+	                movie: '<div class="td"><div class="form-group"><input type="checkbox" name="matching_status_id" value="1" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="appearing_context" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="time_codes" class="form-control" /></div></div><div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>',
+	                look: '<div class="td"><div class="form-group"><input type="checkbox" name="matching_status_id" value="1" class="form-control" /></div></div><div class="td"><div class="form-group"><select name="body_location_id" class="form-control"><option value="1">Tête</option><option value="2">Torse</option><option value="3">Mains</option><option value="4">Jambes</option><option value="5">Pieds</option></select></div></div><div class="td"><div class="form-group"><input type="text" name="appearing_context" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="order" class="form-control" /></div></div><div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>',
+	                set: '<div class="td"><div class="form-group"><input type="checkbox" name="matching_status_id" value="1" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="appearing_context" class="form-control" /></div></div><div class="td"><div class="form-group"><button type="button" class="btn btn-default img-map-button"><i class="fa fa-bullseye" aria-hidden="true"></i></button><i class="fa fa-check" aria-hidden="true"></i><input type="hidden" name="x_offset" /><input type="hidden" name="y_offset" /></div></div><div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>'
+	            };
+
 	            var $clonedRow = $tr.clone();
 	            $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(13),.td:nth-of-type(14)').remove();
 	            $clonedRow.find('.edit-field').remove();
 	            $clonedRow.find('.display-field').removeClass('display-field');
-	            $clonedRow.append('<div class="td"><div class="form-group"><input type="checkbox" name="matching_status_id" value="1" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="appearing_context" class="form-control" /></div></div><div class="td"><div class="form-group"><input type="text" name="time_codes" class="form-control" /></div></div><div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
+	            $clonedRow.append(rawHTML[rowType]);
 	            return $('<div class="tr"></div>').append($clonedRow.contents());
 	        }
 

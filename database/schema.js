@@ -27,6 +27,7 @@ var schema = {
         latitude: { type: 'string', maxlength: 32, nullable: false },
         longitude: { type: 'string', maxlength: 32, nullable: false },
         zoom: { type: 'specific', specificType: 'smallint', nullable: false, defaultTo: 7 },
+        is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },    
@@ -82,6 +83,7 @@ var schema = {
         synopsis: { type: 'text', nullable: true },
         tv_broadcaster: { type: 'string', maxlength: 64, nullable: true },
         media_genre_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_genres' },
+        is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },
@@ -96,7 +98,8 @@ var schema = {
         description: { type: 'text', nullable: true },
         brand_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'brands' },
         //product_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'product_types' },
-		parent_product_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'products', onDelete: 'SET NULL' },
+        parent_product_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'products', onDelete: 'SET NULL' },
+        is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },
@@ -180,7 +183,8 @@ var schema = {
         description: { type: 'text', nullable: true },
         time_codes: { type: 'specific', specificType: 'integer[]', nullable: true },
         video_media_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'SET NULL' },
-		media_character_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_characters' },        
+        media_character_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_characters' },
+        is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },
@@ -208,6 +212,7 @@ var schema = {
         place: { type: 'string', maxlength: 128, nullable: true },
         time_codes: { type: 'specific', specificType: 'integer[]', nullable: true },
         video_media_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'SET NULL' },
+        is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },
@@ -215,8 +220,8 @@ var schema = {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         matching_status_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'matching_statuses', defaultTo: 2 },
         appearing_context: { type: 'text', nullable: true },
-        x_offset: { type: 'integer', nullable: false, defaultTo: 0 },
-        y_offset: { type: 'integer', nullable: false, defaultTo: 0 },
+        x_offset: { type: 'decimal', precisions: [12, 3], nullable: false, defaultTo: 0 },
+        y_offset: { type: 'decimal', precisions: [12, 3], nullable: false, defaultTo: 0 },
         product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products', onDelete: 'CASCADE' },
         set_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'sets', onDelete: 'CASCADE' }
     },

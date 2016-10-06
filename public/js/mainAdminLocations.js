@@ -305,10 +305,17 @@ webpackJsonp([1],{
 	        function addOrUpdateAsset($container, config, cb) {
 	            var data = {};
 
-	            $container.find('input:not([disabled], [type=search], [type=checkbox]), select, textarea').each(function () {
+	            $container.find('input:not([disabled], [type=search], [name*="select-"]), select, textarea').each(function () {
 	                var $input = $(this);
-	                var value = $input.val();
-	                data[$input.attr('name')] = (value && value !== '' ? value : null);
+	                var type = $input.attr('type');
+	                var value;
+	                
+	                if (type && type === 'checkbox') 
+	                    value = $input.is(':checked');
+	                else
+	                    value = $input.val();
+
+	                data[$input.attr('name')] = (typeof value !== 'undefined' && value !== '' ? value : null);
 	            });
 
 	            $.ajax({
