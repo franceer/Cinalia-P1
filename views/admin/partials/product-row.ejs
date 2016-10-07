@@ -14,6 +14,12 @@
         </div>
     </div>
     <div class="td">
+        <div class="display-field"><%= product.is_published _%></div>
+        <div class="edit-field form-group">
+            <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= product.is_published ? 'checked' : '' %> />
+        </div>
+    </div>
+    <div class="td">
         <div class="display-field"><%= product.brand.name _%></div>
         <div class="edit-field form-group">
             <select name="brand_id" data-field-name="brand" class="form-control form-control-success form-control-danger">
@@ -40,15 +46,15 @@
     <div class="td modal-hidden">
         <div class="display-field">
             <ul>
-                <%_ product.categories.forEach(function(category){ _%>
-                <li><%= category.name _%></li>
+                <%_ product.tags.forEach(function(tag){ _%>
+                <li><%= tag.name _%></li>
                 <%_ }); _%>
             </ul>
         </div>
         <div class="edit-field form-group">
-            <select name="categories" class="form-control form-control-success form-control-danger" multiple>
-                <%_ product.categories.forEach(function(category){ _%>
-                <option selected value="<%= category.id _%>"><%= category.name _%></option>
+            <select name="tags" class="form-control form-control-success form-control-danger" multiple>
+                <%_ product.tags.forEach(function(tag){ _%>
+                <option selected value="<%= tag.id _%>"><%= tag.name _%></option>
                 <%_ }); _%>
             </select>
         </div>

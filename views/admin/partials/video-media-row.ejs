@@ -12,6 +12,12 @@
         <%= videoMedia.id _%><input name="id" type="hidden" value="<%= videoMedia.id _%>" />
     </div>
     <div class="td">
+        <div class="display-field"><%= videoMedia.is_published _%></div>
+        <div class="edit-field form-group">
+            <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= videoMedia.is_published ? 'checked' : '' %> />
+        </div>
+    </div>
+    <div class="td">
         <div class="display-field"><%= videoMedia.name _%></div>
         <div class="edit-field form-group">
             <input type="text" name="name" value="<%= videoMedia.name _%>" class="form-control form-control-success form-control-danger" />
@@ -74,28 +80,17 @@
         </div>
     </div>
     <div class="td">
-        <div class="display-field"><%= videoMedia.mediaGenre.name _%></div>
-        <div class="edit-field form-group">
-            <select name="media_genre_id" data-field-name="mediaGenre" class="form-control form-control-success form-control-danger">
-                <%_ genres.forEach(function(genre){ _%>
-                <option value="<%= genre.id _%>"<%= videoMedia.mediaGenre.id === genre.id ? ' selected' : ''_%>><%= genre.name _%></option>
-                <%_ }); _%>
-            </select>
-            <input name="media_genre_name" type="hidden" value="<%= videoMedia.mediaGenre.name _%>" />
-        </div>
-    </div>
-    <div class="td">
         <div class="display-field">
             <ul>
-                <%_ videoMedia.categories.forEach(function(category){ _%>
-                <li><%= category.name _%></li>
+                <%_ videoMedia.tags.forEach(function(tag){ _%>
+                <li><%= tag.name _%></li>
                 <%_ }); _%>
             </ul>
         </div>
         <div class="edit-field form-group">
-            <select name="categories" class="form-control form-control-success form-control-danger" multiple>
-                <%_ videoMedia.categories.forEach(function(category){ _%>
-                <option selected value="<%= category.id _%>"><%= category.name _%></option>
+            <select name="tags" class="form-control form-control-success form-control-danger" multiple>
+                <%_ videoMedia.tags.forEach(function(tag){ _%>
+                <option selected value="<%= tag.id _%>"><%= tag.name _%></option>
                 <%_ }); _%>
             </select>
         </div>
