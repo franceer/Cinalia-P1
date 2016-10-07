@@ -10,7 +10,7 @@ var express = require('express'),
 router.get('/', function (req, res) {
     let currentPage = req.query.p ? req.query.p : 1;
 
-    Location.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['categories'] })
+    Location.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['tags'] })
     .then(function (locations) {          
         locations.pagination.data = helper.getPaginationData(locations.pagination.rowCount, locations.pagination.pageSize, 10, locations.pagination.page);
         res.render('admin/locations', { locations: locations.toJSON(), pagination: locations.pagination, moment: moment });
@@ -22,8 +22,10 @@ router.get('/', function (req, res) {
             req.body[key] = null;        
     });
 
-    var categoriesIDs = req.body.categories;
-    delete req.body.categories;
+    //var tagsIDs = req.body.tags;
+    //delete req.body.tags;
+    var tagsIDs = req.body.tags;
+    delete req.body.tags;
     var location;
 
     Location.findOne({ id: req.params.id }, { require: false }).then(function (oldLocation) {
@@ -63,16 +65,16 @@ router.get('/', function (req, res) {
         location = updatedLocation;
         var returned = null;
 
-        if (categoriesIDs) {
-            returned = location.categories().detach().then(function () {
-                return location.categories().attach(categoriesIDs);
+        if (tagsIDs) {
+            returned = location.tags().detach().then(function () {
+                return location.tags().attach(tagsIDs);
             });
         }
 
         return returned;
     })
     .then(function () {
-        return location.load(['categories']);
+        return location.load(['tags']);
     })
     .then(function (updatedLocation) {        
         res.render('admin/partials/location-row', { layout: false, moment: moment, location: updatedLocation.toJSON() });
@@ -87,8 +89,8 @@ router.get('/', function (req, res) {
             req.body[key] = null;
     });
 
-    var categoriesIDs = req.body.categories;
-    delete req.body.categories;
+    var tagsIDs = req.body.tags;
+    delete req.body.tags;
     var location;
        
     helper.uploadImagesToS3(req, 'picture_url', ['name', 'city_state_country'], 'locations')
@@ -114,13 +116,13 @@ router.get('/', function (req, res) {
         location = addedLocation;
         var returned = null;
 
-        if (categoriesIDs)
-            returned = location.categories().attach(categoriesIDs);
+        if (tagsIDs)
+            returned = location.tags().attach(tagsIDs);
 
         return returned;       
     })
     .then(function () {
-        return location.load(['categories']);
+        return location.load(['tags']);
     })
     .then(function (addedLocation) {
         res.render('admin/partials/location-row', { layout: false, moment: moment, location: addedLocation.toJSON() });

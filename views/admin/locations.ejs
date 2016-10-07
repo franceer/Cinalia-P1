@@ -1,5 +1,5 @@
-<%- include('./partials/add-categories-modal') %>
 <section id="admin-section">
+    <%- include('./partials/add-tags-modal') %>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -26,13 +26,13 @@
                             <div class="form-group">
                                 <label for="name">Ville / Etat / Pays</label>
                                 <input class="form-control form-control-success form-control-danger" type="text" id="city_state_country" name="city_state_country" />
-                            </div>
+                            </div>                            
                             <div class="form-group">
-                                <label for="categories">Catégories</label>
-                                <button class="add-category-button" type="button" data-toggle="modal" data-target="#add-category-modal">
+                                <label for="tags">Catégories</label>
+                                <button class="add-tag-button" type="button" data-toggle="modal" data-target="#add-tag-modal">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
-                                <select id="categories" class="form-control form-control-success form-control-danger" multiple name="categories"></select>
+                                <select id="tags" class="form-control form-control-success form-control-danger" multiple name="tags"></select>
                             </div>
                             <div class="form-group">
                                 <label for="picture_url">Image</label>
@@ -80,7 +80,7 @@
                         <div class="th">Nom</div>
                         <div class="th modal-hidden">Description</div>
                         <div class="th">V.E.P.</div>
-                        <div class="th modal-hidden">Catégories</div>
+                        <div class="th modal-hidden">Tags</div>
                         <div class="th">Image</div>
                         <div class="th modal-hidden">Google ID</div>
                         <div class="th modal-hidden">Latitude</div>
@@ -109,9 +109,9 @@
                             </div>
                         </div>
                         <div class="td">
-                            <div class="display-field"><%= look.is_published _%></div>
+                            <div class="display-field"><%= location.is_published _%></div>
                             <div class="edit-field form-group">
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= look.is_published ? 'checked' : '' %> />
+                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= location.is_published ? 'checked' : '' %> />
                             </div>
                         </div>
                         <div class="td">
@@ -131,19 +131,19 @@
                             <div class="edit-field form-group">
                                 <input type="text" name="city_state_country" value="<%= location.city_state_country _%>" class="form-control form-control-success form-control-danger" />
                             </div>
-                        </div>
+                        </div>                       
                         <div class="td modal-hidden">
                             <div class="display-field">
                                 <ul>
-                                    <%_ location.categories.forEach(function(category){ _%>
-                                    <li><%= category.name _%></li>
+                                    <%_ location.tags.forEach(function(tag){ _%>
+                                    <li><%= tag.name _%></li>
                                     <%_ }); _%>
                                 </ul>
                             </div>
                             <div class="edit-field form-group">
-                                <select name="categories" class="form-control form-control-success form-control-danger" multiple>
-                                    <%_ location.categories.forEach(function(category){ _%>
-                                    <option selected value="<%= category.id _%>"><%= category.name _%></option>
+                                <select name="tags" class="form-control form-control-success form-control-danger" multiple>
+                                    <%_ location.tags.forEach(function(tag){ _%>
+                                    <option selected value="<%= tag.id _%>"><%= tag.name _%></option>
                                     <%_ }); _%>
                                 </select>
                             </div>

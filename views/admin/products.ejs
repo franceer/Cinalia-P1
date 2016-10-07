@@ -1,28 +1,28 @@
-<div class="modal fade" id="parent-product-modal" tabindex="-1" role="dialog" aria-labelledby="parent-product-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Entrez un ID produit ou recherchez dans la base de données (ce champ peut rester vierge)</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group row">
-                    <label class="sr-only" for="parent-product-id">ID Produit</label>
-                    <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="parent-product-id" name="parent-product-id" placeholder="ID Produit" autocomplete="off">
+<section id="admin-section">
+    <div class="modal fade" id="parent-product-modal" tabindex="-1" role="dialog" aria-labelledby="parent-product-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Entrez un ID produit ou recherchez dans la base de données (ce champ peut rester vierge)</h4>
                 </div>
-                <div class="form-group row">
-                    <div class="col-md-6 offset-md-3">
-                        <button type="button" id="add-parent-product" class="btn btn-primary">Valider</button>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="sr-only" for="parent-product-id">ID Produit</label>
+                        <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="parent-product-id" name="parent-product-id" placeholder="ID Produit" autocomplete="off">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-3">
+                            <button type="button" id="add-parent-product" class="btn btn-primary">Valider</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<%- include('./partials/add-categories-modal') %>
-<section id="admin-section">
+    <%- include('./partials/add-tags-modal') %>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -55,13 +55,13 @@
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea class="form-control form-control-success form-control-danger" id="description" name="description"></textarea>
-                            </div>
+                            </div>                           
                             <div class="form-group">
-                                <label for="categories">Catégories</label>
-                                <button class="add-category-button" type="button" data-toggle="modal" data-target="#add-category-modal">
+                                <label for="tags">Tags</label>
+                                <button class="add-tag-button" type="button" data-toggle="modal" data-target="#add-tag-modal">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
-                                <select id="categories" class="form-control form-control-success form-control-danger" multiple name="categories"></select>
+                                <select id="tags" class="form-control form-control-success form-control-danger" multiple name="tags"></select>
                             </div>
                             <div class="form-group">
                                 <label for="picture_url">Image</label>
@@ -106,7 +106,7 @@
                         <div class="th">Marque</div>
                         <div class="th">Nom</div>
                         <div class="th modal-hidden">Description</div>
-                        <div class="th modal-hidden">Catégories</div>
+                        <div class="th modal-hidden">Tags</div>
                         <div class="th">Image</div>
                         <div class="th modal-hidden">Lien Comm.</div>
                         <div class="th modal-hidden">Prix</div>
@@ -163,19 +163,19 @@
                             <div class="edit-field form-group">
                                 <textarea name="description" class="form-control form-control-success"><%= product.description _%></textarea>
                             </div>
-                        </div>
+                        </div>                       
                         <div class="td modal-hidden">
                             <div class="display-field">
                                 <ul>
-                                    <%_ product.categories.forEach(function(category){ _%>
-                                    <li><%= category.name _%></li>
+                                    <%_ product.tags.forEach(function(tag){ _%>
+                                    <li><%= tag.name _%></li>
                                     <%_ }); _%>
                                 </ul>
                             </div>
                             <div class="edit-field form-group">
-                                <select name="categories" class="form-control form-control-success form-control-danger" multiple>
-                                    <%_ product.categories.forEach(function(category){ _%>
-                                    <option selected value="<%= category.id _%>"><%= category.name _%></option>
+                                <select name="tags" class="form-control form-control-success form-control-danger" multiple>
+                                    <%_ product.tags.forEach(function(tag){ _%>
+                                    <option selected value="<%= tag.id _%>"><%= tag.name _%></option>
                                     <%_ }); _%>
                                 </select>
                             </div>

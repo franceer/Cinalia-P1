@@ -20,7 +20,7 @@ webpackJsonp([2],{
 	            noResults: function () { return "Aucun résultat trouvé" },
 	            searching: function () { return "Recherche en cours…" }
 	        };
-	        this.setSelect2Categories($('#categories'));
+	        this.setSelect2Tags($('#tags'));
 	        this.setSelect2Characters($('#media_character_id'));
 	        this.initHandlers();
 	        this.initFormValidators();
@@ -47,18 +47,18 @@ webpackJsonp([2],{
 	            $('.table').on('click', '.edit-button', function (e) {
 	                $button = $(this);
 	                $tr = $button.closest('.tr');
-	                t.setSelect2Categories($tr.find('select[name=categories]'));
+	                t.setSelect2Tags($tr.find('select[name=tags]'));
 	                t.setSelect2Characters($tr.find('select[name=media_character_id]'));
 	                $tr.validate({
 	                    rules: {
 	                        name: 'required',
-	                        categories: 'required',
+	                        tags: 'required',
 	                        media_character_id: 'required',
 	                        time_codes: { required: true, number: true }
 	                    },
 	                    messages: {
 	                        name: 'Merci d\'indiquer le nom du look',
-	                        categories: 'Merci de choisir une catégorie',
+	                        tags: 'Merci de choisir un tag',
 	                        media_character_id: 'Merci de choisir un personnage',
 	                        time_codes: 'Merci d\'indiquer un time code'
 	                    },
@@ -96,7 +96,7 @@ webpackJsonp([2],{
 	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'looks' }, function (updated) {
 	                        $tr.replaceWith(updated);
 	                        $tr = $('.tr.newly-added').removeClass('newly-added');
-	                        setSelect2Categories($tr.find('select[name=categories]'));
+	                        setSelect2Tags($tr.find('select[name=tags]'));
 	                        setSelect2Characters($tr.find('select[name=media_character_id]'));
 	                        $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
 	                    });
@@ -125,7 +125,7 @@ webpackJsonp([2],{
 	                if (confirm('Souhaitez-vous arrêter la modification de cet élement (vos modifications seront perdues) ?')) {
 	                    $tr = $(this).closest('.tr');
 	                    $tr.html($tr.data('htmlBackup'));
-	                    $tr.find('select[name=categories]+.select2-container').remove();
+	                    $tr.find('select[name=tags]+.select2-container').remove();
 	                    $tr.find('select[name=media_character_id]+.select2-container').remove();
 	                }
 	            });
@@ -207,7 +207,7 @@ webpackJsonp([2],{
 
 	                            $('.table:not(#linked-products) > .thead-inverse').after(data);
 	                            $tr = $('.tr.newly-added').removeClass('newly-added');
-	                            setSelect2Categories($tr.find('select[name=categories]'));
+	                            setSelect2Tags($tr.find('select[name=tags]'));
 								setSelect2Characters($tr.find('select[name=media_character_id]'));
 
 	                            showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
@@ -238,15 +238,15 @@ webpackJsonp([2],{
 	                $button.hide().next().show().next().removeAttr('data-related-target').hide().next().show();
 	            });
 
-	            $('#add-category').on('click', function (e) {
-	                var $addCategoryForm = $(this).closest('form').data('validator');
-	                if ($addCategoryForm.form()) {
-	                    $.post('/admin/categories', { name: $addCategoryForm.currentElements.filter('[name=name]').val(), path: $addCategoryForm.currentElements.filter('[name=path]').val() }, function (data) {
+	            $('#add-tag').on('click', function (e) {
+	                var $addTagForm = $(this).closest('form').data('validator');
+	                if ($addTagForm.form()) {
+	                    $.post('/admin/tags', { name: $addTagForm.currentElements.filter('[name=name]').val(), path: $addTagForm.currentElements.filter('[name=path]').val() }, function (data) {
 	                        if (data.status === 'error')
 	                            showMessages($('.alert'), data.message, 'alert-danger');
 	                        else {
-	                            $addCategoryForm.currentElements.val('').parent().removeClass('has-success');
-	                            $('select[name=categories]').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
+	                            $addTagForm.currentElements.val('').parent().removeClass('has-success');
+	                            $('select[name=tags]').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
 	                        }
 	                    });
 	                }
@@ -273,15 +273,15 @@ webpackJsonp([2],{
 	            });
 	        };       
 
-	        var setSelect2Categories = function ($element) {
+	        var setSelect2Tags = function ($element) {
 	            var t = this;
 
 	            if (!$element)
-	                $element = $('select[name=categories]');
+	                $element = $('select[name=tags]');
 
-	            var selectCategories = $element.select2({
+	            var selectTags = $element.select2({
 	                width: '100%',
-	                placeholder: 'Choisissez une catégorie...',
+	                placeholder: 'Choisissez un tag...',
 	                tags: true,
 	                createTag: function (params) {
 	                    return undefined;
@@ -289,7 +289,7 @@ webpackJsonp([2],{
 	                multiple: true,
 	                language: t.select2FR,
 	                ajax: {
-	                    url: '/admin/categories',
+	                    url: '/admin/tags',
 	                    dataType: 'json',
 	                    delay: 250,
 	                    data: function (params) {
@@ -313,13 +313,13 @@ webpackJsonp([2],{
 	                minimumInputLength: 2,
 	            });
 
-	            selectCategories.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
+	            selectTags.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
 
 	            $element.on('change', function () {
 	                $element.closest('form').data('validator').element(this);
 	            });
 
-	            return selectCategories;
+	            return selectTags;
 	        };
 			
 	        var setSelect2Characters = function ($element) {
@@ -376,13 +376,13 @@ webpackJsonp([2],{
 	            $('#admin-add-look-form').validate({
 	                rules: {
 	                    name: 'required',
-	                    categories: 'required',
+	                    tags: 'required',
 	                    media_character_id: 'required',
 	                    time_codes: { required: true, number: true }
 	                },
 	                messages: {
 	                    name: 'Merci d\'indiquer le nom du look',
-	                    categories: 'Merci de choisir une catégorie',
+	                    tags: 'Merci de choisir un tag',
 	                    media_character_id: 'Merci de choisir un personnage',
 	                    time_codes: 'Merci d\'indiquer un time code'
 	                },
@@ -398,14 +398,14 @@ webpackJsonp([2],{
 	                }
 	            });
 
-	            $('#add-category-form').validate({
+	            $('#add-tag-form').validate({
 	                rules: {
 	                    name: 'required',
 	                    path: 'required'
 	                },
 	                messages: {
-	                    name: 'Merci d\'indiquer le nom de la catégorie',
-	                    categories: 'Merci d\'indiquer le path de la catégorie'
+	                    name: 'Merci d\'indiquer le nom du tag',
+	                    tags: 'Merci d\'indiquer le path du tag'
 	                },
 	                highlight: function (element) {
 	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -515,7 +515,7 @@ webpackJsonp([2],{
 	        return {
 	            inIframe: inIframe,
 	            initHandlers: initHandlers,
-	            setSelect2Categories: setSelect2Categories,
+	            setSelect2Tags: setSelect2Tags,
 	            setSelect2Characters: setSelect2Characters,
 	            initFormValidators: initFormValidators
 	        };

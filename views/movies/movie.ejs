@@ -16,11 +16,7 @@
                     <li class="info-separator">|</li>
                     <li>
                         <%= videoMedia.duration -%> min
-                    </li>
-                    <li class="info-separator">|</li>
-                    <li>
-                        <%= videoMedia.mediaGenre.name -%>
-                    </li>
+                    </li>                   
                     <li class="info-separator">|</li>
                     <li>
                         <%= videoMedia.release_country _%>
@@ -150,11 +146,7 @@
             <div class="col-md-12">
                 <h3 class="inline">Durée :</h3>
                 <span><%= videoMedia.duration %> min</span>
-            </div>
-            <div class="col-md-12">
-                <h3 class="inline">Genre :</h3>
-                <span><%= videoMedia.mediaGenre.name %></span>
-            </div>
+            </div>            
             <div class="col-md-12">
                 <h3 class="inline">Date de sortie en salles :</h3>
                 <span><%= moment(videoMedia.theater_release_date).format('DD-MMMM-YYYY') %></span>

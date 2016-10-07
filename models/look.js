@@ -5,7 +5,8 @@ let bookshelf = require('../database/database'),
 
 require('./video-media');
 require('./product');
-require('./category');
+//require('./category');
+require('./tag')
 require('./media-character');
 
 let Look = bookshelf.Model.extend({
@@ -16,8 +17,11 @@ let Look = bookshelf.Model.extend({
 		return this.belongsTo('MediaCharacter');
 	},
 
-	categories: function () {
-	    return this.belongsToMany('Category');
+	//categories: function () {
+	//    return this.belongsToMany('Category');
+    //},
+	tags: function () {
+	    return this.belongsToMany('Tag');
 	},
 
     videoMedia: function () {

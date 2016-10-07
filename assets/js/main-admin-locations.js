@@ -15,7 +15,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
             noResults: function () { return "Aucun résultat trouvé" },
             searching: function () { return "Recherche en cours…" }
         };
-        this.setSelect2Categories($('#categories'));
+        this.setSelect2Tags($('#tags'));
         this.initHandlers();
         this.initFormValidators();
 
@@ -39,16 +39,16 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
             $('.table').on('click', '.edit-button', function (e) {
                 $button = $(this);
                 $tr = $button.closest('.tr');
-                setSelect2Categories($tr.find('select[name=categories]'));
+                setSelect2Tags($tr.find('select[name=tags]'));
                 $tr.validate({
                     rules: {
                         name: 'required',
-                        categories: 'required',
+                        tags: 'required',
                         picture_url: 'required'
                     },
                     messages: {
                         name: 'Merci d\'indiquer le nom du produit',
-                        categories: 'Merci de choisir une catégorie',
+                        tags: 'Merci de choisir un tag',
                         picture_url: 'Merci de définir une image'
                     },
                     highlight: function (element) {
@@ -85,7 +85,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                     addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'lieux' }, function (updated) {
                         $tr.replaceWith(updated);
                         $tr = $('.tr.newly-added').removeClass('newly-added');
-                        setSelect2Categories($tr.find('select[name=categories]'));
+                        setSelect2Tags($tr.find('select[name=tags]'));
                         $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
                     });
                 }
@@ -113,7 +113,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 if (confirm('Souhaitez-vous arrêter la modification de cet élement (vos modifications seront perdues) ?')) {
                     $tr = $(this).closest('.tr');
                     $tr.html($tr.data('htmlBackup'));
-                    $tr.find('select[name=categories]+.select2-container').remove();
+                    $tr.find('select[name=tags]+.select2-container').remove();
                 }
             });
 
@@ -156,7 +156,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                             $form.trigger('reset').find('.form-group.has-success').removeClass('has-success');
                             $('.table .thead-inverse').after(data);                           
                             $tr = $('.tr.newly-added').removeClass('newly-added');
-                            setSelect2Categories($tr.find('select[name=categories]'));
+                            setSelect2Tags($tr.find('select[name=tags]'));
 
                             showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
                             $button.show().siblings('.fa-spinner, .sr-only').remove();
@@ -175,28 +175,28 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 }
             });
 
-            $('#add-category').on('click', function (e) {
-                var $addCategoryForm = $(this).closest('form').data('validator');
-                if ($addCategoryForm.form()) {
-                    $.post('/admin/categories', { name: $addCategoryForm.currentElements.filter('[name=name]').val(), path: $addCategoryForm.currentElements.filter('[name=path]').val() }, function (data) {
+            $('#add-tag').on('click', function (e) {
+                var $addTagForm = $(this).closest('form').data('validator');
+                if ($addTagForm.form()) {
+                    $.post('/admin/tags', { name: $addTagForm.currentElements.filter('[name=name]').val(), path: $addTagForm.currentElements.filter('[name=path]').val() }, function (data) {
                         if (data.status === 'error')
                             showMessages($('.alert'), data.message, 'alert-danger');
                         else {
-                            $addCategoryForm.currentElements.val('').parent().removeClass('has-success');
-                            $('select[name=categories]').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
+                            $addTagForm.currentElements.val('').parent().removeClass('has-success');
+                            $('select[name=tags]').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
                         }
                     });
                 }
             });
         };
         
-        var setSelect2Categories = function ($element) {
+        var setSelect2Tags = function ($element) {
             if (!$element)
-                $element = $('select[name=categories]');
+                $element = $('select[name=tags]');
 
-            var selectCategories = $element.select2({
+            var selectTags = $element.select2({
                 width: '100%',
-                placeholder: 'Choisissez une catégorie...',
+                placeholder: 'Choisissez un tag...',
                 tags: true,
                 createTag: function (params) {
                     return undefined;
@@ -204,7 +204,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 multiple: true,
                 language: this.select2FR,
                 ajax: {
-                    url: '/admin/categories',
+                    url: '/admin/tags',
                     dataType: 'json',
                     delay: 250,
                     data: function (params) {
@@ -228,13 +228,13 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 minimumInputLength: 2,
             });
 
-            selectCategories.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
+            selectTags.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
 
             $element.on('change', function () {
                 $element.closest('form').data('validator').element(this);
             });
 
-            return selectCategories;
+            return selectTags;
         };
 
         var initFormValidators = function () {
@@ -242,7 +242,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 rules: {
                     brand_id: 'required',
                     name: 'required',
-                    categories: 'required',
+                    tags: 'required',
                     picture_url: 'required',
                     commercial_url: 'required',
                     price: 'required'
@@ -250,7 +250,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 messages: {
                     brand_id: 'Merci de choisir une marque',
                     name: 'Merci d\'indiquer le nom du produit',
-                    categories: 'Merci de choisir une catégorie',
+                    tags: 'Merci de choisir un tag',
                     picture_url: 'Merci de renseigner une image',
                     commercial_url: 'Merci de renseigner une url',
                     price: 'Merci de renseigner un prix'
@@ -267,14 +267,14 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 }
             });
 
-            $('#add-category-form').validate({
+            $('#add-tag-form').validate({
                 rules: {
                     name: 'required',
                     path: 'required'
                 },
                 messages: {
-                    name: 'Merci d\'indiquer le nom de la catégorie',
-                    categories: 'Merci d\'indiquer le path de la catégorie'
+                    name: 'Merci d\'indiquer le nom du tag',
+                    tags: 'Merci d\'indiquer le path du tag'
                 },
                 highlight: function (element) {
                     getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -352,7 +352,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
         return {
             inIframe: inIframe,
             initHandlers: initHandlers,
-            setSelect2Categories: setSelect2Categories,
+            setSelect2Tags: setSelect2Tags,
             initFormValidators: initFormValidators
         };
     }();       

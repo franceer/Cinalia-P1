@@ -10,7 +10,8 @@ require('./look');
 require('./product');
 require('./products-in-video-media');
 require('./location');
-require('./category');
+//require('./category');
+require('./tag');
 
 var VideoMedia = bookshelf.Model.extend({
     tableName: 'video_medias',
@@ -41,9 +42,12 @@ var VideoMedia = bookshelf.Model.extend({
         return this.belongsToMany('Location').withPivot(['time_codes', 'appearing_context']);
     },
 
-    categories: function () {
-        return this.belongsToMany('Category');
+    tags: function () {
+        return this.belongsToMany('Tag');
     },
+    //categories: function () {
+    //    return this.belongsToMany('Category');
+    //},
 
     virtuals: {
         type: function(){

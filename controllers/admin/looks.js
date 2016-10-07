@@ -11,7 +11,7 @@ var express = require('express'),
 router.get('/', function (req, res) {
     let currentPage = req.query.p ? req.query.p : 1;
 
-    Look.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['categories', 'products', 'products.brand', 'character'] })
+    Look.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['tags', 'products', 'products.brand', 'character'] })
     .then(function (looks) {          
         looks.pagination.data = helper.getPaginationData(looks.pagination.rowCount, looks.pagination.pageSize, 10, looks.pagination.page);
         res.render('admin/looks', { looks: looks.toJSON(), pagination: looks.pagination, moment: moment });
@@ -25,9 +25,9 @@ router.get('/', function (req, res) {
             req.body[key] = req.body[key][0];
     });
 
-    var categoriesIDs = req.body.categories;
+    var tagsIDs = req.body.tags;
     var products = req.body.products;
-    delete req.body.categories;
+    delete req.body.tags;
     delete req.body.products;
     var look;
     
@@ -36,9 +36,9 @@ router.get('/', function (req, res) {
         look = updatedLook;
         var promises = [];
         
-        promises.push(look.categories().detach().then(function () {
-            if (categoriesIDs)
-                return look.categories().attach(categoriesIDs);            
+        promises.push(look.tags().detach().then(function () {
+            if (tagsIDs)
+                return look.tags().attach(tagsIDs);            
         }));
 
         promises.push(look.products().detach().then(function () {
@@ -55,7 +55,7 @@ router.get('/', function (req, res) {
         return Promise.all(promises);
     })
     .then(function () {
-        return look.load(['categories', 'products', 'products.brand', 'character']);
+        return look.load(['tags', 'products', 'products.brand', 'character']);
     })
     .then(function (updatedLook) {
         res.render('admin/partials/look-row', { layout: false, moment: moment, look: updatedLook.toJSON() });
@@ -72,9 +72,9 @@ router.get('/', function (req, res) {
             req.body[key] = req.body[key][0];
     });
 
-    var categoriesIDs = req.body.categories;
+    var tagsIDs = req.body.tags;
     var products = req.body.products;
-    delete req.body.categories;
+    delete req.body.tags;
     delete req.body.products;
     var look;
 
@@ -83,8 +83,8 @@ router.get('/', function (req, res) {
         look = addedLook;
         var promises = [];
 
-        if (categoriesIDs) 
-            promises.push(look.categories().attach(categoriesIDs));        
+        if (tagsIDs) 
+            promises.push(look.tags().attach(tagsIDs));        
 
         if (products) {
             products.forEach(function (product) {
@@ -98,7 +98,7 @@ router.get('/', function (req, res) {
         return Promise.all(promises);
     })
     .then(function () {
-        return look.load(['categories', 'products', 'products.brand', 'character']);
+        return look.load(['tags', 'products', 'products.brand', 'character']);
     })
     .then(function (createdLook) {       
         res.render('admin/partials/look-row', { layout: false, moment: moment, look: createdLook.toJSON() });

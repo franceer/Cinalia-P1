@@ -22,7 +22,7 @@ webpackJsonp([3],{
 	        this.initHandlers();
 	        this.initFormValidators();
 	        this.setSelect2Genres($('#media_genre_id'));
-	        this.setSelect2Categories($('#categories'));
+	        this.setSelect2Tags($('#tags'));
 	    }
 
 	    MovieManager.prototype = function () {
@@ -47,13 +47,13 @@ webpackJsonp([3],{
 	            });
 	        };
 
-	        var setSelect2Categories = function ($element) {
+	        var setSelect2Tags = function ($element) {
 	            if (!$element)
-	                $element = $('select[name=categories]');
+	                $element = $('select[name=tags]');
 
-	            var selectCategories = $element.select2({
+	            var selectTags = $element.select2({
 	                width: '100%',
-	                placeholder: 'Choisissez une catégorie...',
+	                placeholder: 'Choisissez un tag...',
 	                tags: true,
 	                createTag: function (params) {
 	                    return undefined;
@@ -61,7 +61,7 @@ webpackJsonp([3],{
 	                multiple: true,
 	                language: this.select2FR,
 	                ajax: {
-	                    url: '/admin/categories',
+	                    url: '/admin/tags',
 	                    dataType: 'json',
 	                    delay: 250,
 	                    data: function (params) {
@@ -85,13 +85,13 @@ webpackJsonp([3],{
 	                minimumInputLength: 2,
 	            });
 
-	            selectCategories.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
+	            selectTags.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
 
 	            $element.on('change', function () {
 	                $element.closest('form').data('validator').element(this);
 	            });
 
-	            return selectCategories;
+	            return selectTags;
 	        };
 
 	        var initFormValidators = function () {
@@ -126,14 +126,14 @@ webpackJsonp([3],{
 	                }
 	            });
 
-	            $('#add-category-form').validate({
+	            $('#add-tag-form').validate({
 	                rules: {
 	                    name: 'required',
 	                    path: 'required'
 	                },
 	                messages: {
-	                    name: 'Merci d\'indiquer le nom de la catégorie',
-	                    path: 'Merci d\'indiquer le path de la catégorie'
+	                    name: 'Merci d\'indiquer le nom du tag',
+	                    path: 'Merci d\'indiquer le path du tag'
 	                },
 	                highlight: function (element) {
 	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
@@ -153,7 +153,7 @@ webpackJsonp([3],{
 	                $button = $(this);
 	                $tr = $button.closest('.tr');
 	                setSelect2Genres($tr.find('select[name=media_genre_id]'));
-	                setSelect2Categories($tr.find('select[name=categories]'));
+	                setSelect2Tags($tr.find('select[name=tags]'));
 	                $tr.validate({
 	                    rules: {
 	                        name: 'required',
@@ -207,7 +207,7 @@ webpackJsonp([3],{
 	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'films' }, function (updated) {
 	                        $tr.replaceWith(updated);
 	                        $tr = $('tr.newly-added').removeClass('newly-added');
-	                        setSelect2Categories($tr.find('select[name=categories]'));
+	                        setSelect2Tags($tr.find('select[name=tags]'));
 	                        $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
 	                    });
 	                }
@@ -236,7 +236,7 @@ webpackJsonp([3],{
 	                    $tr = $(this).closest('.tr');                   
 	                    $tr.html($tr.data('htmlBackup'));
 	                    $tr.find('select[name=media_genre_id]+.select2-container').remove();
-	                    $tr.find('select[name=categories]+.select2-container').remove();
+	                    $tr.find('select[name=tags]+.select2-container').remove();
 	                }
 	            });
 
@@ -384,7 +384,7 @@ webpackJsonp([3],{
 	                            $('.table:not(#linked-products, .linked-products, #linked-locations, .linked-locations, #linked-looks, .linked-looks, #linked-sets, .linked-sets) > .thead-inverse').after(data);
 	                            $tr = $('.tr.newly-added').removeClass('newly-added');
 	                            setSelect2Genres($tr.find('select[name=brand_id]'));
-	                            setSelect2Categories($tr.find('select[name=categories]'));
+	                            setSelect2Tags($tr.find('select[name=tags]'));
 
 	                            showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
 	                            $button.show().siblings('.fa-spinner, .sr-only').remove();
@@ -423,15 +423,15 @@ webpackJsonp([3],{
 	                $button.hide().next().show().next().removeAttr('data-related-target').hide().next().show();
 	            });
 
-	            $('#add-category').on('click', function (e) {
-	                var $addCategoryForm = $(this).closest('form').data('validator');
-	                if ($addCategoryForm.form()) {
-	                    $.post('/admin/categories', { name: $addCategoryForm.currentElements.filter('[name=name]').val(), path: $addCategoryForm.currentElements.filter('[name=path]').val() }, function (data) {
+	            $('#add-tag').on('click', function (e) {
+	                var $addTagForm = $(this).closest('form').data('validator');
+	                if ($addTagForm.form()) {
+	                    $.post('/admin/tags', { name: $addTagForm.currentElements.filter('[name=name]').val(), path: $addTagForm.currentElements.filter('[name=path]').val() }, function (data) {
 	                        if (data.status === 'error')
 	                            showMessages($('.alert'), data.message, 'alert-danger');
 	                        else {
-	                            $addCategoryForm.currentElements.val('').parent().removeClass('has-success');
-	                            $('#categories').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
+	                            $addTagForm.currentElements.val('').parent().removeClass('has-success');
+	                            $('#tags').append('<option value="' + data.object.id + '" selected>' + data.object.name + ' (' + data.object.path + ')' + '</option>').trigger('change');
 	                        }
 	                    });
 	                }
@@ -511,7 +511,7 @@ webpackJsonp([3],{
 
 	        return {
 	            setSelect2Genres: setSelect2Genres,
-	            setSelect2Categories: setSelect2Categories,
+	            setSelect2Tags: setSelect2Tags,
 	            initFormValidators: initFormValidators,
 	            initHandlers: initHandlers
 	        };

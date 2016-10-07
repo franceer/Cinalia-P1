@@ -1,0 +1,29 @@
+<div class="modal fade" id="add-tag-modal" tabindex="-1" role="dialog" aria-labelledby="add-tag-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Entrez un nom et un path pour le tag</h4>
+            </div>
+            <div class="modal-body">
+                <form id="add-tag-form" class="form" role="form" novalidate accept-charset="UTF-8">
+                    <div class="form-group row">
+                        <label class="sr-only" for="tag_name">Nom du tag</label>
+                        <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="tag_name" name="name" placeholder="Nom du tag" autocomplete="off">
+                    </div>
+                    <div class="form-group row">
+                        <label class="sr-only" for="tag_path">Path du tag</label>
+                        <input type="text" class="form-control form-control-success form-control-danger col-md-6 offset-md-3" id="tag_path" name="path" placeholder="Path du tag" autocomplete="off">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-3">
+                            <button type="button" id="add-tag" class="btn btn-primary">Ajouter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

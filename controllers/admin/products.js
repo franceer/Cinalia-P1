@@ -12,7 +12,7 @@ var express = require('express'),
 router.get('/', function (req, res) {
     let currentPage = req.query.p ? req.query.p : 1;
 
-    Promise.all([Brand.fetchAll(), Product.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'] })])
+    Promise.all([Brand.fetchAll(), Product.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'tags'] })])
     .then(function (results) {
         var brands = results[0];
         var products = results[1];       
@@ -28,8 +28,8 @@ router.get('/', function (req, res) {
             req.body[key] = req.body[key][0];
     });
 
-    var categoriesIDs = req.body.categories;
-    delete req.body.categories;
+    var tagsIDs = req.body.tags;
+    delete req.body.tags;
     var product;
 
     Product.findOne({ id: req.params.id }, { require: false }).then(function (oldProduct) {
@@ -70,16 +70,16 @@ router.get('/', function (req, res) {
         product = updatedProduct;
         var returned = null;
 
-        if (categoriesIDs) {
-            returned = product.categories().detach().then(function () {
-                return product.categories().attach(categoriesIDs);
+        if (tagsIDs) {
+            returned = product.tags().detach().then(function () {
+                return product.tags().attach(tagsIDs);
             });
         }
 
         return returned;
     })
     .then(function () {
-        return Promise.all([Brand.fetchAll(), product.load(['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'])]);
+        return Promise.all([Brand.fetchAll(), product.load(['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'tags'])]);
     })
     .then(function (results) {
         var brands = results[0];
@@ -98,8 +98,8 @@ router.get('/', function (req, res) {
             req.body[key] = req.body[key][0];
     });
 
-    var categoriesIDs = req.body.categories;
-    delete req.body.categories;
+    var tagsIDs = req.body.tags;
+    delete req.body.tags;
     var product;
 
     Brand.findOne({ name: req.body.brand_name }, {require: false})
@@ -137,13 +137,13 @@ router.get('/', function (req, res) {
         product = addedProduct;
         var returned = null;
 
-        if (categoriesIDs)
-            returned = product.categories().attach(categoriesIDs);
+        if (tagsIDs)
+            returned = product.tags().attach(tagsIDs);
 
         return returned;       
     })
     .then(function () {
-        return Promise.all([Brand.fetchAll(), product.load(['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'categories'])]);
+        return Promise.all([Brand.fetchAll(), product.load(['brand', 'parentProduct', 'parentProduct.brand', 'similarProducts', 'similarProducts.brand', 'tags'])]);
     })
     .then(function (results) {
         var brands = results[0];

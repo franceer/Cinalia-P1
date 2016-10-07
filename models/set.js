@@ -5,7 +5,8 @@ let bookshelf = require('../database/database'),
 
 require('./video-media');
 require('./product');
-require('./category');
+require('./tag');
+//require('./category');
 
 let Set = bookshelf.Model.extend({
     tableName: 'sets',
@@ -19,9 +20,12 @@ let Set = bookshelf.Model.extend({
         return this.belongsToMany('Product').withPivot(['appearing_context', 'matching_status_id', 'x_offset', 'y_offset']);
     },
 
-    categories: function () {
-        return this.belongsToMany('Category');
+    tags: function () {
+        return this.belongsToMany('Tag');
     },
+    //categories: function () {
+    //    return this.belongsToMany('Category');
+    //},
 
     virtuals: {
         type: function () {

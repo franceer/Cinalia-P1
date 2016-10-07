@@ -46,9 +46,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <span><i class="fa fa-tag" aria-hidden="true"></i></span>
-                        <ul id="category-tags">
+                        <!--<ul id="category-tags">
                             <%_product.categories.forEach(function(category){ _%>
                             <li class="tag tag-default"><%= category.name _%></li>
+                            <%_ });_%>
+                        </ul>-->
+                        <ul id="category-tags">
+                            <%_product.tags.forEach(function(tag){ _%>
+                            <li class="tag tag-default"><%= tag.name _%></li>
                             <%_ });_%>
                         </ul>
                     </div>

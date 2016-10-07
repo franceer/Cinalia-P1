@@ -43,17 +43,20 @@ var schema = {
         nickname: { type: 'string', maxlength: 64, nullable: true },
         character_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'character_types', defaultTo: 1 }
     },
-    media_genres: {
-        id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
-        name: { type: 'string', maxlength: 64, nullable: false, unique: true }
-    },
-    categories: {
+    //media_genres: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    name: { type: 'string', maxlength: 64, nullable: false, unique: true }
+    //},
+    tags: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         name: { type: 'string', maxlength: 64, nullable: false },
-        path: {type: 'specific', specificType: 'ltree', nullable: false, unique: true}
-        //sequence: { type: 'integer', nullable: false },
-        //parent_id: { type: 'integer', nullable: false, unsigned: true }
+        path: { type: 'specific', specificType: 'ltree', nullable: false, unique: true }
     },
+    //categories: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    name: { type: 'string', maxlength: 64, nullable: false },
+    //    path: {type: 'specific', specificType: 'ltree', nullable: false, unique: true}        
+    //},
     //product_types: {
     //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
     //    name: { type: 'string', maxlength: 64, nullable: false, unique: true }
@@ -82,7 +85,7 @@ var schema = {
         video_caption: { type: 'string', maxlength: 64, nullable: true },
         synopsis: { type: 'text', nullable: true },
         tv_broadcaster: { type: 'string', maxlength: 64, nullable: true },
-        media_genre_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_genres' },
+        //media_genre_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_genres' },
         is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
@@ -162,21 +165,36 @@ var schema = {
         location_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'locations', onDelete: 'CASCADE' },
         video_media_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'CASCADE' }
     },
-    categories_products: {
+    products_tags: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products', onDelete: 'CASCADE' },
-        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+        tag_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'tags', onDelete: 'CASCADE' }
     },
-    categories_video_medias: {
+    tags_video_medias: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         video_media_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'CASCADE' },
-        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+        tag_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'tags', onDelete: 'CASCADE' }
     },
-    categories_locations: {
+    locations_tags: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         location_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'locations', onDelete: 'CASCADE' },
-        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+        tag_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'tags', onDelete: 'CASCADE' }
     },
+    //categories_products: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products', onDelete: 'CASCADE' },
+    //    category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+    //},
+    //categories_video_medias: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    video_media_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'CASCADE' },
+    //    category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+    //},
+    //categories_locations: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    location_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'locations', onDelete: 'CASCADE' },
+    //    category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+    //},
     looks: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         name: { type: 'string', maxlength: 64, nullable: false },
@@ -197,11 +215,16 @@ var schema = {
         look_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'looks', onDelete: 'CASCADE' },
         product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products', onDelete: 'CASCADE' }
     },
-    categories_looks: {
+    looks_tags: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         look_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'looks', onDelete: 'CASCADE' },
-        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+        tag_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'tags', onDelete: 'CASCADE' }
     },
+    //categories_looks: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    look_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'looks', onDelete: 'CASCADE' },
+    //    category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+    //},
     sets: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         name: { type: 'string', maxlength: 64, nullable: false },
@@ -225,10 +248,15 @@ var schema = {
         product_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'products', onDelete: 'CASCADE' },
         set_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'sets', onDelete: 'CASCADE' }
     },
-    categories_sets: {
+    sets_tags: {
         id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
         set_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'sets', onDelete: 'CASCADE' },
-        category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+        tag_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'tags', onDelete: 'CASCADE' }
     }
+    //categories_sets: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    set_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'sets', onDelete: 'CASCADE' },
+    //    category_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'categories', onDelete: 'CASCADE' }
+    //}
 };
 module.exports = schema;

@@ -55,7 +55,8 @@ router.get('/:id*', function (req, res, next) {
             }
         }
 
-        VideoMedia.findById(req.params.id, { withRelated: ['mediaGenre', 'sets', 'sets.products', 'sets.categories', 'looks', 'looks.products', 'looks.categories', 'looks.character', 'looks.character.type', 'products', 'products.brand', 'products.categories', 'locations', 'locations.categories'], require: true })
+        //VideoMedia.findById(req.params.id, { withRelated: ['mediaGenre', 'sets', 'sets.products', 'sets.categories', 'looks', 'looks.products', 'looks.categories', 'looks.character', 'looks.character.type', 'products', 'products.brand', 'products.categories', 'locations', 'locations.categories'], require: true })
+        VideoMedia.findById(req.params.id, { withRelated: [/*'mediaGenre',*/ 'sets', 'sets.products', 'sets.tags', 'looks', 'looks.products', 'looks.tags', 'looks.character', 'looks.character.type', 'products', 'products.brand', 'products.tags', 'locations', 'locations.tags'], require: true })
         .then(function (videoMedia) {
             moment.locale('fr');
             res.locals.moment = moment;
@@ -114,25 +115,51 @@ router.get('/:id*', function (req, res, next) {
 function dispatchAssets(timelines, assets) {
     assets.forEach(function (asset) {
 
-        var categoryPaths = '';
-        asset.categories.forEach(function (category) {
-            categoryPaths += category.path.toLowerCase() + ' ';
+        //var categoryPaths = '';
+        //asset.categories.forEach(function (category) {
+        //    categoryPaths += category.path.toLowerCase() + ' ';
+        //});
+
+        //if (categoryPaths.includes('mode') || categoryPaths.includes('look')) {
+        //    var positions = asset.time_codes || asset._pivot_time_codes;
+
+        //    positions.forEach(function (position) {
+        //        timelines.fashion.assets[position] === undefined ? timelines.fashion.assets[position] = [asset] : timelines.fashion.assets[position].push(asset);
+        //    });
+        //} else if (categoryPaths.includes('décoration') || categoryPaths.includes('transport') || categoryPaths.includes('décor')) {
+
+        //    var positions = asset.time_codes || asset._pivot_time_codes;
+
+        //    positions.forEach(function (position) {
+        //        timelines.objects.assets[position] === undefined ? timelines.objects.assets[position] = [asset] : timelines.objects.assets[position].push(asset);
+        //    });
+        //} else if (categoryPaths.includes('lieux')) {
+
+        //    var positions = asset.time_codes || asset._pivot_time_codes;
+
+        //    positions.forEach(function (position) {
+        //        timelines.locations.assets[position] === undefined ? timelines.locations.assets[position] = [asset] : timelines.locations.assets[position].push(asset);
+        //    });
+        //}
+        var tagPaths = '';
+        asset.tags.forEach(function (tag) {
+            tagPaths += tag.path.toLowerCase() + ' ';
         });
 
-        if (categoryPaths.includes('mode') || categoryPaths.includes('look')) {
+        if (tagPaths.includes('mode') || tagPaths.includes('look')) {
             var positions = asset.time_codes || asset._pivot_time_codes;
 
             positions.forEach(function (position) {
                 timelines.fashion.assets[position] === undefined ? timelines.fashion.assets[position] = [asset] : timelines.fashion.assets[position].push(asset);
             });
-        } else if (categoryPaths.includes('décoration') || categoryPaths.includes('transport') || categoryPaths.includes('décor')) {
+        } else if (tagPaths.includes('décoration') || tagPaths.includes('transport') || tagPaths.includes('décor')) {
 
             var positions = asset.time_codes || asset._pivot_time_codes;
 
             positions.forEach(function (position) {
                 timelines.objects.assets[position] === undefined ? timelines.objects.assets[position] = [asset] : timelines.objects.assets[position].push(asset);
             });
-        } else if (categoryPaths.includes('lieux')) {
+        } else if (tagPaths.includes('lieux')) {
 
             var positions = asset.time_codes || asset._pivot_time_codes;
 
@@ -140,6 +167,7 @@ function dispatchAssets(timelines, assets) {
                 timelines.locations.assets[position] === undefined ? timelines.locations.assets[position] = [asset] : timelines.locations.assets[position].push(asset);
             });
         }
+
     });
 }
 

@@ -1,7 +1,7 @@
 var express = require('express'),
     router = express.Router(),
     VideoMedia = require('../../models/video-media'),
-    MediaGenre = require('../../models/media-genre'),
+    //MediaGenre = require('../../models/media-genre'),
     Looks = require('../../collections/looks'),
     Look = require('../../models/look'),
     Sets = require('../../collections/sets'),
@@ -14,48 +14,51 @@ var express = require('express'),
     moment = require('moment');
 
 router.get('/', function (req, res) {
-    Promise.all([MediaGenre.fetchAll(),VideoMedia.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 50, page: 1, withRelated: ['mediaGenre', 'categories', 'products', 'products.brand', 'locations', 'looks', 'sets'] })])
+    //Promise.all([MediaGenre.fetchAll(),VideoMedia.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 50, page: 1, withRelated: ['mediaGenre', 'tags', 'products', 'products.brand', 'locations', 'looks', 'sets'] })])
+    VideoMedia.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 50, page: 1, withRelated: [/*'mediaGenre',*/ 'tags', 'products', 'products.brand', 'locations', 'looks', 'sets'] })
     .then(function (results) {
-        var genres = results[0];
-        var videoMedias = results[1];
-        res.render('admin/movies', {genres: genres.toJSON(), videoMedias: videoMedias.toJSON(), moment: moment });
+        //var genres = results[0];
+        //var videoMedias = results[1];
+        var videoMedias = results;
+        res.render('admin/movies', {/*genres: genres.toJSON(), */videoMedias: videoMedias.toJSON(), moment: moment });
     });    
 })
 .put('/:id', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
             req.body[key] = null;
-        else if (key === 'media_genre_id')
-            req.body[key] = req.body[key][0];       
+        //else if (key === 'media_genre_id')
+        //    req.body[key] = req.body[key][0];       
     });
 
-    var categoriesIDs = req.body.categories;
+    var tagsIDs = req.body.tags;
     var products = req.body.products;
     var locations = req.body.locations;
     var looks = req.body.looks;
     var sets = req.body.sets;
-    delete req.body.categories;
+    delete req.body.tags;
     delete req.body.products;
     delete req.body.locations;
     delete req.body.looks;
     delete req.body.sets;
     var videoMedia;
 
-    MediaGenre.findOne({ name: req.body.media_genre_name }, { require: false })
-    .then(function (genre) {
-        var returned = null;
+    //MediaGenre.findOne({ name: req.body.media_genre_name }, { require: false })
+    //.then(function (genre) {
+    //    var returned = null;
 
-        if (!genre)
-            returned = MediaGenre.create({ name: req.body.media_genre_name });
+    //    if (!genre)
+    //        returned = MediaGenre.create({ name: req.body.media_genre_name });
 
-        return returned;
-    })
-    .then(function (genre) {
-        if (genre)
-            req.body.media_genre_id = genre.get('id');
+    //    return returned;
+    //})
+    //.then(function (genre) {
+    //    if (genre)
+    //        req.body.media_genre_id = genre.get('id');
 
-        return VideoMedia.findOne({ id: req.params.id }, { require: false });
-    })    
+    //    return VideoMedia.findOne({ id: req.params.id }, { require: false });
+    //})    
+    VideoMedia.findOne({ id: req.params.id }, { require: false })
     .then(function (oldVideoMedia) {
         if (oldVideoMedia.get('poster_url') !== req.body.poster_url) {
             var index1 = oldVideoMedia.get('poster_url').indexOf(process.env.NODE_ENV);
@@ -64,7 +67,7 @@ router.get('/', function (req, res) {
             return helper.deleteS3Objects(oldVideoMedia.get('poster_url').substring(index1, index2))            
             .catch(function (err) {/*Do nothing in case the images doesn't exist anymore*/ })
             .then(function () {
-                return helper.uploadImagesToS3(req, 'poster_url', ['name'], 'media');
+                return helper.uploadImagesToS3(req, 'poster_url', ['name'], 'medias');
             });
         } else {
             return null;
@@ -83,21 +86,21 @@ router.get('/', function (req, res) {
         }
 
         if (!req.body.poster_alt || req.body.poster_alt.length === 0)
-            req.body.poster_alt = req.body.media_genre_name + ' ' + req.body.name;
+            req.body.poster_alt = /*req.body.media_genre_name + ' ' + */req.body.name;
 
         if (!req.body.poster_title || req.body.poster_title.length === 0)
             req.body.poster_title = req.body.poster_alt;
 
-        delete req.body.media_genre_name;
+        //delete req.body.media_genre_name;
         return VideoMedia.update(req.body, { id: req.params.id });
     })
     .then(function (updatedVideoMedia) {
         videoMedia = updatedVideoMedia;
         var promises = [];
 
-        promises.push(videoMedia.categories().detach().then(function () {
-            if (categoriesIDs)
-                return videoMedia.categories().attach(categoriesIDs);
+        promises.push(videoMedia.tags().detach().then(function () {
+            if (tagsIDs)
+                return videoMedia.tags().attach(tagsIDs);
         }));
 
         promises.push(videoMedia.products().detach().then(function () {
@@ -177,12 +180,14 @@ router.get('/', function (req, res) {
         return promises.length > 0 ? Promise.all(promises) : null;
     })
     .then(function () {
-        return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand', 'locations', 'looks', 'sets'])]);
+        //return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'tags', 'products', 'products.brand', 'locations', 'looks', 'sets'])]);
+        return videoMedia.load(['tags', 'products', 'products.brand', 'locations', 'looks', 'sets']);
     })
     .then(function (results) {
-        var genres = results[0];
-        var updatedVideoMedia = results[1];
-        res.render('admin/partials/video-media-row', { layout: false, moment: moment, genres: genres.toJSON(), videoMedia: updatedVideoMedia.toJSON() });
+        //var genres = results[0];
+        //var updatedVideoMedia = results[1];
+        var updatedVideoMedia = results;
+        res.render('admin/partials/video-media-row', { layout: false, moment: moment, /*genres: genres.toJSON(),*/ videoMedia: updatedVideoMedia.toJSON() });
     })
     .catch(function (err) {
         res.send(err.message);
@@ -192,37 +197,38 @@ router.get('/', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
             req.body[key] = null;
-        else if (key === 'media_genre_id')
-            req.body[key] = req.body[key][0];
+        //else if (key === 'media_genre_id')
+        //    req.body[key] = req.body[key][0];
     });
 
-    var categoriesIDs = req.body.categories;
+    var tagsIDs = req.body.tags;
     var products = req.body.products;
     var locations = req.body.locations;
     var looks = req.body.looks;
     var sets = req.body.sets;
-    delete req.body.categories;
+    delete req.body.tags;
     delete req.body.products;
     delete req.body.locations;
     delete req.body.looks;
     delete req.body.sets;
     var videoMedia;
 
-    MediaGenre.findOne({ name: req.body.media_genre_name }, { require: false })
-    .then(function (genre) {
-        var returned = null;
+    //MediaGenre.findOne({ name: req.body.media_genre_name }, { require: false })
+    //.then(function (genre) {
+    //    var returned = null;
 
-        if (!genre)
-            returned = MediaGenre.create({ name: req.body.media_genre_name });
+    //    if (!genre)
+    //        returned = MediaGenre.create({ name: req.body.media_genre_name });
 
-        return returned;
-    })
-    .then(function (genre) {
-        if (genre)
-            req.body.media_genre_id = genre.get('id');
+    //    return returned;
+    //})
+    //.then(function (genre) {
+    //    if (genre)
+    //        req.body.media_genre_id = genre.get('id');
 
-        return helper.uploadImagesToS3(req, 'poster_url', ['name'], 'media');
-    })
+    //    return helper.uploadImagesToS3(req, 'poster_url', ['name'], 'media');
+    //})
+    helper.uploadImagesToS3(req, 'poster_url', ['name'], 'medias')
     .then(function (files) {
         var originalURL;
 
@@ -234,20 +240,20 @@ router.get('/', function (req, res) {
         req.body.poster_url = originalURL;
 
         if (!req.body.poster_alt || req.body.poster_alt.length === 0)
-            req.body.poster_alt = req.body.media_genre_name + ' ' + req.body.name;
+            req.body.poster_alt = /*req.body.media_genre_name + ' ' + */req.body.name;
 
         if (!req.body.poster_title || req.body.poster_title.length === 0)
             req.body.poster_title = req.body.poster_alt;
 
-        delete req.body.media_genre_name;
+        //delete req.body.media_genre_name;
         return VideoMedia.create(req.body);
     })
     .then(function (videoMediaTemp) {
         videoMedia = videoMediaTemp;
         var promises = [];
 
-        if (categoriesIDs)
-            promises.push(videoMedia.categories().attach(categoriesIDs));
+        if (tagsIDs)
+            promises.push(videoMedia.tags().attach(tagsIDs));
 
         if (products) {
             products.forEach(function (product) {
@@ -286,12 +292,14 @@ router.get('/', function (req, res) {
         return Promise.all(promises);
     })
     .then(function () {
-        return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'categories', 'products', 'products.brand', 'locations', 'looks', 'sets'])]);
+        //return Promise.all([MediaGenre.fetchAll(), videoMedia.load(['mediaGenre', 'tags', 'products', 'products.brand', 'locations', 'looks', 'sets'])]);
+        return videoMedia.load(['tags', 'products', 'products.brand', 'locations', 'looks', 'sets']);
     })
     .then(function (results) {
-        var genres = results[0];
-        var videoMedia = results[1];
-        res.render('admin/partials/video-media-row', { layout: false, moment: moment, genres: genres.toJSON(), videoMedia: videoMedia.toJSON() });
+        //var genres = results[0];
+        //var videoMedia = results[1];
+        var videoMedia = results;
+        res.render('admin/partials/video-media-row', { layout: false, moment: moment, /*genres: genres.toJSON(),*/ videoMedia: videoMedia.toJSON() });
     })    
     .catch(function (err) {
         res.json({ status: 'error', message: err.message });

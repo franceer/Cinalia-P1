@@ -11,7 +11,7 @@ var express = require('express'),
 router.get('/', function (req, res) {
     let currentPage = req.query.p ? req.query.p : 1;
 
-    Set.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['categories', 'products', 'products.brand'] })
+    Set.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: [/*'categories'*/'tags', 'products', 'products.brand'] })
     .then(function (sets) {          
         sets.pagination.data = helper.getPaginationData(sets.pagination.rowCount, sets.pagination.pageSize, 10, sets.pagination.page);
         res.render('admin/sets', { sets: sets.toJSON(), pagination: sets.pagination, moment: moment });
@@ -25,9 +25,12 @@ router.get('/', function (req, res) {
             req.body[key] = req.body[key][0];
     });
 
-    var categoriesIDs = req.body.categories;
+    //var categoriesIDs = req.body.categories;
+    //var products = req.body.products;
+    //delete req.body.categories;
+    var tagsIDs = req.body.tags;
     var products = req.body.products;
-    delete req.body.categories;
+    delete req.body.tags;
     delete req.body.products;
     var set;
 
@@ -68,9 +71,13 @@ router.get('/', function (req, res) {
         set = updatedSet;
         var promises = [];
         
-        promises.push(set.categories().detach().then(function () {
-            if (categoriesIDs)
-                return set.categories().attach(categoriesIDs);            
+        //promises.push(set.categories().detach().then(function () {
+        //    if (categoriesIDs)
+        //        return set.categories().attach(categoriesIDs);            
+        //}));
+        promises.push(set.tags().detach().then(function () {
+            if (tagsIDs)
+                return set.tags().attach(tagsIDs);
         }));
 
         promises.push(set.products().detach().then(function () {
@@ -87,7 +94,7 @@ router.get('/', function (req, res) {
         return Promise.all(promises);
     })
     .then(function () {
-        return set.load(['categories', 'products', 'products.brand']);
+        return set.load([/*'categories'*/'tags', 'products', 'products.brand']);
     })
     .then(function (updatedSet) {
         res.render('admin/partials/set-row', { layout: false, moment: moment, set: updatedSet.toJSON() });
@@ -104,9 +111,12 @@ router.get('/', function (req, res) {
             req.body[key] = req.body[key][0];
     });
 
-    var categoriesIDs = req.body.categories;
+    //var categoriesIDs = req.body.categories;
+    //var products = req.body.products;
+    //delete req.body.categories;
+    var tagsIDs = req.body.tags;
     var products = req.body.products;
-    delete req.body.categories;
+    delete req.body.tags;
     delete req.body.products;
     var set;
 
@@ -133,8 +143,11 @@ router.get('/', function (req, res) {
         set = addedSet;
         var promises = [];
 
-        if (categoriesIDs) {
-            promises.push(set.categories().attach(categoriesIDs));
+        //if (categoriesIDs) {
+        //    promises.push(set.categories().attach(categoriesIDs));
+        //}
+        if (tagsIDs) {
+            promises.push(set.tags().attach(tagsIDs));
         }
 
         if (products) {
@@ -149,7 +162,7 @@ router.get('/', function (req, res) {
         return Promise.all(promises);
     })
     .then(function () {
-        return set.load(['categories', 'products', 'products.brand']);
+        return set.load([/*'categories'*/'tags', 'products', 'products.brand']);
     })
     .then(function (createdSet) {       
         res.render('admin/partials/set-row', { layout: false, moment: moment, set: createdSet.toJSON() });

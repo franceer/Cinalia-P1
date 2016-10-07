@@ -5,7 +5,8 @@ let bookshelf = require('../database/database'),
 
 require('./brand');
 require('./product-type');
-require('./category');
+require('./tag');
+//require('./category');
 require('./video-media');
 require('./products-in-video-media');
 require('./set');
@@ -19,9 +20,12 @@ let Product = bookshelf.Model.extend({
         return this.belongsTo('Brand');
     },
 
-    categories : function(){
-        return this.belongsToMany('Category');
+    tags: function () {
+        return this.belongsToMany('Tag');
     },
+    //categories : function(){
+    //    return this.belongsToMany('Category');
+    //},
 
     matchingStatuses: function () {
         return this.belongsToMany('MatchingStatus');
@@ -69,10 +73,15 @@ let Product = bookshelf.Model.extend({
                 qb.joinRaw('LEFT JOIN user_bookmarks b1 ON b1.bookmark_id = products.id AND b1.user_id = ' + user.id + ' AND b1.bookmark_type = \'product\'');
             }
 
+            //if (filter) {
+            //    qb.join('categories_products as cp', 'cp.product_id', '=', 'products.id');
+            //    qb.join('categories as c', 'cp.category_id', '=', 'c.id');
+            //    qb.where('c.path', '~', '*.' + filter + '.*');
+            //}
             if (filter) {
-                qb.join('categories_products as cp', 'cp.product_id', '=', 'products.id');
-                qb.join('categories as c', 'cp.category_id', '=', 'c.id');
-                qb.where('c.path', '~', '*.' + filter + '.*');
+                qb.join('tags_products as tp', 'tp.product_id', '=', 'products.id');
+                qb.join('tags as t', 'tp.tag_id', '=', 't.id');
+                qb.where('t.path', '~', '*.' + filter + '.*');
             }
 
             qb.join('brands as b', 'b.id', '=', 'products.brand_id');
@@ -86,10 +95,15 @@ let Product = bookshelf.Model.extend({
                     this.joinRaw('LEFT JOIN user_bookmarks b2 ON b2.bookmark_id = products.id AND b2.user_id = ' + user.id + ' AND b2.bookmark_type = \'product\'');
                 }
 
+                //if (filter) {
+                //    this.join('categories_products as cp1', 'cp1.product_id', '=', 'products.id');
+                //    this.join('categories as c1', 'cp1.category_id', '=', 'c1.id');
+                //    this.where('c1.path', '~', '*.' + filter + '.*');
+                //}
                 if (filter) {
-                    this.join('categories_products as cp1', 'cp1.product_id', '=', 'products.id');
-                    this.join('categories as c1', 'cp1.category_id', '=', 'c1.id');
-                    this.where('c1.path', '~', '*.' + filter + '.*');
+                    this.join('tags_products as tp1', 'tp1.product_id', '=', 'products.id');
+                    this.join('tags as t1', 'tp1.tag_id', '=', 't1.id');
+                    this.where('t1.path', '~', '*.' + filter + '.*');
                 }
 
                 this.join('brands as b', 'b.id', '=', 'products.brand_id');
@@ -105,10 +119,15 @@ let Product = bookshelf.Model.extend({
                     this.joinRaw('LEFT JOIN user_bookmarks b2 ON b2.bookmark_id = products.id AND b2.user_id = ' + user.id + ' AND b2.bookmark_type = \'product\'');
                 }
 
+                //if (filter) {
+                //    this.join('categories_products as cp1', 'cp1.product_id', '=', 'products.id');
+                //    this.join('categories as c1', 'cp1.category_id', '=', 'c1.id');
+                //    this.where('c1.path', '~', '*.' + filter + '.*');
+                //}
                 if (filter) {
-                    this.join('categories_products as cp1', 'cp1.product_id', '=', 'products.id');
-                    this.join('categories as c1', 'cp1.category_id', '=', 'c1.id');
-                    this.where('c1.path', '~', '*.' + filter + '.*');
+                    this.join('tags_products as tp1', 'tp1.product_id', '=', 'products.id');
+                    this.join('tags as t1', 'tp1.tag_id', '=', 't1.id');
+                    this.where('t1.path', '~', '*.' + filter + '.*');
                 }
 
                 this.join('brands as b', 'b.id', '=', 'products.brand_id');
