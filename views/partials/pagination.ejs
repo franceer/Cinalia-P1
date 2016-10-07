@@ -8,13 +8,13 @@
             </li>
             <%_  }else{ _%>
             <li>
-                <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= pagination.data.prev _%>'">&laquo; Prev</a>
+                <a href="?<%= typeof tagID !== 'undefined' ? 'tag=' + tagID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= pagination.data.prev _%>'">&laquo; Prev</a>
             </li>
             <%_ }
             pagination.data.items.forEach(function(page, index){
             if (page == '...'){ _%>
             <li class="disabled">
-                <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= index + 1 _%>">...</a>
+                <a href="?<%= typeof tagID !== 'undefined' ? 'tag=' + tagID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= index + 1 _%>">...</a>
             </li>
             <%_ } else {
             if (page == parseInt(pagination.data.currentPage)){ _%>
@@ -23,7 +23,7 @@
             </li>
             <%_ } else { _%>
             <li>
-                <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= page _%>"><%= page _%></a>
+                <a href="?<%= typeof tagID !== 'undefined' ? 'tag=' + tagID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= page _%>"><%= page _%></a>
             </li>
             <%_ }}});
             if (pagination.data.isLastPage){ _%>
@@ -32,7 +32,7 @@
             </li>
             <%_ } else{ _%>
             <li>
-                <a href="?<%= typeof catID !== 'undefined' ? 'cat=' + catID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= pagination.data.next _%>">Next &raquo;</a>
+                <a href="?<%= typeof tagID !== 'undefined' ? 'tag=' + tagID + '&' : '' _%><%= typeof keywords !== 'undefined' ? 'q=' + keywords + '&' : '' _%>p=<%= pagination.data.next _%>">Next &raquo;</a>
             </li>
             <%_ } _%>
         </ul>
