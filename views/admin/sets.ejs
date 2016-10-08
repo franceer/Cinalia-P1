@@ -50,11 +50,7 @@
                         <legend>
                             <button id="add-set-legend" data-toggle="collapse" data-target="#form-toggle">Ajouter un décor</button>
                         </legend>
-                        <div id="form-toggle" class="collapse">
-                            <div class="form-group">
-                                <label for="is_published">Publié</label>
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" />
-                            </div>
+                        <div id="form-toggle" class="collapse">                          
                             <div class="form-group">
                                 <label for="name">Nom</label>
                                 <input class="form-control form-control-success form-control-danger" type="text" id="name" name="name" />
@@ -127,13 +123,12 @@
                         <div class="th"></div>
                         <div class="th modal-hidden">Actions</div>
                         <div class="th">#</div>
-                        <div class="th">Publ.</div>
                         <div class="th">Nom</div>
                         <div class="th modal-hidden">Description</div>
                         <div class="th modal-hidden">Tags</div>
                         <div class="th">Image</div>
                         <div class="th">Loc.</div>
-                        <div class="th modal-hidden">Time Code</div>
+                        <div class="th">Time Code</div>
                         <div class="th">Produits</div>
                         <div class="th">Créé</div>
                         <div class="th">MAJ</div>
@@ -155,12 +150,6 @@
                         <div class="td">
                             <div>
                                 <%= set.id _%><input name="id" type="hidden" value="<%= set.id _%>" />
-                            </div>
-                        </div>                        
-                        <div class="td">
-                            <div class="display-field"><%= set.is_published _%></div>
-                            <div class="edit-field form-group">
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= set.is_published ? 'checked' : '' %> />
                             </div>
                         </div>
                         <div class="td">
@@ -205,7 +194,7 @@
                                 <input type="text" name="place" value="<%= set.place _%>" class="form-control form-control-success form-control-danger" />
                             </div>
                         </div>
-                        <div class="td modal-hidden">
+                        <div class="td">
                             <div class="display-field"><%= set.time_codes _%></div>
                             <div class="edit-field form-group">
                                 <input type="text" name="time_codes" value="<%= set.time_codes _%>" class="form-control form-control-success form-control-danger" />

@@ -7,14 +7,15 @@ require('./video-media');
 require('./product');
 //require('./category');
 require('./tag')
-require('./media-character');
+require('./character-type');
+//require('./media-character');
 
 let Look = bookshelf.Model.extend({
     tableName: 'looks',
     hasTimestamps: true,
 	
-	character: function(){
-		return this.belongsTo('MediaCharacter');
+	characterType: function(){
+		return this.belongsTo('CharacterType');
 	},
 
 	//categories: function () {

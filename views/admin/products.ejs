@@ -33,11 +33,7 @@
                         <legend>
                             <button id="add-product-legend" data-toggle="collapse" data-target="#form-toggle">Ajouter un produit</button>
                         </legend>
-                        <div id="form-toggle" class="collapse">
-                            <div class="form-group">
-                                <label for="is_published">Publié</label>
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" />
-                            </div>
+                        <div id="form-toggle" class="collapse">                           
                             <div class="form-group">
                                 <label for="brand_id">Marque</label>
                                 <select class="form-control form-control-success form-control-danger" id="brand_id" name="brand_id" data-field-name="brand" multiple>
@@ -102,7 +98,6 @@
                         <div class="th"></div>
                         <div class="th modal-hidden">Actions</div>
                         <div class="th">#</div>
-                        <div class="th">Publ.</div>
                         <div class="th">Marque</div>
                         <div class="th">Nom</div>
                         <div class="th modal-hidden">Description</div>
@@ -133,13 +128,7 @@
                             <div>
                                 <%= product.id _%><input name="id" type="hidden" value="<%= product.id _%>" />
                             </div>
-                        </div>
-                        <div class="td">
-                            <div class="display-field"><%= product.is_published _%></div>
-                            <div class="edit-field form-group">
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= product.is_published ? 'checked' : '' %> />
-                            </div>
-                        </div>
+                        </div>                        
                         <div class="td">
                             <div class="display-field"><%= product.brand.name _%></div>
                             <div class="edit-field form-group">

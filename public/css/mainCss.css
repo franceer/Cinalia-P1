@@ -1732,6 +1732,8 @@ body.admin {
       background: #5cb85c; }
   #admin-section [name=is_published] {
     width: auto; }
+  #admin-section .select2-container .select2-search--inline {
+    float: none; }
 
 .edit-field, .th.edit-field, .edit .display-field, .save-button,
 .close-button, .add-grouped-button, #back-to-products-button, #back-to-locations-button, #back-to-looks-button, #back-to-sets-button,
@@ -1743,8 +1745,7 @@ body.admin {
   display: block; }
 
 #form-toggle .select2-container .select2-search__field:not([placeholder='']) {
-  width: 100% !important;
-  margin-right: 100000px; }
+  width: 100% !important; }
 
 .has-danger .select2-container--default .select2-selection--multiple {
   border-color: #d9534f; }

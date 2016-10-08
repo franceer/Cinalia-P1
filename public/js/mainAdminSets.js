@@ -89,13 +89,13 @@ webpackJsonp([5],{
 	                var $tr = $button.closest('.tr');
 
 	                if ($tr.data('validator').form()) {
-	                    $button.hide().next().hide().after('<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>');
+	                    toggleLoadingSpinner($button);
 
 	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'decors' }, function (updated) {
 	                        $tr.replaceWith(updated);
 	                        $tr = $('.tr.newly-added').removeClass('newly-added');
 	                        setSelect2Tags($tr.find('select[name=tags]'));
-	                        $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
+	                        toggleLoadingSpinner($button);
 	                    });
 	                }
 	            });
@@ -210,11 +210,12 @@ webpackJsonp([5],{
 	                var validator = $form.data('validator');
 
 	                if (validator.form()) {
-	                    $button.hide().after('<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>');
+	                    toggleLoadingSpinner($button);
 
 	                    addOrUpdateAsset($form, { method: 'POST', target: 'decors' }, function (data) {
 	                        if (data.status === 'error') {
 	                            showMessages($('.alert'), data.message, 'alert-danger');
+	                            toggleLoadingSpinner($button);
 	                        } else {                            
 	                            $form.find('select').val('').trigger('change');
 	                            validator.resetForm();
@@ -229,7 +230,7 @@ webpackJsonp([5],{
 	                            setSelect2Tags($tr.find('select[name=tags]'));
 
 	                            showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
-	                            $button.show().siblings('.fa-spinner, .sr-only').remove();
+	                            toggleLoadingSpinner($button);
 	                            document.getElementsByTagName('body')[0].scrollIntoView();
 
 	                            if (inIframe()) {
@@ -514,6 +515,17 @@ webpackJsonp([5],{
 	            $clonedRow.find('.display-field').removeClass('display-field');
 	            $clonedRow.append('<div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
 	            return $('<div class="tr"></div>').append($clonedRow.contents());
+	        }
+
+	        function toggleLoadingSpinner($button) {
+	            var htmlSpinner = '<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>';
+	            if ($button.is(':visible')) {
+	                $button.hide().after(htmlSpinner);
+	                $button.siblings('button').hide();
+	            } else {
+	                $button.show().siblings('.fa-spinner, .sr-only').remove();
+	                $button.siblings('button').show();
+	            }
 	        }
 
 	        return {

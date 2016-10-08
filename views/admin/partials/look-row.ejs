@@ -14,12 +14,6 @@
         </div>
     </div>
     <div class="td">
-        <div class="display-field"><%= look.is_published _%></div>
-        <div class="edit-field form-group">
-            <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= look.is_published ? 'checked' : '' %> />
-        </div>
-    </div>
-    <div class="td">
         <div class="display-field"><%= look.name _%></div>
         <div class="edit-field form-group">
             <input type="text" name="name" value="<%= look.name _%>" class="form-control form-control-success form-control-danger" />
@@ -55,11 +49,25 @@
     </div>
     <div class="td modal-hidden">
         <div class="display-field">
-            <%= look.character.firstname + (look.character.lastname ? ' ' + look.character.lastname : '') _%>
+            <%= look.character_name _%>
         </div>
         <div class="edit-field form-group">
-            <select class="form-control form-control-success form-control-danger" multiple name="media_character_id">
-                <option selected value="<%= look.character.id _%>"><%= look.character.firstname + (look.character.lastname ? ' ' + look.character.lastname : '') _%></option>
+            <input class="form-control form-control-success form-control-danger" type="text" name="character_name" value="<%= look.character_name _%>" />
+        </div>
+    </div>
+    <div class="td modal-hidden">
+        <div class="display-field">
+            <%= look.characterType.name _%>
+        </div>
+        <div class="edit-field form-group">
+            <label for="character_type_id">Type de personnage</label>
+            <%_
+            var characterTypes = ['Homme', 'Femme', 'Jeune fille', 'Jeune garçon', 'Robot'];
+            _%>
+            <select name="character_type_id" class="form-control form-control-success form-control-danger">
+                <%_ characterTypes.forEach(function(characterType, index){ _%>
+                <option value="<%= index + 1_%>" <%= look.characterType.id === (index + 1) ? 'selected ' : '' %>><%= characterType _%></option>
+                <%_ }); _%>
             </select>
         </div>
     </div>

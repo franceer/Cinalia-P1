@@ -27,7 +27,6 @@ var schema = {
         latitude: { type: 'string', maxlength: 32, nullable: false },
         longitude: { type: 'string', maxlength: 32, nullable: false },
         zoom: { type: 'specific', specificType: 'smallint', nullable: false, defaultTo: 7 },
-        is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },    
@@ -36,13 +35,13 @@ var schema = {
         name: { type: 'string', maxlength: 64, nullable: false, unique: true },
         display_name: { type: 'string', maxlength: 64, nullable: false }
     },	
-	media_characters: {
-        id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
-        firstname: { type: 'string', maxlength: 64, nullable: false },
-        lastname: { type: 'string', maxlength: 64, nullable: true },
-        nickname: { type: 'string', maxlength: 64, nullable: true },
-        character_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'character_types', defaultTo: 1 }
-    },
+	//media_characters: {
+    //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
+    //    firstname: { type: 'string', maxlength: 64, nullable: false },
+    //    lastname: { type: 'string', maxlength: 64, nullable: true },
+    //    nickname: { type: 'string', maxlength: 64, nullable: true },
+    //    character_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'character_types', defaultTo: 1 }
+    //},
     //media_genres: {
     //    id: { type: 'specific', specificType: 'serial', nullable: false, primary: true },
     //    name: { type: 'string', maxlength: 64, nullable: false, unique: true }
@@ -102,7 +101,6 @@ var schema = {
         brand_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'brands' },
         //product_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'product_types' },
         parent_product_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'products', onDelete: 'SET NULL' },
-        is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },
@@ -200,9 +198,10 @@ var schema = {
         name: { type: 'string', maxlength: 64, nullable: false },
         description: { type: 'text', nullable: true },
         time_codes: { type: 'specific', specificType: 'integer[]', nullable: true },
-        video_media_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'SET NULL' },
-        media_character_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_characters' },
-        is_published: { type: 'boolean', nullable: false, defaultTo: false },
+        character_name: { type: 'string', maxlength: 128, nullable: false },
+        character_type_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'character_types', defaultTo: 1 },
+        video_media_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'SET NULL' },        
+        //media_character_id: { type: 'integer', nullable: false, unsigned: true, references: 'id', inTable: 'media_characters' },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },
@@ -235,7 +234,6 @@ var schema = {
         place: { type: 'string', maxlength: 128, nullable: true },
         time_codes: { type: 'specific', specificType: 'integer[]', nullable: true },
         video_media_id: { type: 'integer', nullable: true, unsigned: true, references: 'id', inTable: 'video_medias', onDelete: 'SET NULL' },
-        is_published: { type: 'boolean', nullable: false, defaultTo: false },
         created_at: { type: 'timestamp', nullable: false, defaultTo: 'now' },
         updated_at: { type: 'timestamp', nullable: true }
     },

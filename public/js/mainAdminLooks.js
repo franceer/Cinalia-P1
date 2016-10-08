@@ -21,7 +21,6 @@ webpackJsonp([2],{
 	            searching: function () { return "Recherche en cours…" }
 	        };
 	        this.setSelect2Tags($('#tags'));
-	        this.setSelect2Characters($('#media_character_id'));
 	        this.initHandlers();
 	        this.initFormValidators();
 
@@ -48,18 +47,19 @@ webpackJsonp([2],{
 	                $button = $(this);
 	                $tr = $button.closest('.tr');
 	                t.setSelect2Tags($tr.find('select[name=tags]'));
-	                t.setSelect2Characters($tr.find('select[name=media_character_id]'));
 	                $tr.validate({
 	                    rules: {
 	                        name: 'required',
 	                        tags: 'required',
-	                        media_character_id: 'required',
+	                        character_name: 'required',
+	                        character_type_id: 'required',
 	                        time_codes: { required: true, number: true }
 	                    },
 	                    messages: {
 	                        name: 'Merci d\'indiquer le nom du look',
 	                        tags: 'Merci de choisir un tag',
-	                        media_character_id: 'Merci de choisir un personnage',
+	                        character_name: 'Merci d\'indiquer le nom du personnage',
+	                        character_type_id: 'Merci de choisir un type de personnage',
 	                        time_codes: 'Merci d\'indiquer un time code'
 	                    },
 	                    highlight: function (element) {
@@ -91,14 +91,13 @@ webpackJsonp([2],{
 	                var $tr = $button.closest('.tr');
 
 	                if ($tr.data('validator').form()) {
-	                    $button.hide().next().hide().after('<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>');
+	                    toggleLoadingSpinner($button);
 
 	                    addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'looks' }, function (updated) {
 	                        $tr.replaceWith(updated);
 	                        $tr = $('.tr.newly-added').removeClass('newly-added');
 	                        setSelect2Tags($tr.find('select[name=tags]'));
-	                        setSelect2Characters($tr.find('select[name=media_character_id]'));
-	                        $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
+	                        toggleLoadingSpinner($button);
 	                    });
 	                }
 	            });
@@ -193,11 +192,12 @@ webpackJsonp([2],{
 	                var validator = $form.data('validator');
 
 	                if (validator.form()) {
-	                    $button.hide().after('<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>');
+	                    toggleLoadingSpinner($button);
 
 	                    addOrUpdateAsset($form, { method: 'POST', target: 'looks' }, function (data) {
 	                        if (data.status === 'error') {
 	                            showMessages($('.alert'), data.message, 'alert-danger');
+	                            toggleLoadingSpinner($button);
 	                        } else {                            
 	                            $form.find('select').val('').trigger('change');
 	                            validator.resetForm();
@@ -208,10 +208,9 @@ webpackJsonp([2],{
 	                            $('.table:not(#linked-products) > .thead-inverse').after(data);
 	                            $tr = $('.tr.newly-added').removeClass('newly-added');
 	                            setSelect2Tags($tr.find('select[name=tags]'));
-								setSelect2Characters($tr.find('select[name=media_character_id]'));
 
 	                            showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
-	                            $button.show().siblings('.fa-spinner, .sr-only').remove();
+	                            toggleLoadingSpinner($button);
 	                            document.getElementsByTagName('body')[0].scrollIntoView();
 
 	                            if (inIframe()) {
@@ -322,68 +321,20 @@ webpackJsonp([2],{
 	            return selectTags;
 	        };
 			
-	        var setSelect2Characters = function ($element) {
-	            var t = this;
-
-	            if (!$element)
-	                $element = $('select[name=media_character_id]');
-
-	            var selectCharacters = $element.select2({
-	                width: '100%',
-	                placeholder: 'Choisissez un personnage...',
-	                tags: true,
-	                createTag: function (params) {
-	                    return undefined;
-	                },
-	                multiple: true,
-	                language: t.select2FR,
-	                ajax: {
-	                    url: '/admin/personnages',
-	                    dataType: 'json',
-	                    delay: 250,
-	                    data: function (params) {
-	                        return {
-	                            q: params.term, // search term
-	                            page: params.page
-	                        };
-	                    },
-	                    processResults: function (data, params) {
-	                        params.page = params.page || 1;
-
-	                        return {
-	                            results: data.items,
-	                            pagination: {
-	                                more: (params.page * 30) < data.total_count
-	                            }
-	                        };
-	                    },
-	                    cache: true
-	                },
-	                minimumInputLength: 1,
-					maximumSelectionLength: 1
-	            });
-
-	            selectCharacters.each(function () { $(this).data('select2').$selection.addClass('form-control form-control-danger form-control-success'); });
-
-	            $element.on('change', function () {
-	                $element.closest('form').data('validator').element(this);
-	            });
-
-	            return selectCharacters;
-	        };
-
 	        var initFormValidators = function () {
 	            $('#admin-add-look-form').validate({
 	                rules: {
 	                    name: 'required',
 	                    tags: 'required',
-	                    media_character_id: 'required',
+	                    character_name: 'required',
+	                    character_type_id: 'required',
 	                    time_codes: { required: true, number: true }
 	                },
 	                messages: {
 	                    name: 'Merci d\'indiquer le nom du look',
 	                    tags: 'Merci de choisir un tag',
-	                    media_character_id: 'Merci de choisir un personnage',
+	                    character_name: 'Merci d\'indiquer le nom du personnage',
+	                    character_type_id: 'Merci de choisir un type de personnage',
 	                    time_codes: 'Merci d\'indiquer un time code'
 	                },
 	                highlight: function (element) {
@@ -418,25 +369,6 @@ webpackJsonp([2],{
 	                    error.appendTo(element.closest('.form-group'));
 	                }
 	            });
-
-	            $('#add-character-form').validate({
-	                rules: {
-	                    firstname: 'required'
-	                },
-	                messages: {
-	                    firstname: 'Merci d\'indiquer au minimum le prénom'
-	                },
-	                highlight: function (element) {
-	                    getValidatorParent(element).removeClass('has-success').addClass('has-danger');
-	                },
-	                unhighlight: function (element) {
-	                    getValidatorParent(element).removeClass('has-danger').addClass('has-success');
-	                },
-	                errorPlacement: function (error, element) {
-	                    error.addClass('form-control-label col-md-6 offset-md-3');
-	                    error.appendTo(element.closest('.form-group'));
-	                }
-	            });
 	        };
 
 	        var inIframe = function () {
@@ -456,9 +388,7 @@ webpackJsonp([2],{
 	                var attrName = $input.attr('name');
 	                var value;
 
-	                if (type && type === 'checkbox')
-	                    value = $input.is(':checked');
-	                else if(attrName === 'time_codes')
+	                if(attrName === 'time_codes')
 	                    value = [$input.val()];
 	                else
 	                    value = $input.val();              
@@ -505,18 +435,28 @@ webpackJsonp([2],{
 
 	        function getLookRow($tr) {
 	            var $clonedRow = $tr.clone();
-	            $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(9), .td:nth-of-type(10),.td:nth-of-type(11)').remove();
+	            $clonedRow.children('.modal-hidden, .td:first-child,.td:nth-of-type(10), .td:nth-of-type(11),.td:nth-of-type(12)').remove();
 	            $clonedRow.find('.edit-field').remove();
 	            $clonedRow.find('.display-field').removeClass('display-field');
 	            $clonedRow.append('<div class="td"><button type="button" class="delete-linked-button"><i class="fa fa-trash" aria-hidden="true"></i></button></div>');
 	            return $('<div class="tr"></div>').append($clonedRow.contents());
 	        }
 
+	        function toggleLoadingSpinner($button) {
+	            var htmlSpinner = '<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>';
+	            if($button.is(':visible')){
+	                $button.hide().after(htmlSpinner);
+	                $button.siblings('button').hide();
+	            }else{
+	                $button.show().siblings('.fa-spinner, .sr-only').remove();
+	                $button.siblings('button').show();
+	            }
+	        }
+
 	        return {
 	            inIframe: inIframe,
 	            initHandlers: initHandlers,
 	            setSelect2Tags: setSelect2Tags,
-	            setSelect2Characters: setSelect2Characters,
 	            initFormValidators: initFormValidators
 	        };
 	    }();       

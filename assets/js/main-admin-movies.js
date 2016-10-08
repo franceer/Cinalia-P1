@@ -197,13 +197,13 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 var $tr = $button.closest('.tr');
 
                 if ($tr.data('validator').form()) {
-                    $button.hide().next().hide().after('<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>');
+                    toggleLoadingSpinner($button);
 
                     addOrUpdateAsset($tr, { id: $tr.find('[name=id]').val(), method: 'PUT', target: 'films' }, function (updated) {
                         $tr.replaceWith(updated);
                         $tr = $('tr.newly-added').removeClass('newly-added');
                         setSelect2Tags($tr.find('select[name=tags]'));
-                        $button.show().next().show().siblings('.fa-spinner, .sr-only').remove();
+                        toggleLoadingSpinner($button);
                     });
                 }
             });
@@ -361,11 +361,12 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                 var validator = $form.data('validator');
 
                 if (validator.form()) {                   
-                    $button.hide().after('<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>');
+                    toggleLoadingSpinner($button);
 
                     addOrUpdateAsset($form, { method: 'POST', target: 'films' }, function (data) {
                         if (data.status === 'error') {
                             showMessages($('#alert-add'), data.message, 'alert-danger');
+                            toggleLoadingSpinner($button);
                         } else {
                             $form.find('select').val('').trigger('change');                            
                             validator.resetForm();
@@ -382,7 +383,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
                             setSelect2Tags($tr.find('select[name=tags]'));
 
                             showMessages($('#alert-add'), $tr.find('input[name=name]').val() + ' ajouté avec succès', 'alert-success');
-                            $button.show().siblings('.fa-spinner, .sr-only').remove();
+                            toggleLoadingSpinner($button);
                             document.getElementsByTagName('body')[0].scrollIntoView();
                         }
                     });
@@ -442,7 +443,7 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
 
                 if (type && type === 'checkbox')
                     value = $input.is(':checked');
-                else
+               else
                     value = $input.val();
 
                 data[$input.attr('name')] = (typeof value !== 'undefined' && value !== '' ? value : null);
@@ -502,6 +503,17 @@ define(['jquery', 'select2', 'jquery.validation'], function ($, select2, validat
 				.attr('class', 'alert '+ style)
 				.text(message)
 				.removeAttr('hidden');
+        }
+
+        function toggleLoadingSpinner($button) {
+            var htmlSpinner = '<i class="fa fa-spinner fa-spin fa-3x fa-fw actions"></i><span class="sr-only">Chargement...</span>';
+            if ($button.is(':visible')) {
+                $button.hide().after(htmlSpinner);
+                $button.siblings('button').hide();
+            } else {
+                $button.show().siblings('.fa-spinner, .sr-only').remove();
+                $button.siblings('button').show();
+            }
         }
 
         return {

@@ -345,9 +345,9 @@
                             </div>
                         </div>
                         <div class="td">
-                            <div class="display-field"><%= moment(new Date(videoMedia.tv_release_date)).format('DD/MM/YYYY') _%></div>
+                            <div class="display-field"><%= videoMedia.tv_release_date !== null && moment(new Date(videoMedia.tv_release_date)).isValid() ? moment(new Date(videoMedia.tv_release_date)).format('DD/MM/YYYY') : 'Pas de date' _%></div>
                             <div class="edit-field form-group">
-                                <input type="text" name="tv_release_date" value="<%= moment(new Date(videoMedia.tv_release_date)).isValid() ? moment(new Date(videoMedia.tv_release_date)).format('DD/MM/YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
+                                <input type="text" name="tv_release_date" value="<%= videoMedia.tv_release_date !== null && moment(new Date(videoMedia.tv_release_date)).isValid() ? moment(new Date(videoMedia.tv_release_date)).format('DD/MM/YYYY') : '' _%>" class="form-control form-control-success form-control-danger" />
                             </div>
                         </div>
                         <div class="td">
@@ -536,6 +536,8 @@
                                 <div class="tr thead-inverse">
                                     <div class="th">ID</div>
                                     <div class="th">Nom</div>
+                                    <div class="th">Time code</div>
+                                    <div class="th">Personnage</div>
                                     <div class="th edit-field">Suppr.</div>
                                 </div>
                                 <%_ videoMedia.looks.forEach(function(look){ _%>
@@ -547,6 +549,12 @@
                                     </div>
                                     <div class="td">
                                         <div><%= look.name _%></div>
+                                    </div>
+                                    <div class="td">
+                                        <div><%= look.time_codes _%></div>
+                                    </div>
+                                    <div class="td">
+                                        <div><%= look.character_name _%></div>
                                     </div>
                                     <div class="td">
                                         <div class="edit-field">
@@ -570,6 +578,7 @@
                                     <div class="th">Nom</div>
                                     <div class="th">Image</div>
                                     <div class="th">Loc.</div>
+                                    <div class="th">Time code</div>
                                     <div class="th edit-field">Suppr.</div>
                                 </div>
                                 <%_ videoMedia.sets.forEach(function(set){ _%>
@@ -589,6 +598,9 @@
                                     </div>
                                     <div class="td">
                                         <div><%= set.place _%></div>
+                                    </div>
+                                    <div class="td">
+                                        <div><%= set.time_codes _%></div>
                                     </div>
                                     <div class="td">
                                         <div class="edit-field">

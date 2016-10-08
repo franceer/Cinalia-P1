@@ -27,8 +27,10 @@ router.get('/', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
             req.body[key] = null;
-        //else if (key === 'media_genre_id')
-        //    req.body[key] = req.body[key][0];       
+        else if (key === 'theater_release_date' || key === 'tv_release_date') {
+            var parsedDate = moment(req.body[key], 'DD/MM/YYYY');
+            req.body[key] = process.env.NODE_ENV === 'production' ? parsedDate.format('MMM-DD-YYYY') : parsedDate.format('DD-MMM-YYYY');
+        }
     });
 
     var tagsIDs = req.body.tags;
@@ -197,8 +199,10 @@ router.get('/', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
             req.body[key] = null;
-        //else if (key === 'media_genre_id')
-        //    req.body[key] = req.body[key][0];
+        else if (key === 'theater_release_date' || key === 'tv_release_date') {
+            var parsedDate = moment(req.body[key], 'DD/MM/YYYY');
+            req.body[key] = process.env.NODE_ENV === 'production' ? parsedDate.format('MMM-DD-YYYY') : parsedDate.format('DD-MMM-YYYY');
+        }
     });
 
     var tagsIDs = req.body.tags;

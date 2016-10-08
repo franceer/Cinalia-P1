@@ -62,6 +62,10 @@ body.admin {
     [name=is_published]{
         width: auto;
     }
+
+    .select2-container .select2-search--inline{
+        float:none;
+    }
 }
 .edit-field,.th.edit-field, .edit .display-field, .save-button,
 .close-button, .add-grouped-button, #back-to-products-button, #back-to-locations-button, #back-to-looks-button, #back-to-sets-button,
@@ -74,7 +78,7 @@ body.admin {
 }
 #form-toggle .select2-container .select2-search__field:not([placeholder='']) {
   width: 100% !important;
-  margin-right: 100000px;
+  //margin-right: 100000px;
 }
 .has-danger .select2-container--default .select2-selection--multiple {
     border-color: #d9534f;
@@ -84,7 +88,7 @@ body.admin {
 }
 .table 
 {
-    display:table;
+    display: table;
     margin: 30px 0;
 
     .actions{

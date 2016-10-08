@@ -10,11 +10,7 @@
                         <legend>
                             <button id="add-location-legend" data-toggle="collapse" data-target="#form-toggle">Ajouter un lieu</button>
                         </legend>
-                        <div id="form-toggle" class="collapse">
-                            <div class="form-group">
-                                <label for="is_published">Publié</label>
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" />
-                            </div>
+                        <div id="form-toggle" class="collapse">                            
                             <div class="form-group">
                                 <label for="name">Nom</label>
                                 <input class="form-control form-control-success form-control-danger" type="text" id="name" name="name" />
@@ -28,7 +24,7 @@
                                 <input class="form-control form-control-success form-control-danger" type="text" id="city_state_country" name="city_state_country" />
                             </div>                            
                             <div class="form-group">
-                                <label for="tags">Catégories</label>
+                                <label for="tags">Tags</label>
                                 <button class="add-tag-button" type="button" data-toggle="modal" data-target="#add-tag-modal">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
@@ -76,7 +72,6 @@
                         <div class="th"></div>
                         <div class="th modal-hidden">Actions</div>
                         <div class="th">#</div>
-                        <div class="th">Publ.</div>
                         <div class="th">Nom</div>
                         <div class="th modal-hidden">Description</div>
                         <div class="th">V.E.P.</div>
@@ -106,12 +101,6 @@
                         <div class="td">
                             <div>
                                 <%= location.id _%><input name="id" type="hidden" value="<%= location.id _%>" />
-                            </div>
-                        </div>
-                        <div class="td">
-                            <div class="display-field"><%= location.is_published _%></div>
-                            <div class="edit-field form-group">
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= location.is_published ? 'checked' : '' %> />
                             </div>
                         </div>
                         <div class="td">

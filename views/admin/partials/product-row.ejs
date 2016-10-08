@@ -14,12 +14,6 @@
         </div>
     </div>
     <div class="td">
-        <div class="display-field"><%= product.is_published _%></div>
-        <div class="edit-field form-group">
-            <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= product.is_published ? 'checked' : '' %> />
-        </div>
-    </div>
-    <div class="td">
         <div class="display-field"><%= product.brand.name _%></div>
         <div class="edit-field form-group">
             <select name="brand_id" data-field-name="brand" class="form-control form-control-success form-control-danger">

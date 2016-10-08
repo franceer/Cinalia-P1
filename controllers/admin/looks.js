@@ -11,7 +11,7 @@ var express = require('express'),
 router.get('/', function (req, res) {
     let currentPage = req.query.p ? req.query.p : 1;
 
-    Look.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['tags', 'products', 'products.brand', 'character'] })
+    Look.query(function (qb) { qb.orderByRaw('updated_at DESC NULLS LAST, created_at DESC, id DESC'); }).fetchPage({ pageSize: 30, page: parseInt(currentPage), withRelated: ['tags', 'products', 'products.brand', 'characterType'] })
     .then(function (looks) {          
         looks.pagination.data = helper.getPaginationData(looks.pagination.rowCount, looks.pagination.pageSize, 10, looks.pagination.page);
         res.render('admin/looks', { looks: looks.toJSON(), pagination: looks.pagination, moment: moment });
@@ -20,9 +20,7 @@ router.get('/', function (req, res) {
 .put('/:id', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
-            req.body[key] = null;
-        else if (key === 'media_character_id')
-            req.body[key] = req.body[key][0];
+            req.body[key] = null;        
     });
 
     var tagsIDs = req.body.tags;
@@ -55,7 +53,7 @@ router.get('/', function (req, res) {
         return Promise.all(promises);
     })
     .then(function () {
-        return look.load(['tags', 'products', 'products.brand', 'character']);
+        return look.load(['tags', 'products', 'products.brand', 'characterType']);
     })
     .then(function (updatedLook) {
         res.render('admin/partials/look-row', { layout: false, moment: moment, look: updatedLook.toJSON() });
@@ -68,8 +66,6 @@ router.get('/', function (req, res) {
     Object.keys(req.body).forEach(function (key) {
         if (req.body[key] === '')
             req.body[key] = null;
-        else if (key === 'media_character_id')
-            req.body[key] = req.body[key][0];
     });
 
     var tagsIDs = req.body.tags;
@@ -98,7 +94,7 @@ router.get('/', function (req, res) {
         return Promise.all(promises);
     })
     .then(function () {
-        return look.load(['tags', 'products', 'products.brand', 'character']);
+        return look.load(['tags', 'products', 'products.brand', 'characterType']);
     })
     .then(function (createdLook) {       
         res.render('admin/partials/look-row', { layout: false, moment: moment, look: createdLook.toJSON() });

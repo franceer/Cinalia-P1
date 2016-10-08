@@ -14,12 +14,6 @@
         </div>
     </div>
     <div class="td">
-        <div class="display-field"><%= location.is_published _%></div>
-        <div class="edit-field form-group">
-            <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= location.is_published ? 'checked' : '' %> />
-        </div>
-    </div>
-    <div class="td">
         <div class="display-field"><%= location.name _%></div>
         <div class="edit-field form-group">
             <input type="text" name="name" value="<%= location.name _%>" class="form-control form-control-success form-control-danger" />

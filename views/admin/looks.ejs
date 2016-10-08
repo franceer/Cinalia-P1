@@ -1,6 +1,6 @@
 <section id="admin-section">
     <%- include('./partials/add-tags-modal') %>
-    <div class="modal fade" id="add-character-modal" tabindex="-1" role="dialog" aria-labelledby="add-character-modal-label" aria-hidden="true">
+    <!--<div class="modal fade" id="add-character-modal" tabindex="-1" role="dialog" aria-labelledby="add-character-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="modal fade" id="products-modal" tabindex="-1" role="dialog" aria-labelledby="products-modal-label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -88,11 +88,7 @@
                         <legend>
                             <button id="add-look-legend" data-toggle="collapse" data-target="#form-toggle">Ajouter un look</button>
                         </legend>
-                        <div id="form-toggle" class="collapse">
-                            <div class="form-group">
-                                <label for="is_published">Publié</label>
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" />
-                            </div>
+                        <div id="form-toggle" class="collapse">                            
                             <div class="form-group">
                                 <label for="name">Nom</label>
                                 <input class="form-control form-control-success form-control-danger" type="text" id="name" name="name" />
@@ -113,11 +109,18 @@
                                 <input class="form-control form-control-success form-control-danger" type="text" id="time_codes" name="time_codes" />
                             </div>
                             <div class="form-group">
-                                <label for="characters">Personnages</label>
-                                <button class="add-character-button" type="button" data-toggle="modal" data-target="#add-character-modal">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </button>
-                                <select id="media_character_id" class="form-control form-control-success form-control-danger" multiple name="media_character_id"></select>
+                                <label for="character_name">Nom du personnage</label>
+                                <input class="form-control form-control-success form-control-danger" type="text" id="character_name" name="character_name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="character_name">Type de personnage</label>
+                                <select id="character_type_id" name="character_type_id" class="form-control form-control-success form-control-danger">
+                                    <option selected value="1">Homme</option>
+                                    <option value="2">Femme</option>
+                                    <option value="3">Jeune fille</option>
+                                    <option value="4">Jeune garçon</option>
+                                    <option value="5">Robot</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <button class="open-products-modal btn btn-default" data-toggle="modal" data-target="#products-modal" type="button">Ajouter des produits</button>
@@ -158,12 +161,12 @@
                         <div class="th"></div>
                         <div class="th modal-hidden">Actions</div>
                         <div class="th">#</div>
-                        <div class="th">Publ.</div>
                         <div class="th">Nom</div>
                         <div class="th modal-hidden">Description</div>
                         <div class="th modal-hidden">Tags</div>
-                        <div class="th modal-hidden">Time Code</div>
-                        <div class="th modal-hidden">Personnages</div>
+                        <div class="th">Time Code</div>
+                        <div class="th">Nom du perso.</div>
+                        <div class="th modal-hidden">Type du perso.</div>
                         <div class="th">Produits</div>
                         <div class="th">Créé</div>
                         <div class="th">MAJ</div>
@@ -186,13 +189,7 @@
                             <div>
                                 <%= look.id _%><input name="id" type="hidden" value="<%= look.id _%>" />
                             </div>
-                        </div>
-                        <div class="td">
-                            <div class="display-field"><%= look.is_published _%></div>
-                            <div class="edit-field form-group">
-                                <input class="form-control form-control-success form-control-danger" type="checkbox" id="is_published" name="is_published" <%= look.is_published ? 'checked' : '' %> />
-                            </div>
-                        </div>
+                        </div>                       
                         <div class="td">
                             <div class="display-field"><%= look.name _%></div>
                             <div class="edit-field form-group">
@@ -221,21 +218,34 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="td modal-hidden">
+                        <div class="td">
                             <div class="display-field"><%= look.time_codes _%></div>
                             <div class="edit-field form-group">
                                 <input type="text" name="time_codes" value="<%= look.time_codes _%>" class="form-control form-control-success form-control-danger" />
                             </div>
                         </div>
-                        <div class="td modal-hidden">
+                        <div class="td">
                             <div class="display-field">
-                                <%= look.character.firstname + (look.character.lastname ? ' ' + look.character.lastname : '') _%>
+                                <%= look.character_name _%>
                             </div>
-                            <div class="edit-field form-group">
-                                <select class="form-control form-control-success form-control-danger" multiple name="media_character_id">
-                                    <option selected value="<%= look.character.id _%>"><%= look.character.firstname + (look.character.lastname ? ' ' + look.character.lastname : '') _%></option>
+                            <div class="edit-field form-group">                                
+                                <input class="form-control form-control-success form-control-danger" type="text" name="character_name" value="<%= look.character_name _%>" />
+                            </div>                                                    
+                        </div>
+                        <div class="td modal-hidden">
+                            <%_
+                            var characterTypes = ['Homme', 'Femme', 'Jeune fille', 'Jeune garçon', 'Robot'];
+                            _%>
+                            <div class="display-field">
+                                <%= characterTypes[look.characterType.id - 1] _%>
+                            </div>
+                            <div class="edit-field form-group">                              
+                                <select name="character_type_id" class="form-control form-control-success form-control-danger">
+                                    <%_ characterTypes.forEach(function(characterType, index){ _%>
+                                    <option value="<%= index + 1_%>" <%= look.characterType.id === (index + 1) ? 'selected ' : '' %>><%= characterType _%></option>
+                                    <%_ }); _%>
                                 </select>
-                            </div>
+                            </div>    
                         </div>
                         <div class="td">
                             <div class="display-field">
